@@ -70,7 +70,7 @@ class QuizSubjectUi extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            //!container for Question
+                            //!container for Questions the problems
                             ListView.builder(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
@@ -124,149 +124,42 @@ class QuizSubjectUi extends StatelessWidget {
                             ),
 //!answers
 // List.suffle(){}
-                            Row(
-                              children: [
-                                Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    decoration: BoxDecoration(
-                                      color: babyblue,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: Lightgreen,
-                                      ),
-                                    ),
-                                    child: state
-                                                .question_with_answer
-                                                .problems![index]
-                                                .questions![index]
-                                                .answers[0]
-                                                .answer_text !=
-                                            null
-                                        ? Text("أ   " +
-                                            state
-                                                .question_with_answer
-                                                .problems![index]
-                                                .questions![index]
-                                                .answers[0]
-                                                .answer_text!)
-                                        : Image.network(state
-                                            .question_with_answer
-                                            .problems![index]
-                                            .questions![index]
-                                            .answers[0]
-                                            .answer_image!)),
-                                Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    decoration: BoxDecoration(
-                                      color: babyblue,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: Lightgreen,
-                                      ),
-                                    ),
-                                    child: state
-                                                .question_with_answer
-                                                .problems![index]
-                                                .questions![index]
-                                                .answers[1]
-                                                .answer_text !=
-                                            null
-                                        ? Text("ب   " +
-                                            state
-                                                .question_with_answer
-                                                .problems![index]
-                                                .questions![index]
-                                                .answers[1]
-                                                .answer_text!)
-                                        : Image.network(state
-                                            .question_with_answer
-                                            .problems![index]
-                                            .questions![index]
-                                            .answers[1]
-                                            .answer_image!))
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    decoration: BoxDecoration(
-                                      color: babyblue,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: Lightgreen,
-                                      ),
-                                    ),
-                                    child: state
-                                                .question_with_answer
-                                                .problems![index]
-                                                .questions![index]
-                                                .answers[2]
-                                                .answer_text !=
-                                            null
-                                        ? Text("ج   " +
-                                            state
-                                                .question_with_answer
-                                                .problems![index]
-                                                .questions![index]
-                                                .answers[2]
-                                                .answer_text!)
-                                        : Image.network(state
-                                            .question_with_answer
-                                            .problems![index]
-                                            .questions![index]
-                                            .answers[2]
-                                            .answer_image!)),
-                                Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    decoration: BoxDecoration(
-                                      color: babyblue,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: Lightgreen,
-                                      ),
-                                    ),
-                                    child: state
-                                                .question_with_answer
-                                                .problems![index]
-                                                .questions![index]
-                                                .answers[3]
-                                                .answer_text !=
-                                            null
-                                        ? Text("د   " +
-                                            state
-                                                .question_with_answer
-                                                .problems![index]
-                                                .questions![index]
-                                                .answers[3]
-                                                .answer_text!)
-                                        : Image.network(state
-                                            .question_with_answer
-                                            .problems![index]
-                                            .questions![index]
-                                            .answers[3]
-                                            .answer_image!))
-                              ],
-                            )
+       Row(
+  children: [
+    AnswerContainer(
+      label: "أ",
+      answerText: state.question_with_answer.problems![index].questions![index].answers[0].answer_text,
+      answerImage: state.question_with_answer.problems![index].questions![index].answers[0].answer_image,
+    ),
+    AnswerContainer(
+      label: "ب",
+      answerText: state.question_with_answer.problems![index].questions![index].answers[1].answer_text,
+      answerImage: state.question_with_answer.problems![index].questions![index].answers[1].answer_image,
+    ),
+  ],
+),
+Row(
+  children: [
+    AnswerContainer(
+      label: "ج",
+      answerText: state.question_with_answer.problems![index].questions![index].answers[2].answer_text,
+      answerImage: state.question_with_answer.problems![index].questions![index].answers[2].answer_image,
+    ),
+    AnswerContainer(
+      label: "د",
+      answerText: state.question_with_answer.problems![index].questions![index].answers[3].answer_text,
+      answerImage: state.question_with_answer.problems![index].questions![index].answers[3].answer_image,
+    ),
+  ],
+),
+                
                           ],
                         );
                       } else {
                         //! sperated question
                         return Column(
                           children: [
-                            //!container for Question
+                            //!container for Question for seprated Question
                             Container(
                                 width: MediaQuery.of(context).size.width * 0.90,
                                 height:
@@ -306,132 +199,41 @@ class QuizSubjectUi extends StatelessWidget {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.1,
                             ),
-//!answers
-// List.suffle(){}
+//!answers for seprated Question
+
+                        
+
+
+                            ////////////
                             Row(
-                              children: [
-                                Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    decoration: BoxDecoration(
-                                      color: babyblue,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: Lightgreen,
-                                      ),
-                                    ),
-                                    child: state
-                                                .question_with_answer
-                                                .separated_questions[index]
-                                                .answers[0]
-                                                .answer_text !=
-                                            null
-                                        ? Text("أ   " +
-                                            state
-                                                .question_with_answer
-                                                .separated_questions[index]
-                                                .answers[0]
-                                                .answer_text!)
-                                        : Image.network(state
-                                            .question_with_answer
-                                            .separated_questions[index]
-                                            .answers[0]
-                                            .answer_image!)),
-                                Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    decoration: BoxDecoration(
-                                      color: babyblue,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: Lightgreen,
-                                      ),
-                                    ),
-                                    child: state
-                                                .question_with_answer
-                                                .separated_questions[index]
-                                                .answers[1]
-                                                .answer_text !=
-                                            null
-                                        ? Text("ب   " +
-                                            state
-                                                .question_with_answer
-                                                .separated_questions[index]
-                                                .answers[1]
-                                                .answer_text!)
-                                        : Image.network(state
-                                            .question_with_answer
-                                            .separated_questions[index]
-                                            .answers[1]
-                                            .answer_image!))
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    decoration: BoxDecoration(
-                                      color: babyblue,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: Lightgreen,
-                                      ),
-                                    ),
-                                    child: state
-                                                .question_with_answer
-                                                .separated_questions[index]
-                                                .answers[2]
-                                                .answer_text !=
-                                            null
-                                        ? Text("ج   " +
-                                            state
-                                                .question_with_answer
-                                                .separated_questions[index]
-                                                .answers[2]
-                                                .answer_text!)
-                                        : Image.network(state
-                                            .question_with_answer
-                                            .separated_questions[index]
-                                            .answers[2]
-                                            .answer_image!)),
-                                Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    decoration: BoxDecoration(
-                                      color: babyblue,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: Lightgreen,
-                                      ),
-                                    ),
-                                    child: state
-                                                .question_with_answer
-                                                .separated_questions[index]
-                                                .answers[3]
-                                                .answer_text !=
-                                            null
-                                        ? Text("د   " +
-                                            state
-                                                .question_with_answer
-                                                .separated_questions[index]
-                                                .answers[3]
-                                                .answer_text!)
-                                        : Image.network(state
-                                            .question_with_answer
-                                            .separated_questions[index]
-                                            .answers[3]
-                                            .answer_image!))
-                              ],
-                            )
+  children: [
+    AnswerContainer(
+      label: "أ",
+      answerText: state.question_with_answer.separated_questions![index].answers[0].answer_text,
+      answerImage: state.question_with_answer.separated_questions![index].answers[0].answer_image,
+    ),
+    AnswerContainer(
+      label: "ب",
+      answerText: state.question_with_answer.separated_questions![index].answers[1].answer_text,
+      answerImage: state.question_with_answer.separated_questions![index].answers[1].answer_image,
+    ),
+  ],
+),
+Row(
+  children: [
+    AnswerContainer(
+      label: "ج",
+      answerText: state.question_with_answer.separated_questions![index].answers[2].answer_text,
+      answerImage: state.question_with_answer.separated_questions![index].answers[2].answer_image,
+    ),
+    AnswerContainer(
+      label: "د",
+      answerText: state.question_with_answer.separated_questions![index].answers[3].answer_text,
+      answerImage: state.question_with_answer.separated_questions![index].answers[3].answer_image,
+    ),
+  ],
+),
+                        
                           ],
                         );
                       }
@@ -443,6 +245,39 @@ class QuizSubjectUi extends StatelessWidget {
           ),
         );
       }),
+    );
+  }
+}
+class AnswerContainer extends StatelessWidget {
+  final String? answerText;
+  final String? answerImage;
+  final String label;
+
+  const AnswerContainer({
+    Key? key,
+    required this.answerText,
+    required this.answerImage,
+    required this.label,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.45,
+      height: MediaQuery.of(context).size.height * 0.07,
+      decoration: BoxDecoration(
+        color: babyblue,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Lightgreen,
+        ),
+      ),
+      child: answerText != null
+          ? Text(
+              "$label   $answerText",
+              style: TextStyle(fontSize: 16),
+            )
+          : Image.network(answerImage!),
     );
   }
 }
