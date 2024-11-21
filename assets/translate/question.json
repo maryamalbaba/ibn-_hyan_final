@@ -1,0 +1,158 @@
+{
+    "status_code": 200,
+    "message": "Quiz problems with questions and answers retrieved successfully.",
+    "data": {
+        "id": 1,
+        "name": "الاختبار الأول",
+        "description": "يجب مراجعة المقرر كاملًا قبل البدء بالحل.",
+        "time_limit": 60,
+        "subject_id": 1,
+        "subject_name": "الرياضيات 1",
+        "result_id": 1,
+        "question_count": 4,
+        "total_score": 10,
+        "problems": [
+            {
+                "id": 1,
+                "problem_text": "المسألة الأولى",
+                "problem_image": "http://localhost:8000/storage/12/one.jpg",
+                "questions": [
+                    {
+                        "id": 1,
+                        "score": 3,
+                        "source": "الاوائل",
+                        "question_text": "السؤال الأول",
+                        "question_image": "http://localhost:8000/storage/13/two.jpg",
+                        "answers": [
+                            {
+                                "id": 1,
+                                "answer_text": "الإجابة الأولى",
+                                "is_correct": 1,
+                                "answer_image": ""
+                            },
+                            {
+                                "id": 2,
+                                "answer_text": "الإجابة الثانية",
+                                "is_correct": 0,
+                                "answer_image": ""
+                            },
+                            {
+                                "id": 3,
+                                "answer_text": "الإجابة الثالثة",
+                                "is_correct": 0,
+                                "answer_image": ""
+                            },
+                            {
+                                "id": 4,
+                                "answer_text": "الإجابة الرابعة",
+                                "is_correct": 0,
+                                "answer_image": ""
+                            }
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "score": 3,
+                        "source": "التفوق",
+                        "question_text": "السؤال الثاني",
+                        "question_image": "",
+                        "answers": [
+                            {
+                                "id": 5,
+                                "answer_text": "الإجابة الأولى",
+                                "is_correct": 1,
+                                "answer_image": ""
+                            },
+                            {
+                                "id": 6,
+                                "answer_text": "الإجابة الثانية",
+                                "is_correct": 0,
+                                "answer_image": ""
+                            },
+                            {
+                                "id": 7,
+                                "answer_text": "الإجابة الثالثة",
+                                "is_correct": 0,
+                                "answer_image": ""
+                            },
+                            {
+                                "id": 8,
+                                "answer_text": "الإجابة الرابعة",
+                                "is_correct": 0,
+                                "answer_image": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "separated_questions": [
+            {
+                "id": 3,
+                "score": 2,
+                "source": "0",
+                "question_text": "السؤال الخامس",
+                "question_image": "http://localhost:8000/storage/14/five.jpg",
+                "answers": [
+                    {
+                        "id": 9,
+                        "answer_text": "الإجابة الأولى",
+                        "is_correct": 1,
+                        "answer_image": "http://localhost:8000/storage/15/six.jpg"
+                    },
+                    {
+                        "id": 10,
+                        "answer_text": "الإجابة الثانية",
+                        "is_correct": 0,
+                        "answer_image": "http://localhost:8000/storage/16/seven.jpg"
+                    },
+                    {
+                        "id": 11,
+                        "answer_text": "الإجابة الثالثة",
+                        "is_correct": 0,
+                        "answer_image": "http://localhost:8000/storage/17/eight.jpg"
+                    },
+                    {
+                        "id": 12,
+                        "answer_text": "الإجابة الرابعة",
+                        "is_correct": 0,
+                        "answer_image": "http://localhost:8000/storage/18/nine.jpg"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "score": 2,
+                "source": "0",
+                "question_text": "السؤال السادس",
+                "question_image": "",
+                "answers": [
+                    {
+                        "id": 13,
+                        "answer_text": "الإجابة الأولى",
+                        "is_correct": 1,
+                        "answer_image": ""
+                    },
+                    {
+                        "id": 14,
+                        "answer_text": "الإجابة الثانية",
+                        "is_correct": 0,
+                        "answer_image": ""
+                    },
+                    {
+                        "id": 15,
+                        "answer_text": "الإجابة الثالثة",
+                        "is_correct": 0,
+                        "answer_image": ""
+                    },
+                    {
+                        "id": 16,
+                        "answer_text": "الإجابة الرابعة",
+                        "is_correct": 0,
+                        "answer_image": ""
+                    }
+                ]
+            }
+        ]
+    }
+}
