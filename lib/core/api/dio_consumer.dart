@@ -70,7 +70,7 @@ class DioConsumer implements ApiConsumer {
       return response;
     } on DioException catch (e) {
       HandleDioException(e);
-      throw e;
+      rethrow;
     }
 
    

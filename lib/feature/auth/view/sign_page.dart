@@ -8,12 +8,12 @@ import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/core/resourses/styles_manager.dart';
 import 'package:ibnhyanfinal/core/widgets/otp_field.dart';
 import 'package:ibnhyanfinal/core/widgets/useable_green_container.dart';
-import 'package:ibnhyanfinal/feature/Subject/presenture/view/subject_page.dart';
+import 'package:ibnhyanfinal/feature/SubjectQuiz/ShowSubject/presenture/view/subject_page.dart';
 import 'package:ibnhyanfinal/feature/auth/bloc/auth_bloc.dart';
 import 'package:ibnhyanfinal/feature/auth/model/usermodel.dart';
 
 class SignPage extends StatelessWidget {
-  SignPage({super.key});
+  const SignPage({super.key});
 
   @override
   Widget build(BuildContext context) {

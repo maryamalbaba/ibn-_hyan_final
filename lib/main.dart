@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/config/sharedpref.dart';
-import 'package:ibnhyanfinal/feature/auth/service/pag.dart';
 import 'package:ibnhyanfinal/feature/auth/view/firstPage.dart';
 
 void main() async{
