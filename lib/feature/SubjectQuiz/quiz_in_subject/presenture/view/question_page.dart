@@ -6,8 +6,8 @@ import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Mo
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/presenture/view/send_answer_page.dart';
 
 class QuizSubjectUi extends StatefulWidget {
-  const QuizSubjectUi({super.key, required this.id});
-  final num id;
+  const QuizSubjectUi({super.key,  this.id});
+  final num? id;
 
   @override
   State<QuizSubjectUi> createState() => _QuizSubjectUiState();
@@ -58,14 +58,14 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          SubjectQuestionBloc()..add(GetSubjectQuestionEvent(id: widget.id)),
+          SubjectQuestionBloc()..add(GetSubjectQuestionEvent(id: widget.id!)),
       child: Builder(builder: (context) {
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: green,
-          ),
-          backgroundColor: offwhite,
-          body: BlocConsumer<SubjectQuestionBloc, SubjectQuestionState>(
+        return 
+          // appBar: AppBar(
+          //   backgroundColor: green,
+          // ),
+          // backgroundColor: offwhite,
+           BlocConsumer<SubjectQuestionBloc, SubjectQuestionState>(
             listener: (context, state) {
               // TODO: implement listener
               print("state is");
@@ -544,8 +544,8 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                 return const Center(child: CircularProgressIndicator());
               }
             },
-          ),
-        );
+          );
+        
       }),
     );
   }

@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/Error/noInternet.dart';
 
 class Auth {
+  List<user_response>userList=[];
   DioConsumer api = DioConsumer(dio: Dio());
   Future<Result> sign(user_request) async {
     try {
@@ -22,6 +23,13 @@ class Auth {
             user_response.fromMap(response.data["data"]["user"]);
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString("token", response.data["data"]["token"]);
+
+           pref.setString("first_name", response.data["data"]["user"]["first_name"]);
+            pref.setString("last_name", response.data["data"]["user"]["last_name"]);
+             pref.setString("signIn_code", response.data["data"]["user"]["signIn_code"]);
+ 
+ 
+        userList.add(res);
         return res;
       }
       if (response.statusCode == 401) {

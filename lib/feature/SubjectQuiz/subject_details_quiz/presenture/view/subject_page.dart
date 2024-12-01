@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ibnhyanfinal/core/resourses/assets_manager.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
+import 'package:ibnhyanfinal/core/widgets/container_page_subj.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view/question_page.dart';
 
 import 'package:ibnhyanfinal/feature/SubjectQuiz/subject_details_quiz/presenture/bloc/bloc/subject_bloc.dart';
@@ -17,17 +18,10 @@ class SubjectdetailsQuizPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          SubjectdetailsBloc()..add((GetAllSubjectDetailsQuiz(id: id))),
-      child: Builder(builder: (context) {
-        return Scaffold(
-          backgroundColor: offwhite,
-          appBar: AppBar(
-            backgroundColor: green,
-            title: const Text("اختبارات"),
-            leading: Image.asset(user_image),
-          ),
-          body: BlocBuilder<SubjectdetailsBloc, SubjectdetailsQuizState>(
+        create: (context) =>
+            SubjectdetailsBloc()..add((GetAllSubjectDetailsQuiz(id: id))),
+        child: Builder(builder: (context) {
+          return BlocBuilder<SubjectdetailsBloc, SubjectdetailsQuizState>(
             builder: (context, state) {
               if (state is SuucessGetSubjectDetailsQuiz) {
                 return ListView.builder(
@@ -35,33 +29,40 @@ class SubjectdetailsQuizPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>QuizSubjectUi(id: state.subjects[index].id,)));
+                          Navigator.of(context).pushNamed(
+                            "/QuizSubjectUi",
+                            arguments: state.subjects[index].id,
+                          );
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width*0.80,
-                                height:MediaQuery.of(context).size.height*0.10,
-                                decoration: BoxDecoration(
-                                color: babyblue,
-                                  borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                  color: Lightgreen,
-                                )),
-                            child: ListTile(
-                                title: Text(state.subjects[index].name),
-                                leading: Text(state.subjects[index].description)),
+                        child: ContainerSubject(
+                            widget: Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: ListTile(
+                            trailing: Text(state.subjects[index].name),
+                            title: Row(
+                              children: [
+                                Text(state.subjects[index].time_limit.toString()+"دقيقة"+":"
+                                    ),
+                                 Image.asset(clock),
+                              
+                              ],
+                            ),
+                            subtitle: Row(
+                              children: [
+                                Image.asset(questionmark),
+                                Text(state.subjects[index].question_count
+                                    .toString()),
+                              ],
+                            ),
                           ),
-                        ),
+                        )),
                       );
                     });
               } else {
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               }
             },
-          ),
-        );
-      }),
-    );
+          );
+        }));
   }
 }

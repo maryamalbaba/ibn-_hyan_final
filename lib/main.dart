@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       
-    home:const welcomePage(),
+    home: welcomePage(),
     
   //  welcomePage()
     );
