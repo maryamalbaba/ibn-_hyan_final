@@ -6,17 +6,20 @@ import 'package:ibnhyanfinal/core/api/api_consumer.dart';
 import 'package:ibnhyanfinal/core/api/dio_consumer.dart';
 import 'package:ibnhyanfinal/core/resourses/api_manager.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/ShowSubject/data/Model/Subject.dart';
+import 'package:ibnhyanfinal/feature/auth/service/real/sign_ser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 ApiConsumer api = DioConsumer(dio: Dio());
 
 class Subject {
+  Auth auth=Auth();
   Future<Either<ErrorModel, List<SubjectModel>>> getsubject() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String accesstoken = pref.getString("token") ?? "";
+   
+    String accesstoken =auth.token;
     Response response = await api.get(get_subject_url,
         options: Options(headers: {"Authorization": "Bearer $accesstoken"}));
-    print("student token :" + accesstoken);
+    print(" student token : " + accesstoken);
     print("before try in subject");
     try {
       if (response.statusCode == 200) {

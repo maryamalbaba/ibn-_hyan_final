@@ -4,6 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibnhyanfinal/core/core_page.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/core/resourses/styles_manager.dart';
 import 'package:ibnhyanfinal/core/widgets/otp_field.dart';
@@ -142,9 +143,9 @@ class SignPage extends StatelessWidget {
                     if (state is SuccessSign) {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(const SnackBar(content: Text("succ")));
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const SubjectPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CorePage()));
                     } 
-                    if(state is WronginputException){
+                     else if (state is WronginputException){
                        ScaffoldMessenger.of(context)
                           .showSnackBar(const SnackBar(content: Text(" wrong enter value")));
                     }
@@ -185,7 +186,8 @@ class SignPage extends StatelessWidget {
                             controller7.text +
                             controller8.text);
                       },
-                      child: const Useable_Green_container(text: "تحققق")),
+                      child: InkWell(
+                        child: const Useable_Green_container(text: "تحققق"))),
                 ),
                 const Spacer(
                   flex: 1,

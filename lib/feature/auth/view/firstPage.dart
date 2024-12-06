@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/config/sharedpref.dart';
 import 'package:ibnhyanfinal/core/core_page.dart';
@@ -5,6 +8,7 @@ import 'package:ibnhyanfinal/core/resourses/assets_manager.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/core/widgets/useable_green_container.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/ShowSubject/presenture/view/subject_page.dart';
+import 'package:ibnhyanfinal/feature/auth/model/response_model.dart';
 import 'package:ibnhyanfinal/feature/auth/model/response_user.dart';
 import 'package:ibnhyanfinal/feature/auth/service/real/sign_ser.dart';
 import 'package:ibnhyanfinal/feature/auth/view/sign_page.dart';
@@ -23,6 +27,10 @@ class _welcomePageState extends State<welcomePage> {
   Auth auth = Auth();
 
   bool isLoggedIn = false;
+  List <String>tokens = [];
+  List listtokens = [];
+  List<RespoonseModel> users = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -34,15 +42,21 @@ class _welcomePageState extends State<welcomePage> {
     setState(() {
       final token = pref.getString("token");
       print("token saved is " + token.toString());
-      print("userlist is :" + auth.userList.toString());
-      isLoggedIn = token != null;
-      auth.userList = [
-        user_response(
-          first_name: pref.getString("first_name")!,
-          last_name: pref.getString("last_name")!,
-          signIn_code: pref.getString("signIn_code")!,
-        )
-      ];
+      print("tokenlist:" + listtokens.toString());
+      print("users are :" + users.toString());
+      isLoggedIn = token != null && users.isNotEmpty;
+
+      List<String> userStrings = pref.getStringList("users") ?? [];
+
+      users = userStrings.map((e) => RespoonseModel.fromJson((e))).toList();
+
+//!edit
+      // users = pref
+      //     .getStringList("users")
+      //     .map((e) => RespoonseModel.fromJson(e))
+      //     .toList();
+       tokens = users.map((user) => user.token).toList();
+      pref.setStringList("savedtokens", tokens);
       print(isLoggedIn);
     });
   }
@@ -60,7 +74,6 @@ class _welcomePageState extends State<welcomePage> {
                   image: AssetImage(background), fit: BoxFit.fill),
             ),
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 if (!isLoggedIn)
                   Padding(
@@ -82,32 +95,42 @@ class _welcomePageState extends State<welcomePage> {
                         reverse: true,
                         itemCount: auth.userList.length,
                         itemBuilder: (context, index) {
+                          // pref.setStringList("savedtokens",tokens[index] );
                           return Padding(
                             padding: EdgeInsets.all(
                               MediaQuery.of(context).size.width * 0.1,
                             ),
                             child: Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  border: Border.all(color: Color(0xff9FD7C6)),
-                                  color: Color(0xffE9FFFB),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10)),
+                                  border: Border.all(
+                                      color: const Color(0xff9FD7C6)),
+                                  color: const Color(0xffE9FFFB),
                                 ),
                                 width: MediaQuery.of(context).size.width * 0.1,
                                 height:
                                     MediaQuery.of(context).size.height * 0.1,
                                 child: InkWell(
                                   onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>CorePage()));
-                              },
+                                    //!extract  one token
+
+                                    auth.token = pref
+                                        .getStringList("savedtokens")![index];
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => CorePage()));
+                                  },
                                   child: ListTile(
                                       leading: Image.asset(greenIconUser),
                                       title: Text(
-                                        auth.userList[index].first_name +
+                                        users[index].user.first_name +
                                             " " +
-                                            auth.userList[index].last_name,
+                                            users[index].user.last_name,
                                       ),
-                                      subtitle: Text(
-                                          auth.userList[index].signIn_code)),
+                                      subtitle:
+                                          Text(users[index].user.signIn_code)),
                                 )),
                           );
                         }),
