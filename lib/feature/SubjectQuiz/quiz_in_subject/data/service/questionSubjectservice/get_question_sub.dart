@@ -58,14 +58,14 @@ class QuizinSubject {
             print(res);
         return Right(res);
       } else {
-        return Left(ErrorModel(errors: "error"));
+        return Left(ErrorModel());
       }
     } catch (e) {
       if(e is TypeError){
         print(e.stackTrace);
       }
       print(e);
-      return Left((ErrorModel(errors: "error")));
+      return Left((ErrorModel()));
     }
   }
 }

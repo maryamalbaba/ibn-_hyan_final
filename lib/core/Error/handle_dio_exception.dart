@@ -9,29 +9,29 @@ void HandleDioException(DioException e) {
   switch (e.type) {
     case DioExceptionType.connectionTimeout:
       print("connectio exception");
-      throw ErrorModel.fromMap(e.response!.data);
+      throw ErrorModel();
     case DioExceptionType.sendTimeout:
       print("connectio exception");
-      throw ErrorModel.fromMap(e.response!.data);
+      throw ErrorModel();
     case DioExceptionType.receiveTimeout:
       print("connectio exception");
-    throw ErrorModel.fromMap(e.response!.data);
+    throw ErrorModel();
     case DioExceptionType.badCertificate:
       print("connectio exception");
-   throw ErrorModel.fromMap(e.response!.data);
+   throw ErrorModel();
     case DioExceptionType.cancel:
       print("connectio exception");
-throw ErrorModel.fromMap(e.response!.data);
+throw ErrorModel();
     case DioExceptionType.connectionError:
       print("connectio exception");
-  throw ErrorModel.fromMap(e.response!.data);
+  throw ErrorModel();
     case DioExceptionType.unknown:
       print("connectio exception");
-throw ErrorModel.fromMap(e.response!.data);
+throw ErrorModel();
 
     case DioExceptionType.badResponse:
     print("bad response");
-
-      throw ErrorModel.fromMap(e.response!.data);
+print(DioExceptionType.badResponse);
+      throw ErrorModel();
   }
 }

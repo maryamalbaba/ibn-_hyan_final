@@ -30,10 +30,13 @@ class SubjectDetailsQuiz {
                 SubjecDetailsQuizs.fromMap(response.data["data"][index]));
         return Right(res);
       } else {
-        return Left(ErrorModel(errors: "error"));
+        return Left(
+          ErrorModel());
       }
     } catch (e) {
-      return Left((ErrorModel(errors: "error")));
+      print("error");
+      print(e);
+      return Left((ErrorModel()));
     }
   }
 }

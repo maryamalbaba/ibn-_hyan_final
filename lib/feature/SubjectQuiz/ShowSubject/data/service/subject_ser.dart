@@ -26,12 +26,16 @@ class Subject {
         print("200 in subject");
         List<SubjectModel> res = List.generate(response.data["data"].length,
             (index) => SubjectModel.fromMap(response.data["data"][index]));
+            print("res is"+"$res");
         return Right(res);
       } else {
-        return Left(ErrorModel(errors: "error"));
+        print("else in service show sub");
+        return Left(ErrorModel());
       }
     } catch (e) {
-      return Left((ErrorModel(errors: "error")));
+      print("error is in show sub");
+      print(e);
+      return Left((ErrorModel()));
     }
   }
 }

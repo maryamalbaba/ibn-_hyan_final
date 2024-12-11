@@ -10,7 +10,7 @@ class offlineException extends ErrorModel {
   String errors;
   offlineException({
     required this.errors,
-  }) : super(errors: "no internet error");
+  }) ;
 
 
 

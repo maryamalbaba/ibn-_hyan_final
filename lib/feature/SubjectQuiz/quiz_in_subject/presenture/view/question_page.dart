@@ -14,6 +14,7 @@ class QuizSubjectUi extends StatefulWidget {
 
 class _QuizSubjectUiState extends State<QuizSubjectUi> {
   List<SentAnswerModel> selectedAnswers = [];
+  List <String> Label=["أ","ب","ج","د"];
   bool callintialzeanswe=false;
 
   void initializeAnswers(int totalQuestions) {
@@ -32,9 +33,10 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
 
   void storeAnswer(num questionId, num answerId, num resultId, num index,
       String answer_text, String answer_tarqem) {
+setState(() {
     int existingIndex =
         selectedAnswers.indexWhere((answer) => answer.answer_id == answerId);
-
+  
     if (existingIndex != -1) {
       selectedAnswers[existingIndex] = SentAnswerModel(
           answer_id: answerId,
@@ -55,6 +57,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
     }
 
     print(selectedAnswers);
+});
   }
 
   @override
@@ -70,25 +73,24 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
             // TODO: implement listener
             print("state is");
             print(state);
+if (state is SubjectQuestionSuccess && !callintialzeanswe) {
+      setState(() {
+        callintialzeanswe = true;
+        int totalQuestions = state.question_with_answer.problems!.length +
+            state.question_with_answer.separated_questions.length;
+
+        initializeAnswers(totalQuestions);
+      });}
+
           },
           builder: (context, state) {
             if (state is SubjectQuestionSuccess) {
-              if(!callintialzeanswe)
-              {
-                setState(() {
-                  
-              callintialzeanswe=true;
-                });
+           
 
-              int totalQuestions = state.question_with_answer.problems!.length +
-                  state.question_with_answer.separated_questions.length;
-              }
-
-              // initializeAnswers(totalQuestions);
               return PageView.builder(
                   itemCount: state.question_with_answer.problems!.length +
                       state.question_with_answer.separated_questions.length +
-                      1, //   ,
+                      1,
                   itemBuilder: (context, index) {
                     if (index < state.question_with_answer.problems!.length) {
                       return Column(
@@ -176,7 +178,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                           ),
 
 //!answers
-// List.suffle(){}
+
                                     Row(
                                       children: [
                                         AnswerContainer(
@@ -194,7 +196,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                 .answers[0]
                                                 .answer_image,
                                             onTap: () {
-                                              setState(() {
+                                              
                                                 storeAnswer(
                                                   state.question_with_answer.id,
                                                   state
@@ -215,8 +217,8 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                       .answer_text!,
                                                   "أ",
                                                 );
-                                              });
-                                            }),
+                                              })
+                                            ,
                                         AnswerContainer(
                                           label: "ب",
                                           answerText: state
@@ -232,7 +234,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                               .answers[1]
                                               .answer_image,
                                           onTap: () {
-                                            setState(() {
+                                            
                                               storeAnswer(
                                                   state.question_with_answer.id,
                                                   state
@@ -250,10 +252,9 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                       .questions![
                                                           indexQuestions]
                                                       .answers[1]
-                                                      .answer_text!,
-                                                  "ب");
-                                            });
-                                          },
+                                                      .answer_text!,"ب"
+                                              );
+                                            },
                                         ),
                                       ],
                                     ),
@@ -274,7 +275,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                               .answers[2]
                                               .answer_image,
                                           onTap: () {
-                                            setState(() {
+                                           
                                               storeAnswer(
                                                   state.question_with_answer.id,
                                                   state
@@ -294,7 +295,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                       .answers[2]
                                                       .answer_text!,
                                                   "ج");
-                                            });
+                                          
                                           },
                                         ),
                                         AnswerContainer(
@@ -312,7 +313,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                               .answers[3]
                                               .answer_image,
                                           onTap: () {
-                                            setState(() {
+                                          
                                               storeAnswer(
                                                   state.question_with_answer.id,
                                                   state
@@ -332,7 +333,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                       .answers[3]
                                                       .answer_text!,
                                                   "د");
-                                            });
+                                           
                                           },
                                         ),
                                       ],
@@ -400,152 +401,192 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                               height: MediaQuery.of(context).size.height * 0.1,
                             ),
 //!answers for seprated Question
+for(int i=0;i<4;i+2)
+Row(
+  children: [
+    for(int j=i;j<i+2;j++)
+         AnswerContainer(
+                                  label: Label[j],
+                                  answerText: state
+                                      .question_with_answer
+                                      .separated_questions[sepratedIndex]
+                                      .answers[j]
+                                      .answer_text,
+                                  answerImage: state
+                                      .question_with_answer
+                                      .separated_questions[sepratedIndex]
+                                      .answers[j]
+                                      .answer_image,
+                                  onTap: () {
+                                   
+                                      storeAnswer(
+                                          state.question_with_answer.id,
+                                          state
+                                              .question_with_answer
+                                              .separated_questions[
+                                                  sepratedIndex]
+                                              .answers[j]
+                                              .id!,
+                                          state.question_with_answer.result_id,
+                                          index,
+                                          state
+                                              .question_with_answer
+                                              .separated_questions[
+                                                  sepratedIndex]
+                                              .answers[j]
+                                              .answer_text!,
+                                          Label[j]);
+                                   
+                                  },
+                                ),
+  ]
+),
 
-                            ////////////
-                            Row(
-                              children: [
-                                AnswerContainer(
-                                  label: "أ",
-                                  answerText: state
-                                      .question_with_answer
-                                      .separated_questions[sepratedIndex]
-                                      .answers[0]
-                                      .answer_text,
-                                  answerImage: state
-                                      .question_with_answer
-                                      .separated_questions[sepratedIndex]
-                                      .answers[0]
-                                      .answer_image,
-                                  onTap: () {
-                                    setState(() {
-                                      storeAnswer(
-                                          state.question_with_answer.id,
-                                          state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[0]
-                                              .id!,
-                                          state.question_with_answer.result_id,
-                                          index,
-                                          state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[0]
-                                              .answer_text!,
-                                          "أ");
-                                    });
-                                  },
-                                ),
-                                AnswerContainer(
-                                  label: "ب",
-                                  answerText: state
-                                      .question_with_answer
-                                      .separated_questions[sepratedIndex]
-                                      .answers[1]
-                                      .answer_text,
-                                  answerImage: state
-                                      .question_with_answer
-                                      .separated_questions[sepratedIndex]
-                                      .answers[1]
-                                      .answer_image,
-                                  onTap: () {
-                                    setState(() {
-                                      storeAnswer(
-                                          state.question_with_answer.id,
-                                          state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[1]
-                                              .id!,
-                                          state.question_with_answer.result_id,
-                                          index,
-                                          state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[1]
-                                              .answer_text!,
-                                          "ب");
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                AnswerContainer(
-                                  label: "ج",
-                                  answerText: state
-                                      .question_with_answer
-                                      .separated_questions[sepratedIndex]
-                                      .answers[2]
-                                      .answer_text,
-                                  answerImage: state
-                                      .question_with_answer
-                                      .separated_questions[sepratedIndex]
-                                      .answers[2]
-                                      .answer_image,
-                                  onTap: () {
-                                    setState(() {
-                                      storeAnswer(
-                                          state.question_with_answer.id,
-                                          state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[2]
-                                              .id!,
-                                          state.question_with_answer.result_id,
-                                          index,
-                                          state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[2]
-                                              .answer_text!,
-                                          "ج");
-                                    });
-                                  },
-                                ),
-                                AnswerContainer(
-                                  label: "د",
-                                  answerText: state
-                                      .question_with_answer
-                                      .separated_questions[sepratedIndex]
-                                      .answers[3]
-                                      .answer_text,
-                                  answerImage: state
-                                      .question_with_answer
-                                      .separated_questions[sepratedIndex]
-                                      .answers[3]
-                                      .answer_image,
-                                  onTap: () {
-                                    setState(() {
-                                      storeAnswer(
-                                          state.question_with_answer.id,
-                                          state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[3]
-                                              .id!,
-                                          state.question_with_answer.result_id,
-                                          index,
-                                          state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[3]
-                                              .answer_text!,
-                                          "د");
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
+
+                            // ////////////
+                            // Row(
+                            //   children: [
+                            //     AnswerContainer(
+                            //       label: "أ",
+                            //       answerText: state
+                            //           .question_with_answer
+                            //           .separated_questions[sepratedIndex]
+                            //           .answers[0]
+                            //           .answer_text,
+                            //       answerImage: state
+                            //           .question_with_answer
+                            //           .separated_questions[sepratedIndex]
+                            //           .answers[0]
+                            //           .answer_image,
+                            //       onTap: () {
+                                   
+                            //           storeAnswer(
+                            //               state.question_with_answer.id,
+                            //               state
+                            //                   .question_with_answer
+                            //                   .separated_questions[
+                            //                       sepratedIndex]
+                            //                   .answers[0]
+                            //                   .id!,
+                            //               state.question_with_answer.result_id,
+                            //               index,
+                            //               state
+                            //                   .question_with_answer
+                            //                   .separated_questions[
+                            //                       sepratedIndex]
+                            //                   .answers[0]
+                            //                   .answer_text!,
+                            //               "أ");
+                                   
+                            //       },
+                            //     ),
+                            //     AnswerContainer(
+                            //       label: "ب",
+                            //       answerText: state
+                            //           .question_with_answer
+                            //           .separated_questions[sepratedIndex]
+                            //           .answers[1]
+                            //           .answer_text,
+                            //       answerImage: state
+                            //           .question_with_answer
+                            //           .separated_questions[sepratedIndex]
+                            //           .answers[1]
+                            //           .answer_image,
+                            //       onTap: () {
+                                   
+                            //           storeAnswer(
+                            //               state.question_with_answer.id,
+                            //               state
+                            //                   .question_with_answer
+                            //                   .separated_questions[
+                            //                       sepratedIndex]
+                            //                   .answers[1]
+                            //                   .id!,
+                            //               state.question_with_answer.result_id,
+                            //               index,
+                            //               state
+                            //                   .question_with_answer
+                            //                   .separated_questions[
+                            //                       sepratedIndex]
+                            //                   .answers[1]
+                            //                   .answer_text!,
+                            //               "ب");
+                            //                                         },
+                            //     ),
+                            //   ],
+                            // ),
+                            // Row(
+                            //   children: [
+                            //     AnswerContainer(
+                            //       label: "ج",
+                            //       answerText: state
+                            //           .question_with_answer
+                            //           .separated_questions[sepratedIndex]
+                            //           .answers[2]
+                            //           .answer_text,
+                            //       answerImage: state
+                            //           .question_with_answer
+                            //           .separated_questions[sepratedIndex]
+                            //           .answers[2]
+                            //           .answer_image,
+                            //       onTap: () {
+                                   
+                            //           storeAnswer(
+                            //               state.question_with_answer.id,
+                            //               state
+                            //                   .question_with_answer
+                            //                   .separated_questions[
+                            //                       sepratedIndex]
+                            //                   .answers[2]
+                            //                   .id!,
+                            //               state.question_with_answer.result_id,
+                            //               index,
+                            //               state
+                            //                   .question_with_answer
+                            //                   .separated_questions[
+                            //                       sepratedIndex]
+                            //                   .answers[2]
+                            //                   .answer_text!,
+                            //               "ج");
+                                   
+                            //       },
+                            //     ),
+                            //     AnswerContainer(
+                            //       label: "د",
+                            //       answerText: state
+                            //           .question_with_answer
+                            //           .separated_questions[sepratedIndex]
+                            //           .answers[3]
+                            //           .answer_text,
+                            //       answerImage: state
+                            //           .question_with_answer
+                            //           .separated_questions[sepratedIndex]
+                            //           .answers[3]
+                            //           .answer_image,
+                            //       onTap: () {
+                                   
+                            //           storeAnswer(
+                            //               state.question_with_answer.id,
+                            //               state
+                            //                   .question_with_answer
+                            //                   .separated_questions[
+                            //                       sepratedIndex]
+                            //                   .answers[3]
+                            //                   .id!,
+                            //               state.question_with_answer.result_id,
+                            //               index,
+                            //               state
+                            //                   .question_with_answer
+                            //                   .separated_questions[
+                            //                       sepratedIndex]
+                            //                   .answers[3]
+                            //                   .answer_text!,
+                            //               "د");
+                                   
+                            //       },
+                            //     ),
+                            //   ],
+                            // ),
                           ],
                         );
                       } else {

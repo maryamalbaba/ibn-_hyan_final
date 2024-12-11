@@ -14,8 +14,18 @@ import '../../../../core/Error/noInternet.dart';
 
 class Auth {
   List<String> userList = [];
-  String token="" ;
   DioConsumer api = DioConsumer(dio: Dio());
+
+  String token = "";
+  Auth.internal(
+    
+  );
+
+  static final Auth _instance = Auth.internal();
+  
+  factory Auth() {
+    return _instance;
+  }
   Future<Result> sign(user_request) async {
     try {
       Response response =
@@ -25,13 +35,12 @@ class Auth {
 
         RespoonseModel res = RespoonseModel.fromMap(response.data["data"]);
         SharedPreferences pref = await SharedPreferences.getInstance();
-
         pref.setString("token", response.data["data"]["token"]);
         token = pref.getString("token") ?? "";
 
         userList = pref.getStringList("users") ?? [];
 
-        userList.add(json.encode(res.toJson()));
+        userList.add(res.toJson());
         pref.setStringList("users", userList);
         print("the updated  old list" + userList.toString());
 
@@ -46,8 +55,8 @@ class Auth {
         return offlineException(errors: "no internet");
       }
     } catch (e) {
-      ErrorModel exception_res = ErrorModel(errors: "some thing went wrong");
-      return exception_res;
+  //    ErrorModel exception_res = ErrorModel(errors: "some thing went wrong");
+      return ErrorModel();
     }
   }
 }

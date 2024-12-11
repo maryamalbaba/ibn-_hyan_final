@@ -27,7 +27,7 @@ class _welcomePageState extends State<welcomePage> {
   Auth auth = Auth();
 
   bool isLoggedIn = false;
-  List <String>tokens = [];
+  List<String> tokens = [];
   List listtokens = [];
   List<RespoonseModel> users = [];
 
@@ -43,19 +43,20 @@ class _welcomePageState extends State<welcomePage> {
       final token = pref.getString("token");
       print("token saved is " + token.toString());
       print("tokenlist:" + listtokens.toString());
-      print("users are :" + users.toString());
-      isLoggedIn = token != null && users.isNotEmpty;
+
+      
 
       List<String> userStrings = pref.getStringList("users") ?? [];
 
       users = userStrings.map((e) => RespoonseModel.fromJson((e))).toList();
-
+      print("users are :" + users.toString());
+      isLoggedIn =  users.isNotEmpty;
 //!edit
       // users = pref
       //     .getStringList("users")
       //     .map((e) => RespoonseModel.fromJson(e))
       //     .toList();
-       tokens = users.map((user) => user.token).toList();
+      tokens = users.map((user) => user.token).toList();
       pref.setStringList("savedtokens", tokens);
       print(isLoggedIn);
     });
@@ -75,25 +76,11 @@ class _welcomePageState extends State<welcomePage> {
             ),
             child: Column(
               children: [
-                if (!isLoggedIn)
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                          onTap: () {
-                            print("fffffff");
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const SignPage()));
-                          },
-                          child: const Useable_Green_container(
-                            text: "تسجيل الدخول",
-                          ))),
                 if (isLoggedIn)
                   Expanded(
                     child: ListView.builder(
                         reverse: true,
-                        itemCount: auth.userList.length,
+                        itemCount: users.length,
                         itemBuilder: (context, index) {
                           // pref.setStringList("savedtokens",tokens[index] );
                           return Padding(
@@ -115,8 +102,7 @@ class _welcomePageState extends State<welcomePage> {
                                   onTap: () {
                                     //!extract  one token
 
-                                    auth.token = pref
-                                        .getStringList("savedtokens")![index];
+                                    auth.token =users[index].token;
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

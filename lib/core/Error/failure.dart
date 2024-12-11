@@ -6,21 +6,21 @@ import 'dart:convert';
 import 'package:ibnhyanfinal/core/Models/Error.dart';
 
 class serverfailur extends ErrorModel {
-  serverfailur({required super.errors});
+
 }
 
 
 
 // ignore: camel_case_types
 class cacheFailure extends ErrorModel {
-  cacheFailure({required super.errors});
+
 }
 
 class wronginputFailure extends ErrorModel {
   String errors;
   wronginputFailure({
     required this.errors,
-  }) : super(errors: 'wrong input');
+  }) ;
 
   @override
   wronginputFailure copyWith({
