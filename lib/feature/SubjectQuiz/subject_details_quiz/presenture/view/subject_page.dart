@@ -31,7 +31,8 @@ class SubjectdetailsQuizPage extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).pushNamed(
                             "/QuizSubjectUi",
-                            arguments: state.subjects[index].id,
+                            arguments: [state.subjects[index].id, state.subjects[index].time_limit],
+                            
                           );
                         },
                         child: ContainerSubject(

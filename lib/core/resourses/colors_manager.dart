@@ -9,3 +9,4 @@ const Color grey=Color(0xff7D7C73);
 // ignore: constant_identifier_names
 const Color Lightgrey=Color(0xff8F8D7D);
 const Color babyblue=Color(0xffE9FFFB);
+const Color yellow=Color(0xffFFAF00);

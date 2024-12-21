@@ -2,10 +2,12 @@
 
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:ibnhyanfinal/core/Models/Error.dart';
 
 // ignore: non_constant_identifier_names
 void HandleDioException(DioException e) {
+  debugPrint("DEBUG: $e: ${e.response}");
   switch (e.type) {
     case DioExceptionType.connectionTimeout:
       print("connectio exception");

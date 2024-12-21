@@ -1,63 +1,101 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
+import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/answer_model.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/bloc/bloc/subject_question_bloc.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Model/answer.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/presenture/view/send_answer_page.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class QuizSubjectUi extends StatefulWidget {
-   QuizSubjectUi({super.key, this.id,});
+  QuizSubjectUi({
+    super.key,
+    this.id,
+    required this.time_limit,
+  });
   final num? id;
+  final num time_limit;
   @override
   State<QuizSubjectUi> createState() => _QuizSubjectUiState();
 }
 
 class _QuizSubjectUiState extends State<QuizSubjectUi> {
   List<SentAnswerModel> selectedAnswers = [];
-  List <String> Label=["أ","ب","ج","د"];
-  bool callintialzeanswe=false;
-
-  void initializeAnswers(int totalQuestions) {
-    selectedAnswers = List.generate(
-      totalQuestions,
-      (index) => SentAnswerModel(
-        answer_id: 0,
-        result_id: 0,
-        questionid: 0,
-        index: index,
-        answer_text: "  ",
-        answer_tarqem: "  ",
-      ),
-    );
+  List<SentAnswerModel> ListSepratedAnswer1 = [];
+  List<SentAnswerModel> ListSepratedAnswer2 = [];
+  List<String> Label = ["أ", "ب", "ج", "د"];
+  bool callintialzeanswe = false;
+  double percent = 0.0;
+  late Timer timer;
+  startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      if (mounted)
+        setState(() {
+          percent += 1;
+          if (percent >= widget.time_limit.toInt()) {
+            timer.cancel();
+            // percent=0.0;
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text("انتهى الوقت")));
+          }
+        });
+    });
   }
 
-  void storeAnswer(num questionId, num answerId, num resultId, num index,
-      String answer_text, String answer_tarqem) {
-setState(() {
-    int existingIndex =
-        selectedAnswers.indexWhere((answer) => answer.answer_id == answerId);
-  
-    if (existingIndex != -1) {
-      selectedAnswers[existingIndex] = SentAnswerModel(
-          answer_id: answerId,
-          result_id: resultId,
-          questionid: questionId,
-          index: index,
-          answer_text: answer_text,
-          answer_tarqem: answer_tarqem);
-    } else {
-      selectedAnswers.removeWhere((answer) => answer.questionid == questionId);
+  void store1answerList(
+      {length, index, required SentAnswerModel answerQuestioninSepratedQ}) {
+    setState(() {
+      ListSepratedAnswer1 = List.generate(
+          length,
+          (index) => (SentAnswerModel(
+              answer_id: answerQuestioninSepratedQ.answer_id,
+              result_id: answerQuestioninSepratedQ.result_id,
+              answer_tarqem: answerQuestioninSepratedQ.answer_tarqem,
+              answer_text: answerQuestioninSepratedQ.answer_text)));
+      // SentAnswerModel(
+      //     answer_id: answerQuestioninSepratedQ.answer_id,
+      //     result_id: answerQuestioninSepratedQ.result_id,
+      //     answer_tarqem: answerQuestioninSepratedQ.answer_tarqem,
+      //     answer_text: answerQuestioninSepratedQ.answer_text);
 
-      selectedAnswers.add(SentAnswerModel(
-          answer_id: answerId,
-          result_id: resultId,
-          index: index,
-          answer_text: answer_text,
-          answer_tarqem: answer_tarqem));
-    }
+      print("List1 $ListSepratedAnswer1");
+    });
+  }
 
-    print(selectedAnswers);
-});
+  void store2answerList(
+      {length, index, required SentAnswerModel answerQuestioninSepratedQ}) {
+    setState(() {
+      final existingSnswerId = ListSepratedAnswer2.indexWhere((answer) =>
+          answer.questionid == answerQuestioninSepratedQ.questionid);
+      if (existingSnswerId != -1) {
+        ListSepratedAnswer2[existingSnswerId] = answerQuestioninSepratedQ;
+      } else {
+        ListSepratedAnswer2.add(SentAnswerModel(
+            answer_id: answerQuestioninSepratedQ.answer_id,
+            result_id: answerQuestioninSepratedQ.result_id,
+            answer_tarqem: answerQuestioninSepratedQ.answer_tarqem,
+            answer_text: answerQuestioninSepratedQ.answer_text));
+      }
+      print("List2 $ListSepratedAnswer2");
+    });
+  }
+
+  List<SentAnswerModel> mergeAnswers() {
+    List<SentAnswerModel> allAnswers = [];
+
+    allAnswers = ListSepratedAnswer1 + ListSepratedAnswer2;
+
+    print("list mearge $allAnswers");
+    return allAnswers;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
   }
 
   @override
@@ -66,39 +104,72 @@ setState(() {
       create: (context) =>
           SubjectQuestionBloc()..add(GetSubjectQuestionEvent(id: widget.id!)),
       child: Builder(builder: (context) {
-        return
-            
-            BlocConsumer<SubjectQuestionBloc, SubjectQuestionState>(
+        return BlocConsumer<SubjectQuestionBloc, SubjectQuestionState>(
           listener: (context, state) {
             // TODO: implement listener
             print("state is");
             print(state);
-if (state is SubjectQuestionSuccess && !callintialzeanswe) {
-      setState(() {
-        callintialzeanswe = true;
-        int totalQuestions = state.question_with_answer.problems!.length +
-            state.question_with_answer.separated_questions.length;
-
-        initializeAnswers(totalQuestions);
-      });}
-
+            if (state is SubjectQuestionSuccess) {
+              setState(() {
+                callintialzeanswe = true;
+                int totalQuestions =
+                    state.question_with_answer.problems!.length +
+                        state.question_with_answer.separated_questions.length;
+              });
+            }
           },
           builder: (context, state) {
             if (state is SubjectQuestionSuccess) {
-           
-
               return PageView.builder(
                   itemCount: state.question_with_answer.problems!.length +
-                      state.question_with_answer.separated_questions.length +
-                      1,
+                      state.question_with_answer.separated_questions.length,
                   itemBuilder: (context, index) {
                     if (index < state.question_with_answer.problems!.length) {
                       return Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
+                          Padding(
+                            padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.height * 0.01),
+                            child: Row(children: [
+                              Text(widget.time_limit.toString() + ":00"),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  // padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.01),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.6),
+                                        spreadRadius: 0.001,
+                                        blurRadius: 10,
+                                      )
+                                    ],
+                                  ),
+                                  child: LinearPercentIndicator(
+                                    backgroundColor: Colors.white,
+                                    progressColor: yellow,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    animationDuration: 2500,
+                                    lineHeight: 14.0,
+                                    percent: percent / widget.time_limit,
+                                    barRadius: Radius.circular(10),
+                                    onPercentValue: (val) {
+                                      val = percent;
+                                      print(percent);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ),
                           //!container for problem
                           Container(
                             width: MediaQuery.of(context).size.width * 0.6,
-                            height: MediaQuery.of(context).size.height * 0.03,
+                            height: MediaQuery.of(context).size.height * 0.1,
                             decoration: BoxDecoration(
                                 color: babyblue,
                                 borderRadius: BorderRadius.circular(10),
@@ -131,24 +202,15 @@ if (state is SubjectQuestionSuccess && !callintialzeanswe) {
                             ),
                           ),
                           //!container for Questions the problems
-                          ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: state.question_with_answer
-                                .problems![index].questions!.length,
-                            itemBuilder:
-                                (BuildContext context, int indexQuestions) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.2,
-                                decoration: BoxDecoration(
-                                    color: babyblue,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: Lightgreen,
-                                    )),
-                                child: Column(
+                          Flexible(
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: state.question_with_answer
+                                  .problems![index].questions!.length,
+                              itemBuilder:
+                                  (BuildContext context, int indexQuestions) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(state
                                         .question_with_answer
@@ -173,175 +235,90 @@ if (state is SubjectQuestionSuccess && !callintialzeanswe) {
                                             .questions![indexQuestions]
                                             .question_image!)
                                         : const SizedBox(
-                                            height: 1,
-                                            width: 1,
+                                            height: 5,
+                                            width: 5,
                                           ),
 
-//!answers
-
-                                    Row(
-                                      children: [
-                                        AnswerContainer(
-                                            label: "أ",
-                                            answerText: state
-                                                .question_with_answer
-                                                .problems![index]
-                                                .questions![indexQuestions]
-                                                .answers[0]
-                                                .answer_text,
-                                            answerImage: state
-                                                .question_with_answer
-                                                .problems![index]
-                                                .questions![indexQuestions]
-                                                .answers[0]
-                                                .answer_image,
-                                            onTap: () {
-                                              
-                                                storeAnswer(
-                                                  state.question_with_answer.id,
-                                                  state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![index]
-                                                      .answers[index]
-                                                      .id!,
-                                                  state.question_with_answer
-                                                      .result_id,
-                                                  index,
-                                                  state
+                                    //!answers
+                                    Flexible(
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: state
+                                              .question_with_answer
+                                              .problems![index]
+                                              .questions![index]
+                                              .answers
+                                              .length,
+                                          itemBuilder:
+                                              (contxt, indexforanswer) {
+                                            return Padding(
+                                              padding: EdgeInsets.all(
+                                                MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.01,
+                                              ),
+                                              child: AnswerContainer(
+                                                  label: Label[indexforanswer],
+                                                  answerText: state
                                                       .question_with_answer
                                                       .problems![index]
                                                       .questions![
                                                           indexQuestions]
-                                                      .answers[0]
-                                                      .answer_text!,
-                                                  "أ",
-                                                );
-                                              })
-                                            ,
-                                        AnswerContainer(
-                                          label: "ب",
-                                          answerText: state
-                                              .question_with_answer
-                                              .problems![index]
-                                              .questions![indexQuestions]
-                                              .answers[1]
-                                              .answer_text,
-                                          answerImage: state
-                                              .question_with_answer
-                                              .problems![index]
-                                              .questions![indexQuestions]
-                                              .answers[1]
-                                              .answer_image,
-                                          onTap: () {
-                                            
-                                              storeAnswer(
-                                                  state.question_with_answer.id,
-                                                  state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![index]
-                                                      .answers[index]
-                                                      .id!,
-                                                  state.question_with_answer
-                                                      .result_id,
-                                                  index,
-                                                  state
+                                                      .answers[indexforanswer]
+                                                      .answer_text,
+                                                  answerImage: state
                                                       .question_with_answer
                                                       .problems![index]
                                                       .questions![
                                                           indexQuestions]
-                                                      .answers[1]
-                                                      .answer_text!,"ب"
-                                              );
-                                            },
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        AnswerContainer(
-                                          label: "ج",
-                                          answerText: state
-                                              .question_with_answer
-                                              .problems![index]
-                                              .questions![indexQuestions]
-                                              .answers[2]
-                                              .answer_text,
-                                          answerImage: state
-                                              .question_with_answer
-                                              .problems![index]
-                                              .questions![indexQuestions]
-                                              .answers[2]
-                                              .answer_image,
-                                          onTap: () {
-                                           
-                                              storeAnswer(
-                                                  state.question_with_answer.id,
-                                                  state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![index]
-                                                      .answers[index]
-                                                      .id!,
-                                                  state.question_with_answer
-                                                      .result_id,
-                                                  index,
-                                                  state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![
-                                                          indexQuestions]
-                                                      .answers[2]
-                                                      .answer_text!,
-                                                  "ج");
-                                          
-                                          },
-                                        ),
-                                        AnswerContainer(
-                                          label: "د",
-                                          answerText: state
-                                              .question_with_answer
-                                              .problems![index]
-                                              .questions![indexQuestions]
-                                              .answers[3]
-                                              .answer_text,
-                                          answerImage: state
-                                              .question_with_answer
-                                              .problems![index]
-                                              .questions![indexQuestions]
-                                              .answers[3]
-                                              .answer_image,
-                                          onTap: () {
-                                          
-                                              storeAnswer(
-                                                  state.question_with_answer.id,
-                                                  state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![index]
-                                                      .answers[index]
-                                                      .id!,
-                                                  state.question_with_answer
-                                                      .result_id,
-                                                  index,
-                                                  state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![
-                                                          indexQuestions]
-                                                      .answers[3]
-                                                      .answer_text!,
-                                                  "د");
-                                           
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                                                      .answers[indexforanswer]
+                                                      .answer_image,
+                                                  onTap: () {
+                                                    setState(() {
+                                                      store1answerList(
+                                                          answerQuestioninSepratedQ:
+                                                              SentAnswerModel(
+                                                            answer_id: state
+                                                                .question_with_answer
+                                                                .problems![
+                                                                    index]
+                                                                .questions![
+                                                                    indexQuestions]
+                                                                .answers[
+                                                                    indexforanswer]
+                                                                .id!,
+                                                            result_id: state
+                                                                .question_with_answer
+                                                                .result_id
+                                                                .toInt(),
+                                                            answer_tarqem: Label[
+                                                                indexforanswer],
+                                                            answer_text: state
+                                                                .question_with_answer
+                                                                .problems![
+                                                                    index]
+                                                                .questions![
+                                                                    indexQuestions]
+                                                                .answers[
+                                                                    indexforanswer]
+                                                                .answer_text!,
+                                                          ),
+                                                          length: state
+                                                              .question_with_answer
+                                                              .problems![index]
+                                                              .questions!
+                                                              .length,
+                                                          index: index);
+                                                    });
+                                                  }),
+                                            );
+                                          }),
+                                    )
                                   ],
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.1,
@@ -358,6 +335,41 @@ if (state is SubjectQuestionSuccess && !callintialzeanswe) {
                       if (index < totalindex - 1) {
                         return Column(
                           children: [
+                            Row(
+                              children: [
+                                Text(widget.time_limit.toString() + ":00"),
+                                Container(
+                                  padding: EdgeInsets.all(
+                                      MediaQuery.of(context).size.height *
+                                          0.01),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.6),
+                                        spreadRadius: 0.01,
+                                        blurRadius: 10,
+                                      )
+                                    ],
+                                  ),
+                                  child: LinearPercentIndicator(
+                                    backgroundColor: Colors.white,
+                                    progressColor: yellow,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.9,
+                                    animationDuration: 2500,
+                                    lineHeight: 14.0,
+                                    percent: percent / widget.time_limit,
+                                    barRadius: Radius.circular(10),
+                                    onPercentValue: (val) {
+                                      val = percent;
+                                      print(percent);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                             //!container for Question for seprated Question
                             Container(
                                 width: MediaQuery.of(context).size.width * 0.90,
@@ -401,205 +413,79 @@ if (state is SubjectQuestionSuccess && !callintialzeanswe) {
                               height: MediaQuery.of(context).size.height * 0.1,
                             ),
 //!answers for seprated Question
-for(int i=0;i<4;i+2)
-Row(
-  children: [
-    for(int j=i;j<i+2;j++)
-         AnswerContainer(
-                                  label: Label[j],
-                                  answerText: state
-                                      .question_with_answer
-                                      .separated_questions[sepratedIndex]
-                                      .answers[j]
-                                      .answer_text,
-                                  answerImage: state
-                                      .question_with_answer
-                                      .separated_questions[sepratedIndex]
-                                      .answers[j]
-                                      .answer_image,
-                                  onTap: () {
-                                   
-                                      storeAnswer(
-                                          state.question_with_answer.id,
-                                          state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[j]
-                                              .id!,
-                                          state.question_with_answer.result_id,
-                                          index,
-                                          state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[j]
-                                              .answer_text!,
-                                          Label[j]);
-                                   
-                                  },
-                                ),
-  ]
-),
 
-
-                            // ////////////
-                            // Row(
-                            //   children: [
-                            //     AnswerContainer(
-                            //       label: "أ",
-                            //       answerText: state
-                            //           .question_with_answer
-                            //           .separated_questions[sepratedIndex]
-                            //           .answers[0]
-                            //           .answer_text,
-                            //       answerImage: state
-                            //           .question_with_answer
-                            //           .separated_questions[sepratedIndex]
-                            //           .answers[0]
-                            //           .answer_image,
-                            //       onTap: () {
-                                   
-                            //           storeAnswer(
-                            //               state.question_with_answer.id,
-                            //               state
-                            //                   .question_with_answer
-                            //                   .separated_questions[
-                            //                       sepratedIndex]
-                            //                   .answers[0]
-                            //                   .id!,
-                            //               state.question_with_answer.result_id,
-                            //               index,
-                            //               state
-                            //                   .question_with_answer
-                            //                   .separated_questions[
-                            //                       sepratedIndex]
-                            //                   .answers[0]
-                            //                   .answer_text!,
-                            //               "أ");
-                                   
-                            //       },
-                            //     ),
-                            //     AnswerContainer(
-                            //       label: "ب",
-                            //       answerText: state
-                            //           .question_with_answer
-                            //           .separated_questions[sepratedIndex]
-                            //           .answers[1]
-                            //           .answer_text,
-                            //       answerImage: state
-                            //           .question_with_answer
-                            //           .separated_questions[sepratedIndex]
-                            //           .answers[1]
-                            //           .answer_image,
-                            //       onTap: () {
-                                   
-                            //           storeAnswer(
-                            //               state.question_with_answer.id,
-                            //               state
-                            //                   .question_with_answer
-                            //                   .separated_questions[
-                            //                       sepratedIndex]
-                            //                   .answers[1]
-                            //                   .id!,
-                            //               state.question_with_answer.result_id,
-                            //               index,
-                            //               state
-                            //                   .question_with_answer
-                            //                   .separated_questions[
-                            //                       sepratedIndex]
-                            //                   .answers[1]
-                            //                   .answer_text!,
-                            //               "ب");
-                            //                                         },
-                            //     ),
-                            //   ],
-                            // ),
-                            // Row(
-                            //   children: [
-                            //     AnswerContainer(
-                            //       label: "ج",
-                            //       answerText: state
-                            //           .question_with_answer
-                            //           .separated_questions[sepratedIndex]
-                            //           .answers[2]
-                            //           .answer_text,
-                            //       answerImage: state
-                            //           .question_with_answer
-                            //           .separated_questions[sepratedIndex]
-                            //           .answers[2]
-                            //           .answer_image,
-                            //       onTap: () {
-                                   
-                            //           storeAnswer(
-                            //               state.question_with_answer.id,
-                            //               state
-                            //                   .question_with_answer
-                            //                   .separated_questions[
-                            //                       sepratedIndex]
-                            //                   .answers[2]
-                            //                   .id!,
-                            //               state.question_with_answer.result_id,
-                            //               index,
-                            //               state
-                            //                   .question_with_answer
-                            //                   .separated_questions[
-                            //                       sepratedIndex]
-                            //                   .answers[2]
-                            //                   .answer_text!,
-                            //               "ج");
-                                   
-                            //       },
-                            //     ),
-                            //     AnswerContainer(
-                            //       label: "د",
-                            //       answerText: state
-                            //           .question_with_answer
-                            //           .separated_questions[sepratedIndex]
-                            //           .answers[3]
-                            //           .answer_text,
-                            //       answerImage: state
-                            //           .question_with_answer
-                            //           .separated_questions[sepratedIndex]
-                            //           .answers[3]
-                            //           .answer_image,
-                            //       onTap: () {
-                                   
-                            //           storeAnswer(
-                            //               state.question_with_answer.id,
-                            //               state
-                            //                   .question_with_answer
-                            //                   .separated_questions[
-                            //                       sepratedIndex]
-                            //                   .answers[3]
-                            //                   .id!,
-                            //               state.question_with_answer.result_id,
-                            //               index,
-                            //               state
-                            //                   .question_with_answer
-                            //                   .separated_questions[
-                            //                       sepratedIndex]
-                            //                   .answers[3]
-                            //                   .answer_text!,
-                            //               "د");
-                                   
-                            //       },
-                            //     ),
-                            //   ],
-                            // ),
+                            Expanded(
+                              child: GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 50,
+                                        mainAxisSpacing: 30),
+                                itemBuilder:
+                                    (context, index_for_seprated_answer) {
+                                  return AnswerContainer(
+                                    label: Label[index_for_seprated_answer],
+                                    answerText: state
+                                        .question_with_answer
+                                        .separated_questions[sepratedIndex]
+                                        .answers[index_for_seprated_answer]
+                                        .answer_text,
+                                    answerImage: state
+                                        .question_with_answer
+                                        .separated_questions[sepratedIndex]
+                                        .answers[index_for_seprated_answer]
+                                        .answer_image,
+                                    onTap: () {
+                                      setState(() {
+                                        store2answerList(
+                                            index: index_for_seprated_answer,
+                                            length: state.question_with_answer
+                                                .separated_questions.length,
+                                            answerQuestioninSepratedQ: SentAnswerModel(
+                                                answer_id: state
+                                                    .question_with_answer
+                                                    .separated_questions[
+                                                        sepratedIndex]
+                                                    .answers[
+                                                        index_for_seprated_answer]
+                                                    .id!,
+                                                result_id: state
+                                                    .question_with_answer
+                                                    .result_id
+                                                    .toInt(),
+                                                answer_text: state
+                                                    .question_with_answer
+                                                    .separated_questions[
+                                                        sepratedIndex]
+                                                    .answers[
+                                                        index_for_seprated_answer]
+                                                    .answer_text!,
+                                                answer_tarqem: Label[
+                                                    index_for_seprated_answer]));
+                                      });
+                                    },
+                                  );
+                                },
+                                itemCount: state
+                                    .question_with_answer
+                                    .separated_questions[sepratedIndex]
+                                    .answers
+                                    .length,
+                              ),
+                            ),
+                            ////////////
                           ],
                         );
                       } else {
                         return SendAnswerUI(
-                          onTap: () {
-                            print("ops");
-                            print(selectedAnswers);
-                          },
-                          itemcount:
-                              state.question_with_answer.problems!.length +
-                                  state.question_with_answer.separated_questions
-                                      .length,
-                          list: selectedAnswers,
+                          // onTap: () {
+                          //   print("ops");
+                          //   print(selectedAnswers);
+
+                          // },
+                          itemcount: mergeAnswers().length,
+                          list: mergeAnswers(),
+                          result_Id: state.question_with_answer.result_id,
                         );
                       }
                     }
@@ -643,7 +529,7 @@ class AnswerContainer extends StatelessWidget {
         ),
         child: answerText != null
             ? Text(
-                "$label   $answerText",
+                "  $label   $answerText",
                 style: const TextStyle(fontSize: 16),
               )
             : Image.network(answerImage!),
@@ -654,6 +540,24 @@ class AnswerContainer extends StatelessWidget {
 //   q id_index >page view builder+>to know when i have to go _aswertext_answer tarqem
 //controleeler jump to index page .....
 //controller have to pass
-///list from new model by index stoarge 
+///list from new model by index stoarge
 ///must to color my answer and right answer
 ///
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,3 +6,5 @@ const String get_subject_url = "my_subjects";
 const String get_detail_subject_quizes_url = "quizzes/subject/";
 // ignore: constant_identifier_names
 const String get_Quiz_Subject_Id_url = "questions/";
+const String marks="my-exams";
+const String sendAnswer="solves";

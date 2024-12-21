@@ -66,8 +66,10 @@ final GlobalKey<NavigatorState>navigatorKey=GlobalKey<NavigatorState>();
             break;
 
             case "/QuizSubjectUi":
-            final num  id2=setting.arguments as num;
-            page= QuizSubjectUi(id: id2,);
+
+            final num  id2=(setting.arguments as List)[0] as num;
+            final num time_limit=(setting.arguments as List)[1] as num;
+            page= QuizSubjectUi(id: id2, time_limit: time_limit,);
             break;
 
           default:

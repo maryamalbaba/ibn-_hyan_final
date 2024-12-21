@@ -17,7 +17,9 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
           await Subject().getsubject();
       result.fold((error) {
         emit(ErrorGetSubject());
-      }, (subjects) {
+
+      }, 
+      (subjects) {
         emit(SuucessGetSubject(subjects: subjects ));
       });
     });

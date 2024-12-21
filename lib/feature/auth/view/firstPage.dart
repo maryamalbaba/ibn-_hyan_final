@@ -52,10 +52,7 @@ class _welcomePageState extends State<welcomePage> {
       print("users are :" + users.toString());
       isLoggedIn =  users.isNotEmpty;
 //!edit
-      // users = pref
-      //     .getStringList("users")
-      //     .map((e) => RespoonseModel.fromJson(e))
-      //     .toList();
+     
       tokens = users.map((user) => user.token).toList();
       pref.setStringList("savedtokens", tokens);
       print(isLoggedIn);
