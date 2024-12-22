@@ -21,3 +21,5 @@ const TextStyle style_text_code = TextStyle(color: Lightgrey, fontSize: 14);
 const TextStyle style_enter_yourcode = TextStyle(color: grey, fontSize: 17);
  // ignore: constant_identifier_names
  const TextStyle style_subject_word=TextStyle(color: green);
+
+ final TextStyle style_font_marks=TextStyle( fontSize:10 ,fontWeight: FontWeight.w400);

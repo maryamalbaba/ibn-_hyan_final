@@ -13,13 +13,18 @@ class SubjectdetailsBloc extends Bloc<SubjectDetailsEvent, SubjectdetailsQuizSta
   SubjectdetailsBloc() : super(SubjectDetailsQuizInitial()) {
     on<GetAllSubjectDetailsQuiz>((event, emit) async {
       emit(LoadingGetSubjectDetailsQuiz());
-      Either<ErrorModel, List<SubjecDetailsQuizs>> result =
+    try{
+        Either<ErrorModel, List<SubjecDetailsQuizs>> result =
           await SubjectDetailsQuiz().get_subject_detail_quizes(event.id);
       result.fold((error) {
         emit(ErrorGetSubjectDetailsQuiz());
       }, (subjects) {
         emit(SuucessGetSubjectDetailsQuiz(subjects: subjects ));
       });
+    }
+    catch(e){
+emit(ErrorGetSubjectDetailsQuiz());
+    }
     });
   }
 }

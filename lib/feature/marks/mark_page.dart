@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
+import 'package:ibnhyanfinal/core/resourses/styles_manager.dart';
 import 'package:ibnhyanfinal/feature/marks/presenture/bloc/marks_bloc.dart';
 
 class MarksPage extends StatelessWidget {
@@ -36,18 +37,13 @@ class MarksPage extends StatelessWidget {
                                     padding: EdgeInsets.all(
                                         MediaQuery.of(context).size.width *
                                             0.03),
-                                    child: Text("التاريخ"),
+                                    child: Text(
+                                      "التاريخ",
+                                      style: style_font_marks,
+                                    ),
                                   )),
                             ),
-                            RotatedBox(
-                                quarterTurns: 1,
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Divider(
-                                    color: Color.fromARGB(255, 182, 132, 47),
-                                    thickness: 1,
-                                  ),
-                                )),
+                            verticalDivDer(),
                             Expanded(
                               flex: 1,
                               child: FittedBox(
@@ -56,18 +52,13 @@ class MarksPage extends StatelessWidget {
                                     padding: EdgeInsets.all(
                                         MediaQuery.of(context).size.width *
                                             0.01),
-                                    child: Text("س/م"),
+                                    child: Text(
+                                      "س/م",
+                                      style: style_font_marks,
+                                    ),
                                   )),
                             ),
-                            RotatedBox(
-                                quarterTurns: 1,
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Divider(
-                                    color: Color.fromARGB(255, 182, 132, 47),
-                                    thickness: 1,
-                                  ),
-                                )),
+                            verticalDivDer(),
                             Expanded(
                               flex: 2,
                               child: FittedBox(
@@ -76,38 +67,31 @@ class MarksPage extends StatelessWidget {
                                     padding: EdgeInsets.all(
                                         MediaQuery.of(context).size.width *
                                             0.03),
-                                    child: Text("المادة"),
+                                    child: Text(
+                                      "المادة",
+                                      style: style_font_marks,
+                                    ),
                                   )),
                             ),
-                            RotatedBox(
-                                quarterTurns: 1,
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Divider(
-                                    color: Color.fromARGB(255, 182, 132, 47),
-                                    thickness: 1,
-                                  ),
-                                )),
+                            verticalDivDer(),
                             Expanded(
                               flex: 2,
                               child: FittedBox(
                                   fit: BoxFit.fill,
-                                  child: Text("العلامة المستحقة")),
+                                  child: Text(
+                                    "العلامة المستحقة",
+                                    style: style_font_marks,
+                                  )),
                             ),
-                            RotatedBox(
-                                quarterTurns: 1,
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Divider(
-                                    color: Color.fromARGB(255, 182, 132, 47),
-                                    thickness: 1,
-                                  ),
-                                )),
+                            verticalDivDer(),
                             Expanded(
                               flex: 2,
                               child: FittedBox(
                                   fit: BoxFit.fill,
-                                  child: Text("العلامة العظمى")),
+                                  child: Text(
+                                    "العلامة العظمى",
+                                    style: style_font_marks,
+                                  )),
                             ),
                           ],
                         ),
@@ -116,7 +100,7 @@ class MarksPage extends StatelessWidget {
                 Container(
                     width: MediaQuery.of(context).size.width,
                     child: Divider(
-                      color: grey,
+                      color: Lightgreen,
                     )),
                 Expanded(
                   child: ListView.builder(
@@ -141,20 +125,13 @@ class MarksPage extends StatelessWidget {
                                                       .size
                                                       .width *
                                                   0.01),
-                                          child: Text(state.list[index].date),
+                                          child: Text(
+                                            state.list[index].date,
+                                            style: style_font_marks,
+                                          ),
                                         )),
                                   ),
-                                  RotatedBox(
-                                      quarterTurns: 1,
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Divider(
-                                          color:
-                                              Color.fromARGB(255, 182, 132, 47),
-                                          thickness: 1,
-                                        ),
-                                      )),
+                                  verticalDivDer(),
                                   Expanded(
                                     flex: 1,
                                     child: FittedBox(
@@ -165,21 +142,13 @@ class MarksPage extends StatelessWidget {
                                                       .size
                                                       .width *
                                                   0.01),
-                                          child:
-                                              Text(state.list[index].exam_name),
+                                          child: Text(
+                                            state.list[index].exam_name,
+                                            style: style_font_marks,
+                                          ),
                                         )),
                                   ),
-                                  RotatedBox(
-                                      quarterTurns: 1,
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Divider(
-                                          color:
-                                              Color.fromARGB(255, 182, 132, 47),
-                                          thickness: 1,
-                                        ),
-                                      )),
+                                  verticalDivDer(),
                                   Expanded(
                                     flex: 2,
                                     child: FittedBox(
@@ -191,20 +160,12 @@ class MarksPage extends StatelessWidget {
                                                       .width *
                                                   0.01),
                                           child: Text(
-                                              state.list[index].subject_name),
+                                            state.list[index].subject_name,
+                                            style: style_font_marks,
+                                          ),
                                         )),
                                   ),
-                                  RotatedBox(
-                                      quarterTurns: 1,
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Divider(
-                                          color:
-                                              Color.fromARGB(255, 182, 132, 47),
-                                          thickness: 1,
-                                        ),
-                                      )),
+                                  verticalDivDer(),
                                   Expanded(
                                     flex: 2,
                                     child: FittedBox(
@@ -214,22 +175,15 @@ class MarksPage extends StatelessWidget {
                                               MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.02),
-                                          child: Text(state.list[index].my_score
-                                              .toString()),
+                                                  0.04),
+                                          child: Text(
+                                            state.list[index].my_score
+                                                .toString(),
+                                            style: style_font_marks,
+                                          ),
                                         )),
                                   ),
-                                  RotatedBox(
-                                      quarterTurns: 1,
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Divider(
-                                          color:
-                                              Color.fromARGB(255, 182, 132, 47),
-                                          thickness: 1,
-                                        ),
-                                      )),
+                                  verticalDivDer(),
                                   Expanded(
                                     flex: 2,
                                     child: FittedBox(
@@ -239,21 +193,20 @@ class MarksPage extends StatelessWidget {
                                               MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.02),
-                                          child: Text(state
-                                              .list[index].total_score
-                                              .toString()),
+                                                  0.04),
+                                          child: Text(
+                                            state.list[index].total_score
+                                                .toString(),
+                                            style: style_font_marks,
+                                          ),
                                         )),
                                   ),
                                 ],
                               ),
                             ),
-                          
-
-                                Divider(
-                                  
-                                  color: grey,
-                                )
+                            Divider(
+                              color: Lightgreen,
+                            )
                           ],
                         );
                       }),
@@ -266,5 +219,22 @@ class MarksPage extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class verticalDivDer extends StatelessWidget {
+  const verticalDivDer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return RotatedBox(
+        quarterTurns: 1,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Divider(
+            color: Lightgreen,
+            thickness: 1,
+          ),
+        ));
   }
 }

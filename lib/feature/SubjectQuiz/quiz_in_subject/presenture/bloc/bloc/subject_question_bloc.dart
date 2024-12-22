@@ -13,14 +13,18 @@ class SubjectQuestionBloc
     extends Bloc<SubjectQuestionEvent, SubjectQuestionState> {
   SubjectQuestionBloc() : super(SubjectQuestionInitial()) {
     on<GetSubjectQuestionEvent>((event, emit) async {
-      emit(SubjectQuestionLoading());
+     try{ emit(SubjectQuestionLoading());
       Either<ErrorModel, ResponseQuizAllSubject> result =
           await QuizinSubject().get_response_subject_quizes(event.id);
       result.fold((erorr) {
         emit(SubjectQuestionError());
       }, (AllQuize) {
         emit(SubjectQuestionSuccess(question_with_answer: AllQuize));
-      });
+      });}
+     catch(e){
+      emit( SubjectQuestionError());
+
+     }
     });
   }
 }

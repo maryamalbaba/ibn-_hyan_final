@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ibnhyanfinal/core/resourses/styles_manager.dart';
 import 'package:ibnhyanfinal/core/widgets/container_page_subj.dart';
+import 'package:ibnhyanfinal/feature/Failed/Error.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/ShowSubject/presenture/bloc/bloc/subject_bloc.dart';
 
 
@@ -59,7 +60,12 @@ class SubjectPage extends StatelessWidget {
                       }),
                 ),
               ]);
-            } else {
+            } 
+            else if(state is ErrorGetSubject)
+            {
+              return MyWidget();
+            }
+            else {
               return const Center(child: CircularProgressIndicator());
             }
           },

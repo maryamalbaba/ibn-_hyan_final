@@ -11,15 +11,20 @@ part 'send_answer_state.dart';
 
 class SendAnswerBloc extends Bloc<SendAnswerEvent, SendAnswerState> {
   SendAnswerBloc() : super(SendAnswerInitial()) {
-    on<SendAnswer>((event, emit) async{
+    on<SendAnswer>((event, emit) async {
       // TODO: implement event handler
-   Result   res=await SendAnswerServices().send_answer_service(event.list);
       emit(SendAnswerLoading());
-      if (res is SuccessModel) {
-        print("res is SendAnswerSuccess");
-        emit(SendAnswerSuccess(event.list));
-      } else {
-        print("SendAnswerfailed");
+      try {
+        Result res = await SendAnswerServices().send_answer_service(event.list);
+
+        if (res is SuccessModel) {
+          print("res is SendAnswerSuccess");
+          emit(SendAnswerSuccess(event.list));
+        } else {
+          print("SendAnswerfailed");
+          emit(SendAnswerfailed());
+        }
+      } catch (e) {
         emit(SendAnswerfailed());
       }
     });

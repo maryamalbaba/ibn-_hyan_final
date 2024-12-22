@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
+import 'package:ibnhyanfinal/feature/Failed/Error.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/answer_model.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/bloc/bloc/subject_question_bloc.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Model/answer.dart';
@@ -18,6 +19,7 @@ class QuizSubjectUi extends StatefulWidget {
   });
   final num? id;
   final num time_limit;
+
   @override
   State<QuizSubjectUi> createState() => _QuizSubjectUiState();
 }
@@ -29,6 +31,8 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
   List<String> Label = ["أ", "ب", "ج", "د"];
   bool callintialzeanswe = false;
   double percent = 0.0;
+  bool ispresse = false;
+   late List<bool> isPressedList ;
   late Timer timer;
   startTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (_) {
@@ -44,6 +48,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
         });
     });
   }
+  
 
   void store1answerList(
       {length, index, required SentAnswerModel answerQuestioninSepratedQ}) {
@@ -55,11 +60,6 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
               result_id: answerQuestioninSepratedQ.result_id,
               answer_tarqem: answerQuestioninSepratedQ.answer_tarqem,
               answer_text: answerQuestioninSepratedQ.answer_text)));
-      // SentAnswerModel(
-      //     answer_id: answerQuestioninSepratedQ.answer_id,
-      //     result_id: answerQuestioninSepratedQ.result_id,
-      //     answer_tarqem: answerQuestioninSepratedQ.answer_tarqem,
-      //     answer_text: answerQuestioninSepratedQ.answer_text);
 
       print("List1 $ListSepratedAnswer1");
     });
@@ -120,9 +120,14 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
           },
           builder: (context, state) {
             if (state is SubjectQuestionSuccess) {
+              print("count");
+              print(state.question_with_answer.problems!.length +
+                  state.question_with_answer.separated_questions.length);
               return PageView.builder(
+                  physics: AlwaysScrollableScrollPhysics(),
                   itemCount: state.question_with_answer.problems!.length +
-                      state.question_with_answer.separated_questions.length,
+                      state.question_with_answer.separated_questions.length +
+                      1,
                   itemBuilder: (context, index) {
                     if (index < state.question_with_answer.problems!.length) {
                       return Column(
@@ -242,6 +247,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                     //!answers
                                     Flexible(
                                       child: ListView.builder(
+                                        
                                           shrinkWrap: true,
                                           itemCount: state
                                               .question_with_answer
@@ -251,6 +257,12 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                               .length,
                                           itemBuilder:
                                               (contxt, indexforanswer) {
+                                                List<bool> isPressedList =List.filled(state
+                                              .question_with_answer
+                                              .problems![index]
+                                              .questions![index]
+                                              .answers
+                                              .length, false);
                                             return Padding(
                                               padding: EdgeInsets.all(
                                                 MediaQuery.of(context)
@@ -259,59 +271,64 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                     0.01,
                                               ),
                                               child: AnswerContainer(
-                                                  label: Label[indexforanswer],
-                                                  answerText: state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![
-                                                          indexQuestions]
-                                                      .answers[indexforanswer]
-                                                      .answer_text,
-                                                  answerImage: state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![
-                                                          indexQuestions]
-                                                      .answers[indexforanswer]
-                                                      .answer_image,
-                                                  onTap: () {
-                                                    setState(() {
-                                                      store1answerList(
-                                                          answerQuestioninSepratedQ:
-                                                              SentAnswerModel(
-                                                            answer_id: state
-                                                                .question_with_answer
-                                                                .problems![
-                                                                    index]
-                                                                .questions![
-                                                                    indexQuestions]
-                                                                .answers[
-                                                                    indexforanswer]
-                                                                .id!,
-                                                            result_id: state
-                                                                .question_with_answer
-                                                                .result_id
-                                                                .toInt(),
-                                                            answer_tarqem: Label[
-                                                                indexforanswer],
-                                                            answer_text: state
-                                                                .question_with_answer
-                                                                .problems![
-                                                                    index]
-                                                                .questions![
-                                                                    indexQuestions]
-                                                                .answers[
-                                                                    indexforanswer]
-                                                                .answer_text!,
-                                                          ),
-                                                          length: state
+                                                label: Label[indexforanswer],
+                                                answerText: state
+                                                    .question_with_answer
+                                                    .problems![index]
+                                                    .questions![indexQuestions]
+                                                    .answers[indexforanswer]
+                                                    .answer_text,
+                                                answerImage: state
+                                                    .question_with_answer
+                                                    .problems![index]
+                                                    .questions![indexQuestions]
+                                                    .answers[indexforanswer]
+                                                    .answer_image,
+                                                onTap: () {
+                                                  setState(() {
+                                                     isPressedList = List<bool>.filled(state
+                                              .question_with_answer
+                                              .problems![index]
+                                              .questions![index]
+                                              .answers
+                                              .length, false);
+                                                    isPressedList[index]=true;
+                                                    store1answerList(
+                                                        answerQuestioninSepratedQ:
+                                                            SentAnswerModel(
+                                                          answer_id: state
                                                               .question_with_answer
                                                               .problems![index]
-                                                              .questions!
-                                                              .length,
-                                                          index: index);
-                                                    });
-                                                  }),
+                                                              .questions![
+                                                                  indexQuestions]
+                                                              .answers[
+                                                                  indexforanswer]
+                                                              .id!,
+                                                          result_id: state
+                                                              .question_with_answer
+                                                              .result_id
+                                                              .toInt(),
+                                                          answer_tarqem: Label[
+                                                              indexforanswer],
+                                                          answer_text: state
+                                                              .question_with_answer
+                                                              .problems![index]
+                                                              .questions![
+                                                                  indexQuestions]
+                                                              .answers[
+                                                                  indexforanswer]
+                                                              .answer_text!,
+                                                        ),
+                                                        length: state
+                                                            .question_with_answer
+                                                            .problems![index]
+                                                            .questions!
+                                                            .length,
+                                                        index: index);
+                                                  });
+                                                },
+                                                ispressesd: isPressedList[index],
+                                              ),
                                             );
                                           }),
                                     )
@@ -332,7 +349,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                           state.question_with_answer.separated_questions.length;
                       int sepratedIndex =
                           index - state.question_with_answer.problems!.length;
-                      if (index < totalindex - 1) {
+                      if (index < totalindex) {
                         return Column(
                           children: [
                             Row(
@@ -437,6 +454,8 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                         .answer_image,
                                     onTap: () {
                                       setState(() {
+                                        ispresse = true;
+
                                         store2answerList(
                                             index: index_for_seprated_answer,
                                             length: state.question_with_answer
@@ -464,6 +483,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                     index_for_seprated_answer]));
                                       });
                                     },
+                                    ispressesd: ispresse,
                                   );
                                 },
                                 itemCount: state
@@ -477,19 +497,19 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                           ],
                         );
                       } else {
-                        return SendAnswerUI(
-                          // onTap: () {
-                          //   print("ops");
-                          //   print(selectedAnswers);
-
-                          // },
-                          itemcount: mergeAnswers().length,
-                          list: mergeAnswers(),
-                          result_Id: state.question_with_answer.result_id,
-                        );
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Navigator.of(context)
+                              .pushNamed("/SendAnswerUI", arguments: [
+                            mergeAnswers().length,
+                            mergeAnswers(),
+                            state.question_with_answer.result_id,
+                          ]);
+                        });
                       }
                     }
                   });
+            } else if (state is SubjectQuestionError) {
+              return MyWidget();
             } else {
               return const Center(child: CircularProgressIndicator());
             }
@@ -505,12 +525,14 @@ class AnswerContainer extends StatelessWidget {
   final String? answerImage;
   final String label;
   final VoidCallback onTap;
+  final bool ispressesd;
   const AnswerContainer({
     Key? key,
     required this.answerText,
     required this.answerImage,
     required this.label,
     required this.onTap,
+    required this.ispressesd,
   }) : super(key: key);
 
   @override
@@ -521,7 +543,7 @@ class AnswerContainer extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.1,
         height: MediaQuery.of(context).size.height * 0.06,
         decoration: BoxDecoration(
-          color: babyblue,
+          color: ispressesd ? greygreen : babyblue,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: Lightgreen,

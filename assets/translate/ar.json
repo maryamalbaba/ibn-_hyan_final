@@ -5,5 +5,8 @@
     "it is wrong code": "لقد أدخلت رمز تسجيل خاطئ",
     "did you forget your code":"  هل نسيت الكود الخاص بك؟",
     "resend":"اعادة ارسال",
-    "subjects":"المقررات"
+    "subjects":"المقررات",
+    "finsh exam":"أنهيت الاختبار",
+    "minute":"دقيقة",
+    "read answers":"قراءة الأجوبة"
 }

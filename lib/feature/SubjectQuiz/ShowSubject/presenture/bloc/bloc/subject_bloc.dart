@@ -13,15 +13,18 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
   SubjectBloc() : super(SubjectInitial()) {
     on<GetAllSubject>((event, emit) async {
       emit(LoadingGetSubject());
-      Either<ErrorModel, List<SubjectModel>> result =
-          await Subject().getsubject();
-      result.fold((error) {
-        emit(ErrorGetSubject());
 
-      }, 
-      (subjects) {
-        emit(SuucessGetSubject(subjects: subjects ));
-      });
+      try {
+        Either<ErrorModel, List<SubjectModel>> result =
+            await Subject().getsubject();
+        result.fold((error) {
+          emit(ErrorGetSubject());
+        }, (subjects) {
+          emit(SuucessGetSubject(subjects: subjects));
+        });
+      } catch (e) {
+        emit(ErrorGetSubject());
+      }
     });
   }
 }

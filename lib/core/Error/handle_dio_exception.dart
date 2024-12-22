@@ -1,6 +1,5 @@
 // ignore: non_constant_identifier_names
 
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ibnhyanfinal/core/Models/Error.dart';
@@ -12,28 +11,39 @@ void HandleDioException(DioException e) {
     case DioExceptionType.connectionTimeout:
       print("connectio exception");
       throw ErrorModel();
+      
     case DioExceptionType.sendTimeout:
       print("connectio exception");
       throw ErrorModel();
+     
     case DioExceptionType.receiveTimeout:
       print("connectio exception");
-    throw ErrorModel();
+      throw ErrorModel();
+     
     case DioExceptionType.badCertificate:
       print("connectio exception");
-   throw ErrorModel();
+     
+      throw ErrorModel();
     case DioExceptionType.cancel:
       print("connectio exception");
-throw ErrorModel();
+      throw ErrorModel();
+      
     case DioExceptionType.connectionError:
       print("connectio exception");
-  throw ErrorModel();
+      throw ErrorModel();
+     
     case DioExceptionType.unknown:
       print("connectio exception");
-throw ErrorModel();
+      throw ErrorModel();
+    
 
     case DioExceptionType.badResponse:
-    print("bad response");
-print(DioExceptionType.badResponse);
-      throw ErrorModel();
+      
+        print("bad response");
+        print(DioExceptionType.badResponse);
+        throw ErrorModel();
+        
+      default :throw ErrorModel();
+      
   }
 }

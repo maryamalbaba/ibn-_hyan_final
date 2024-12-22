@@ -25,10 +25,14 @@ class QuizinSubject {
       if (response.statusCode == 200) {
         print("200 in get_detail_subject_quizes_");
 
+print(response.data["data"]);
+print("yyy");
+print(response.data["data"]["separated_questions"]);
+//  print( ResponseQuizAllSubject.fromMap(response.data["data"]["separated_questions"]));
         ResponseQuizAllSubject res =
             ResponseQuizAllSubject.fromMap(response.data["data"]);
 
-        print(res);
+        print(res.separated_questions);
         return Right(res);
       } else {
         return Left(ErrorModel());

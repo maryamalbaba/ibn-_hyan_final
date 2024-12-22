@@ -35,6 +35,7 @@ class DioConsumer implements ApiConsumer {
           options: options, data: data, queryParameters: queryParameters);
       return response;
     } on DioException catch (e) {
+      print(e.stackTrace);
       HandleDioException(e);
     }
     throw UnimplementedError();
