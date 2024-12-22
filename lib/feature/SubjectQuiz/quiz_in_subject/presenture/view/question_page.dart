@@ -1,14 +1,19 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:dartz/dartz_unsafe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/answer_model.dart';
+import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/problem.dart';
+import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/question_model.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/bloc/bloc/subject_question_bloc.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Model/answer.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/presenture/view/send_answer_page.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+
+import '../../data/model/response_quiz.dart';
 
 class QuizSubjectUi extends StatefulWidget {
   QuizSubjectUi({
@@ -16,80 +21,59 @@ class QuizSubjectUi extends StatefulWidget {
     this.id,
     required this.time_limit,
   });
+
   final num? id;
   final num time_limit;
+
   @override
   State<QuizSubjectUi> createState() => _QuizSubjectUiState();
 }
 
 class _QuizSubjectUiState extends State<QuizSubjectUi> {
-  List<SentAnswerModel> selectedAnswers = [];
-  List<SentAnswerModel> ListSepratedAnswer1 = [];
-  List<SentAnswerModel> ListSepratedAnswer2 = [];
+  //a list to initialize and keep question order (stores questionIds)
+  List<int> questionOrder = [];
+
+  //map to store question answers { question_id: answer_model }
+  Map<int, SentAnswerModel> questionsAnswers = {};
+
+  initQuestionOrder(ResponseQuizAllSubject quiz) {
+    for (var p in quiz.problems ?? <ProblemModel>[]) {
+      for (var q in p.questions ?? <QuestionModel>[]) {
+        questionOrder.add(q.id as int);
+      }
+    }
+    for (var q in quiz.separated_questions) {
+      questionOrder.add(q.id as int);
+    }
+  }
+
+  storeAnswer(SentAnswerModel answer) {
+    setState(() {
+      questionsAnswers[answer.questionid! as int] = answer;
+    });
+  }
+
+  List<SentAnswerModel?> getAnswersList() {
+    return questionOrder.map((e) => questionsAnswers[e]).toList();
+  }
+
   List<String> Label = ["أ", "ب", "ج", "د"];
   bool callintialzeanswe = false;
-  double percent = 0.0;
+  ValueNotifier<double> percent = ValueNotifier<double>(0.0);
   late Timer timer;
+
   startTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (_) {
-      if (mounted)
-        setState(() {
-          percent += 1;
-          if (percent >= widget.time_limit.toInt()) {
-            timer.cancel();
-            // percent=0.0;
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text("انتهى الوقت")));
-          }
-        });
-    });
-  }
-
-  void store1answerList(
-      {length, index, required SentAnswerModel answerQuestioninSepratedQ}) {
-    setState(() {
-      ListSepratedAnswer1 = List.generate(
-          length,
-          (index) => (SentAnswerModel(
-              answer_id: answerQuestioninSepratedQ.answer_id,
-              result_id: answerQuestioninSepratedQ.result_id,
-              answer_tarqem: answerQuestioninSepratedQ.answer_tarqem,
-              answer_text: answerQuestioninSepratedQ.answer_text)));
-      // SentAnswerModel(
-      //     answer_id: answerQuestioninSepratedQ.answer_id,
-      //     result_id: answerQuestioninSepratedQ.result_id,
-      //     answer_tarqem: answerQuestioninSepratedQ.answer_tarqem,
-      //     answer_text: answerQuestioninSepratedQ.answer_text);
-
-      print("List1 $ListSepratedAnswer1");
-    });
-  }
-
-  void store2answerList(
-      {length, index, required SentAnswerModel answerQuestioninSepratedQ}) {
-    setState(() {
-      final existingSnswerId = ListSepratedAnswer2.indexWhere((answer) =>
-          answer.questionid == answerQuestioninSepratedQ.questionid);
-      if (existingSnswerId != -1) {
-        ListSepratedAnswer2[existingSnswerId] = answerQuestioninSepratedQ;
-      } else {
-        ListSepratedAnswer2.add(SentAnswerModel(
-            answer_id: answerQuestioninSepratedQ.answer_id,
-            result_id: answerQuestioninSepratedQ.result_id,
-            answer_tarqem: answerQuestioninSepratedQ.answer_tarqem,
-            answer_text: answerQuestioninSepratedQ.answer_text));
+      if (mounted) {
+        percent.value += percent.value;
+        if (percent.value >= widget.time_limit.toInt()) {
+          // timer.cancel();
+          // percent=0.0;
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("انتهى الوقت")));
+        }
       }
-      print("List2 $ListSepratedAnswer2");
     });
-  }
-
-  List<SentAnswerModel> mergeAnswers() {
-    List<SentAnswerModel> allAnswers = [];
-
-    allAnswers = ListSepratedAnswer1 + ListSepratedAnswer2;
-
-    print("list mearge $allAnswers");
-    return allAnswers;
   }
 
   @override
@@ -112,9 +96,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
             if (state is SubjectQuestionSuccess) {
               setState(() {
                 callintialzeanswe = true;
-                int totalQuestions =
-                    state.question_with_answer.problems!.length +
-                        state.question_with_answer.separated_questions.length;
+                initQuestionOrder(state.question_with_answer);
               });
             }
           },
@@ -131,40 +113,41 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                           Padding(
                             padding: EdgeInsets.all(
                                 MediaQuery.of(context).size.height * 0.01),
-                            child: Row(children: [
-                              Text(widget.time_limit.toString() + ":00"),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Container(
-                                  // padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.01),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.6),
-                                        spreadRadius: 0.001,
-                                        blurRadius: 10,
-                                      )
-                                    ],
-                                  ),
-                                  child: LinearPercentIndicator(
-                                    backgroundColor: Colors.white,
-                                    progressColor: yellow,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.8,
-                                    animationDuration: 2500,
-                                    lineHeight: 14.0,
-                                    percent: percent / widget.time_limit,
-                                    barRadius: Radius.circular(10),
-                                    onPercentValue: (val) {
-                                      val = percent;
-                                      print(percent);
-                                    },
+                            child: ValueListenableBuilder(
+                              valueListenable: percent,
+                              builder: (context, value, child) =>
+                                  Row(children: [
+                                Text("${widget.time_limit - value}"),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    // padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.01),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.6),
+                                          spreadRadius: 0.001,
+                                          blurRadius: 10,
+                                        )
+                                      ],
+                                    ),
+                                    child: LinearPercentIndicator(
+                                      backgroundColor: Colors.white,
+                                      progressColor: yellow,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      animationDuration: 2500,
+                                      lineHeight: 14.0,
+                                      percent:
+                                          min(100, value / widget.time_limit),
+                                      barRadius: const Radius.circular(10),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ]),
+                              ]),
+                            ),
                           ),
                           //!container for problem
                           Container(
@@ -275,42 +258,30 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                       .answers[indexforanswer]
                                                       .answer_image,
                                                   onTap: () {
-                                                    setState(() {
-                                                      store1answerList(
-                                                          answerQuestioninSepratedQ:
-                                                              SentAnswerModel(
-                                                            answer_id: state
-                                                                .question_with_answer
-                                                                .problems![
-                                                                    index]
-                                                                .questions![
-                                                                    indexQuestions]
-                                                                .answers[
-                                                                    indexforanswer]
-                                                                .id!,
-                                                            result_id: state
-                                                                .question_with_answer
-                                                                .result_id
-                                                                .toInt(),
-                                                            answer_tarqem: Label[
-                                                                indexforanswer],
-                                                            answer_text: state
-                                                                .question_with_answer
-                                                                .problems![
-                                                                    index]
-                                                                .questions![
-                                                                    indexQuestions]
-                                                                .answers[
-                                                                    indexforanswer]
-                                                                .answer_text!,
-                                                          ),
-                                                          length: state
-                                                              .question_with_answer
-                                                              .problems![index]
-                                                              .questions!
-                                                              .length,
-                                                          index: index);
-                                                    });
+                                                    storeAnswer(SentAnswerModel(
+                                                      answer_id: state
+                                                          .question_with_answer
+                                                          .problems![index]
+                                                          .questions![
+                                                              indexQuestions]
+                                                          .answers[
+                                                              indexforanswer]
+                                                          .id!,
+                                                      result_id: state
+                                                          .question_with_answer
+                                                          .result_id
+                                                          .toInt(),
+                                                      answer_tarqem:
+                                                          Label[indexforanswer],
+                                                      answer_text: state
+                                                          .question_with_answer
+                                                          .problems![index]
+                                                          .questions![
+                                                              indexQuestions]
+                                                          .answers[
+                                                              indexforanswer]
+                                                          .answer_text!,
+                                                    ));
                                                   }),
                                             );
                                           }),
@@ -335,40 +306,40 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                       if (index < totalindex - 1) {
                         return Column(
                           children: [
-                            Row(
-                              children: [
-                                Text(widget.time_limit.toString() + ":00"),
-                                Container(
-                                  padding: EdgeInsets.all(
-                                      MediaQuery.of(context).size.height *
-                                          0.01),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.6),
-                                        spreadRadius: 0.01,
-                                        blurRadius: 10,
-                                      )
-                                    ],
-                                  ),
-                                  child: LinearPercentIndicator(
-                                    backgroundColor: Colors.white,
-                                    progressColor: yellow,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.9,
-                                    animationDuration: 2500,
-                                    lineHeight: 14.0,
-                                    percent: percent / widget.time_limit,
-                                    barRadius: Radius.circular(10),
-                                    onPercentValue: (val) {
-                                      val = percent;
-                                      print(percent);
-                                    },
+                            ValueListenableBuilder(
+                              valueListenable: percent,
+                              builder: (context, value, child) =>
+                                  Row(children: [
+                                Text("${widget.time_limit - value}"),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    // padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.01),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.6),
+                                          spreadRadius: 0.001,
+                                          blurRadius: 10,
+                                        )
+                                      ],
+                                    ),
+                                    child: LinearPercentIndicator(
+                                      backgroundColor: Colors.white,
+                                      progressColor: yellow,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      animationDuration: 2500,
+                                      lineHeight: 14.0,
+                                      percent:
+                                          min(100, value / widget.time_limit),
+                                      barRadius: const Radius.circular(10),
+                                    ),
                                   ),
                                 ),
-                              ],
+                              ]),
                             ),
                             //!container for Question for seprated Question
                             Container(
@@ -436,33 +407,26 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                         .answers[index_for_seprated_answer]
                                         .answer_image,
                                     onTap: () {
-                                      setState(() {
-                                        store2answerList(
-                                            index: index_for_seprated_answer,
-                                            length: state.question_with_answer
-                                                .separated_questions.length,
-                                            answerQuestioninSepratedQ: SentAnswerModel(
-                                                answer_id: state
-                                                    .question_with_answer
-                                                    .separated_questions[
-                                                        sepratedIndex]
-                                                    .answers[
-                                                        index_for_seprated_answer]
-                                                    .id!,
-                                                result_id: state
-                                                    .question_with_answer
-                                                    .result_id
-                                                    .toInt(),
-                                                answer_text: state
-                                                    .question_with_answer
-                                                    .separated_questions[
-                                                        sepratedIndex]
-                                                    .answers[
-                                                        index_for_seprated_answer]
-                                                    .answer_text!,
-                                                answer_tarqem: Label[
-                                                    index_for_seprated_answer]));
-                                      });
+                                      storeAnswer(SentAnswerModel(
+                                          answer_id: state
+                                              .question_with_answer
+                                              .separated_questions[
+                                                  sepratedIndex]
+                                              .answers[
+                                                  index_for_seprated_answer]
+                                              .id!,
+                                          result_id: state
+                                              .question_with_answer.result_id
+                                              .toInt(),
+                                          answer_text: state
+                                              .question_with_answer
+                                              .separated_questions[
+                                                  sepratedIndex]
+                                              .answers[
+                                                  index_for_seprated_answer]
+                                              .answer_text!,
+                                          answer_tarqem: Label[
+                                              index_for_seprated_answer]));
                                     },
                                   );
                                 },
@@ -477,14 +441,16 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                           ],
                         );
                       } else {
+                        final list = getAnswersList();
                         return SendAnswerUI(
+                          timer: timer,
                           // onTap: () {
                           //   print("ops");
                           //   print(selectedAnswers);
 
                           // },
-                          itemcount: mergeAnswers().length,
-                          list: mergeAnswers(),
+                          itemcount: list.length,
+                          list: list,
                           result_Id: state.question_with_answer.result_id,
                         );
                       }
@@ -505,6 +471,7 @@ class AnswerContainer extends StatelessWidget {
   final String? answerImage;
   final String label;
   final VoidCallback onTap;
+
   const AnswerContainer({
     Key? key,
     required this.answerText,
@@ -543,21 +510,3 @@ class AnswerContainer extends StatelessWidget {
 ///list from new model by index stoarge
 ///must to color my answer and right answer
 ///
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
