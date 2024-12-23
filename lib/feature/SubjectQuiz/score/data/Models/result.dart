@@ -4,25 +4,29 @@ import 'dart:convert';
 import 'package:ibnhyanfinal/core/Models/Result.dart';
 
 class ResultExam extends Result {
+    num result_id;
 String image;
   num duration_minutes;
    num score;
         num total_score;
   ResultExam({
+    required this.result_id,
     required this.image,
     required this.duration_minutes,
     required this.score,
     required this.total_score,
   });
-
+ 
 
   ResultExam copyWith({
+    num? result_id,
     String? image,
     num? duration_minutes,
     num? score,
     num? total_score,
   }) {
     return ResultExam(
+      result_id: result_id ?? this.result_id,
       image: image ?? this.image,
       duration_minutes: duration_minutes ?? this.duration_minutes,
       score: score ?? this.score,
@@ -32,6 +36,7 @@ String image;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'result_id': result_id,
       'image': image,
       'duration_minutes': duration_minutes,
       'score': score,
@@ -41,6 +46,7 @@ String image;
 
   factory ResultExam.fromMap(Map<String, dynamic> map) {
     return ResultExam(
+      result_id: map['result_id'] as num,
       image: map['image'] as String,
       duration_minutes: map['duration_minutes'] as num,
       score: map['score'] as num,
@@ -54,7 +60,7 @@ String image;
 
   @override
   String toString() {
-    return 'ResultExam(image: $image, duration_minutes: $duration_minutes, score: $score, total_score: $total_score)';
+    return 'ResultExam(result_id: $result_id, image: $image, duration_minutes: $duration_minutes, score: $score, total_score: $total_score)';
   }
 
   @override
@@ -62,6 +68,7 @@ String image;
     if (identical(this, other)) return true;
   
     return 
+      other.result_id == result_id &&
       other.image == image &&
       other.duration_minutes == duration_minutes &&
       other.score == score &&
@@ -70,7 +77,8 @@ String image;
 
   @override
   int get hashCode {
-    return image.hashCode ^
+    return result_id.hashCode ^
+      image.hashCode ^
       duration_minutes.hashCode ^
       score.hashCode ^
       total_score.hashCode;

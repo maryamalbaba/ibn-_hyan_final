@@ -6,6 +6,7 @@ import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/ShowSubject/presenture/view/subject_page.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/answer_model.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view/question_page.dart';
+import 'package:ibnhyanfinal/feature/SubjectQuiz/revision_quiz/presenture/view/revision_page.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/score/presenture/view/result_exam_ui.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Model/answer.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/presenture/view/send_answer_page.dart';
@@ -90,6 +91,9 @@ class _CorePageState extends State<CorePage> {
                   time_limit: time_limit,
                 );
                 break;
+                case "/RevisionPage":
+                final num id=(setting.arguments ) as num;
+                page=RevisionPage(id: id,);
 
               default:
                 page = pages_in_Bar[currentIndex];

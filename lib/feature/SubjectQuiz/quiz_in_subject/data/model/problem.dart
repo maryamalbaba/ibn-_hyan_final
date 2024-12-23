@@ -40,14 +40,21 @@ class ProblemModel {
     };
   }
 
-  factory ProblemModel.fromMap(Map<String, dynamic> map) {
-    return ProblemModel(
-      id: map['id'] != null ? map['id'] as num : null,
-      problem_text: map['problem_text'] != null ? map['problem_text'] as String : null,
-      problem_image: map['problem_image'] != null ? map['problem_image'] as String : null,
-      questions: map['questions'] != null ? List<QuestionModel>.from((map['questions'] as List).map<QuestionModel?>((x) => QuestionModel.fromMap(x as Map<String,dynamic>),),) : null,
-    );
-  }
+factory ProblemModel.fromMap(Map<String, dynamic> map) {
+  return ProblemModel(
+    id: map['id'] as num?,
+    problem_text: map['problem_text'] as String?,
+    problem_image: map['problem_image'] as String?,
+    questions: map['questions'] != null
+        ? List<QuestionModel>.from(
+            (map['questions'] as List)
+                .where((element) => element != null) // Filter out null
+                .map((x) => QuestionModel.fromMap(x as Map<String, dynamic>)),
+          )
+        : [],
+  );
+}
+
 
   String toJson() => json.encode(toMap());
 

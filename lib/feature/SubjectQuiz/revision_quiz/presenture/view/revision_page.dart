@@ -9,35 +9,38 @@ import 'package:ibnhyanfinal/feature/Failed/Error.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/answer_model.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/problem.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/question_model.dart';
+import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/response_quiz.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/bloc/bloc/subject_question_bloc.dart';
+import 'package:ibnhyanfinal/feature/SubjectQuiz/revision_quiz/data/Models/full_res_revivion.dart';
+import 'package:ibnhyanfinal/feature/SubjectQuiz/revision_quiz/presenture/bloc/fullrevision_bloc.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Model/answer.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/presenture/view/send_answer_page.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import '../../data/model/response_quiz.dart';
 
-class QuizSubjectUi extends StatefulWidget {
-  QuizSubjectUi({
+
+class RevisionPage extends StatefulWidget {
+  RevisionPage({
     super.key,
     this.id,
-    required this.time_limit,
-  });
+    // required this.time_limit,
+  }){print("constructure in RevPage UI");}
 
   final num? id;
-  final num time_limit;
+  // final num time_limit;
 
   @override
-  State<QuizSubjectUi> createState() => _QuizSubjectUiState();
+  State<RevisionPage> createState() => _RevisionPageState();
 }
 
-class _QuizSubjectUiState extends State<QuizSubjectUi> {
+class _RevisionPageState extends State<RevisionPage> {
   //a list to initialize and keep question order (stores questionIds)
   List<int> questionOrder = [];
 
   //map to store question answers { question_id: answer_model }
   Map<int, SentAnswerModel> questionsAnswers = {};
 
-  initQuestionOrder(ResponseQuizAllSubject quiz) {
+  initQuestionOrder2(FullResRevivion quiz) {
     for (var p in quiz.problems ?? <ProblemModel>[]) {
       for (var q in p.questions ?? <QuestionModel>[]) {
         questionOrder.add(q.id as int);
@@ -48,63 +51,52 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
     }
   }
 
-  storeAnswer(SentAnswerModel answer) {
+  storeAnswer2(SentAnswerModel answer) {
     setState(() {
       questionsAnswers[answer.questionid!.toInt()] = answer;
     });
   }
 
-  List<SentAnswerModel?> getAnswersList() {
+  List<SentAnswerModel?> getAnswersList2() {
     return questionOrder.map((e) => questionsAnswers[e]).toList();
   }
 
   List<String> Label = ["أ", "ب", "ج", "د"];
   bool callintialzeanswe = false;
   ValueNotifier<double> percent = ValueNotifier<double>(0.0);
-  late Timer timer;
 
-  startTimer() {
-    timer = Timer.periodic(Duration(seconds: 1), (_) {
-      if (mounted) {
-        percent.value += percent.value;
-        if (percent.value >= widget.time_limit.toInt()) {
-          // timer.cancel();
-          // percent=0.0;
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("انتهى الوقت")));
-        }
-      }
-    });
-  }
+
 
   @override
   void initState() {
     super.initState();
-    startTimer();
+ //   startTimer();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          SubjectQuestionBloc()..add(GetSubjectQuestionEvent(id: widget.id!)),
+          FullrevisionBloc()..add(GetSubjecRevEvent(id: widget.id!)),
       child: Builder(builder: (context) {
-        return BlocConsumer<SubjectQuestionBloc, SubjectQuestionState>(
+        print("heerree");
+        return BlocConsumer<FullrevisionBloc, FullrevisionState>(
           listener: (context, state) {
+
             // TODO: implement listener
-            print("state is");
+            print("state is :::::::::");
             print(state);
-            if (state is SubjectQuestionSuccess) {
+            if (state is SubjectRevSuccess) {
               setState(() {
                 callintialzeanswe = true;
-                initQuestionOrder(state.question_with_answer);
+                initQuestionOrder2(state.question_with_answer);
               });
             }
           },
           builder: (context, state) {
-            if (state is SubjectQuestionSuccess) {
+            if (state is SubjectRevSuccess) {
               print("count");
-              print(state.question_with_answer.problems!.length +
+              print(state.question_with_answer.problems!.length+
                   state.question_with_answer.separated_questions.length);
               return PageView.builder(
                   physics: AlwaysScrollableScrollPhysics(),
@@ -116,45 +108,45 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(
-                            padding: EdgeInsets.all(
-                                MediaQuery.of(context).size.height * 0.01),
-                            child: ValueListenableBuilder(
-                              valueListenable: percent,
-                              builder: (context, value, child) =>
-                                  Row(children: [
-                                Text("${widget.time_limit - value}"),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    // padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.01),
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.6),
-                                          spreadRadius: 0.001,
-                                          blurRadius: 10,
-                                        )
-                                      ],
-                                    ),
-                                    child: LinearPercentIndicator(
-                                      backgroundColor: Colors.white,
-                                      progressColor: yellow,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8,
-                                      animationDuration: 2500,
-                                      lineHeight: 14.0,
-                                      percent:
-                                          min(100, value / widget.time_limit),
-                                      barRadius: const Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsets.all(
+                          //       MediaQuery.of(context).size.height * 0.01),
+                          //   child: ValueListenableBuilder(
+                          //     valueListenable: percent,
+                          //     builder: (context, value, child) =>
+                          //         Row(children: [
+                          //      // Text("${widget.time_limit - value}"),
+                          //       Align(
+                          //         alignment: Alignment.center,
+                          //         child: Container(
+                          //           // padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.01),
+                          //           decoration: BoxDecoration(
+                          //             borderRadius:
+                          //                 BorderRadius.all(Radius.circular(10)),
+                          //             boxShadow: [
+                          //               BoxShadow(
+                          //                 color: Colors.grey.withOpacity(0.6),
+                          //                 spreadRadius: 0.001,
+                          //                 blurRadius: 10,
+                          //               )
+                          //             ],
+                          //           ),
+                          //           child: LinearPercentIndicator(
+                          //             backgroundColor: Colors.white,
+                          //             progressColor: yellow,
+                          //             width: MediaQuery.of(context).size.width *
+                          //                 0.8,
+                          //             animationDuration: 2500,
+                          //             lineHeight: 14.0,
+                          //             percent:
+                          //                 min(100, value / widget.time_limit),
+                          //             barRadius: const Radius.circular(10),
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ]),
+                          //   ),
+                          // ),
                           //!container for problem
                           Container(
                             width: MediaQuery.of(context).size.width * 0.6,
@@ -279,7 +271,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                             .questions![indexQuestions]
                                                             .id}");
                                                         
-                                                    storeAnswer(SentAnswerModel(
+                                                    storeAnswer2(SentAnswerModel(
                                                         answer_id: state
                                                             .question_with_answer
                                                             .problems![index]
@@ -289,7 +281,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                                 indexforanswer]
                                                             .id!,
                                                         result_id: state
-                                                            .question_with_answer
+                                                            .question_with_answer.result_score
                                                             .result_id
                                                             .toInt(),
                                                         answer_tarqem: Label[
@@ -331,41 +323,41 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                       if (index < totalindex) {
                         return Column(
                           children: [
-                            ValueListenableBuilder(
-                              valueListenable: percent,
-                              builder: (context, value, child) =>
-                                  Row(children: [
-                                Text("${widget.time_limit - value}"),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    // padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.01),
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.6),
-                                          spreadRadius: 0.001,
-                                          blurRadius: 10,
-                                        )
-                                      ],
-                                    ),
-                                    child: LinearPercentIndicator(
-                                      backgroundColor: Colors.white,
-                                      progressColor: yellow,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8,
-                                      animationDuration: 2500,
-                                      lineHeight: 14.0,
-                                      percent:
-                                          min(100, value / widget.time_limit),
-                                      barRadius: const Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            ),
+                            // ValueListenableBuilder(
+                            //   valueListenable: percent,
+                            //   builder: (context, value, child) =>
+                            //       Row(children: [
+                            //     Text("${widget.time_limit - value}"),
+                            //     Align(
+                            //       alignment: Alignment.center,
+                            //       child: Container(
+                            //         // padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.01),
+                            //         decoration: BoxDecoration(
+                            //           borderRadius:
+                            //               BorderRadius.all(Radius.circular(10)),
+                            //           boxShadow: [
+                            //             BoxShadow(
+                            //               color: Colors.grey.withOpacity(0.6),
+                            //               spreadRadius: 0.001,
+                            //               blurRadius: 10,
+                            //             )
+                            //           ],
+                            //         ),
+                            //         child: LinearPercentIndicator(
+                            //           backgroundColor: Colors.white,
+                            //           progressColor: yellow,
+                            //           width: MediaQuery.of(context).size.width *
+                            //               0.8,
+                            //           animationDuration: 2500,
+                            //           lineHeight: 14.0,
+                            //           percent:
+                            //               min(100, value / widget.time_limit),
+                            //           barRadius: const Radius.circular(10),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ]),
+                            // ),
                             //!container for Question for seprated Question
                             Container(
                                 width: MediaQuery.of(context).size.width * 0.90,
@@ -435,7 +427,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                       print(" question id in seprated Q is :${state
                                               .question_with_answer
                                               .separated_questions[sepratedIndex].id}");
-                                      storeAnswer(SentAnswerModel(
+                                      storeAnswer2(SentAnswerModel(
                                           answer_id: state
                                               .question_with_answer
                                               .separated_questions[
@@ -444,7 +436,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                   index_for_seprated_answer]
                                               .id!,
                                           result_id: state
-                                              .question_with_answer.result_id
+                                              .question_with_answer.result_score.result_id
                                               .toInt(),
                                           answer_text: state
                                               .question_with_answer
@@ -477,24 +469,26 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                           ],
                         );
                       } else {
-                        final list = getAnswersList();
-                        return SendAnswerUI(
-                          timer: timer,
-                          // onTap: () {
-                          //   print("ops");
-                          //   print(selectedAnswers);
+                        final list = getAnswersList2();
+                        return MyWidget();
+                        // return SendAnswerUI(
+                        //   timer: timer,
+                        //   // onTap: () {
+                        //   //   print("ops");
+                        //   //   print(selectedAnswers);
 
-                          // },
-                          itemcount: list.length,
-                          list: list,
-                          result_Id: state.question_with_answer.result_id,
-                        );
+                        //   // },
+                        //   itemcount: list.length,
+                        //   list: list,
+                        //   result_Id: state.question_with_answer.result_id,
+                        // );
                       }
                     }
                   });
-            } else if (state is SubjectQuestionError) {
+            } else if (state is SubjectRevError) {
               return MyWidget();
             } else {
+              print("else in ui in RevPage");
               return const Center(child: CircularProgressIndicator());
             }
           },

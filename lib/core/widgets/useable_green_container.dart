@@ -10,7 +10,7 @@ final String text;
   Widget build(BuildContext context) {
     return  Container(
                 width: MediaQuery.of(context).size.width*0.75,
-                height: 50,
+                height:  MediaQuery.of(context).size.height*0.1,
                 decoration: BoxDecoration(color: green,
               borderRadius: BorderRadius.circular(10)),
               

@@ -27,6 +27,7 @@ class Subject {
         List<SubjectModel> res = List.generate(response.data["data"].length,
             (index) => SubjectModel.fromMap(response.data["data"][index]));
             print("res is"+"$res");
+            print(res.runtimeType);
         return Right(res);
       } else {
         print("else in service show sub");

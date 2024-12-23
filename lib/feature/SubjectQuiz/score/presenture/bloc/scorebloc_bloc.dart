@@ -13,20 +13,21 @@ part 'scorebloc_state.dart';
 class ResultExamblocBloc extends Bloc<ResultblocEvent, ResultGetExamblocState> {
   ResultExamblocBloc() : super(ResultblocInitial()) {
     on<GetResult>((event, emit) async {
-       emit(LosadingGetResult());
+      emit(LosadingGetResult());
       try {
-         Either<ErrorModel, ResultExam> res = await ResultExamService().getResultExam(event.result_Id);
+        Either<ErrorModel, ResultExam> res =
+            await ResultExamService().getResultExam(event.result_Id);
+        print("res in bloc:${res.runtimeType}");
 
-        if (res is ResultExam) {
-          print("res is ResultAnswerSuccess");
-          emit(SuccessGetResult(result: res as ResultExam));
-        } else {
-          print("ResultAnswerfailed");
+        res.fold((error) {
           emit(FailedGetResult());
-        }
+        }, (subjects) {
+          emit(SuccessGetResult(result: subjects ));
+        });
       } catch (e) {
         emit(FailedGetResult());
       }
     });
+   
   }
 }

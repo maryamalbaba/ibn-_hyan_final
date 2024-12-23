@@ -19,34 +19,46 @@ class ResultExamUI extends StatelessWidget {
         builder: (context, state) {
           if (state is SuccessGetResult) {
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("finsh exam").tr(),
-                Container(
+                Expanded(flex: 1, child: Text("finsh exam").tr()),
+                Expanded(
+                  flex: 1,
                   child: Row(
                     children: [
                       Text(state.result.duration_minutes.toString()),
                       Text("minute".tr()),
-                      Image.asset(A_plus)
+                      Image.asset(clock2)
                     ],
                   ),
                 ),
-                Container(
+                Expanded(
+                    flex: 1,
                     child: Row(children: [
-                      Image.asset(clock2),
-                  Text("${state.result.total_score}/${state.result.score}")
-                ])),
-                Image.network(state.result.image),
-                Useable_Green_container(
-                  text: 'read answers'.tr(),
+                      Image.asset(A_plus),
+                      Text("${state.result.total_score}/${state.result.score}")
+                    ])),
+                Expanded(flex: 4, child: Image.network(state.result.image)),
+                Padding(
+                  padding:
+                      EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),
+                  child: InkWell(
+                    onTap: () {
+                      print("push named");
+                      Navigator.pushNamed(context, "/RevisionPage",
+                          arguments: resultId);
+                    },
+                    child: Useable_Green_container(
+                      text: 'read answers'.tr(),
+                    ),
+                  ),
                 )
               ],
             );
-          }
-          else if( state is FailedGetResult){
+          } else if (state is FailedGetResult) {
             return MyWidget();
-          }
-          
-           else {
+          } else {
             return Center(child: CircularProgressIndicator());
           }
         },

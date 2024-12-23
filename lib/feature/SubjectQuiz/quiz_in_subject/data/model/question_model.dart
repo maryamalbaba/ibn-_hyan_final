@@ -12,12 +12,16 @@ class QuestionModel {
   // ignore: non_constant_identifier_names
   String? question_image;
   List<AnswerModel> answers;
+   // ignore: non_constant_identifier_names
+   num? user_answer_id;
 
   QuestionModel({
     required this.id,
     required this.question_text,
     this.question_image,
+   
     required this.answers,
+     this.user_answer_id,
   });
 
   QuestionModel copyWith({
@@ -27,12 +31,14 @@ class QuestionModel {
     // ignore: non_constant_identifier_names
     String? question_image,
     List<AnswerModel>? answers,
+    num? user_answer_id,
   }) {
     return QuestionModel(
       id: id ?? this.id,
       question_text: question_text ?? this.question_text,
       question_image: question_image ?? this.question_image,
       answers: answers ?? this.answers,
+      user_answer_id:user_answer_id ?? this.user_answer_id,
     );
   }
 
@@ -42,6 +48,7 @@ class QuestionModel {
       'question_text': question_text,
       'question_image': question_image,
       'answers': answers.map((x) => x.toMap()).toList(),
+      'user_answer_id': user_answer_id,
     };
   }
 
@@ -60,15 +67,19 @@ class QuestionModel {
                     (x) => AnswerModel.fromMap(x as Map<String, dynamic>),
                   ),
                 )
-              : []);
+              : [],
+              user_answer_id:map['user_answer_id'] != null
+              ? map['user_answer_id'] as num
+              : null,);
     } catch (e, stackTrace) {
       print("we are in  question model catch");
       
       return QuestionModel(
         id: 0,
         question_text: "",
-        question_image: null,
+        question_image: "",
         answers: [],
+        user_answer_id:0,
       );
     }
   }
@@ -80,7 +91,7 @@ class QuestionModel {
 
   @override
   String toString() {
-    return 'QuestionModel(id: $id, question_text: $question_text, question_image: $question_image, answers: $answers)';
+    return 'QuestionModel(id: $id, question_text: $question_text, question_image: $question_image, answers: $answers,user_answer_id:$user_answer_id)';
   }
 
   @override
@@ -90,7 +101,10 @@ class QuestionModel {
     return other.id == id &&
         other.question_text == question_text &&
         other.question_image == question_image &&
+        other.user_answer_id == user_answer_id&&
         listEquals(other.answers, answers);
+         
+
   }
 
   @override
@@ -98,6 +112,7 @@ class QuestionModel {
     return id.hashCode ^
         question_text.hashCode ^
         question_image.hashCode ^
+        user_answer_id.hashCode^
         answers.hashCode;
   }
 }

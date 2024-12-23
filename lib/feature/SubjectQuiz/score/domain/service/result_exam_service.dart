@@ -23,6 +23,7 @@ print( "result id:: $result_Id");
         ResultExam result = ResultExam.fromMap(response.data["data"]);
         print("Result Exam : ");
         print(result);
+         print(result.runtimeType);
         return Right(result);
       } else {
         return Left(ErrorModel());
