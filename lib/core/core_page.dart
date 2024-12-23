@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/resourses/assets_manager.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
@@ -71,8 +73,10 @@ class _CorePageState extends State<CorePage> {
                 final List<SentAnswerModel> list = (setting.arguments as List)[1];
                    
                 final num result_Id = (setting.arguments as List)[2];
+                 final Timer timer = (setting.arguments as List)[3];
+
                 page = SendAnswerUI(
-                    itemcount: itemcount, list: list, result_Id: result_Id);
+                    itemcount: itemcount, list: list, result_Id: result_Id, timer: timer,);
 
                     case "/ResultExamUI":
                     final num result_Id=(setting.arguments ) as num;

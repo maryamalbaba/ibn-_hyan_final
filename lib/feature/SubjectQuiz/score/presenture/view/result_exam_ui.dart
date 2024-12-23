@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/resourses/assets_manager.dart';
 import 'package:ibnhyanfinal/core/widgets/useable_green_container.dart';
+import 'package:ibnhyanfinal/feature/Failed/Error.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/score/presenture/bloc/scorebloc_bloc.dart';
 
 class ResultExamUI extends StatelessWidget {
@@ -40,7 +41,12 @@ class ResultExamUI extends StatelessWidget {
                 )
               ],
             );
-          } else {
+          }
+          else if( state is FailedGetResult){
+            return MyWidget();
+          }
+          
+           else {
             return Center(child: CircularProgressIndicator());
           }
         },

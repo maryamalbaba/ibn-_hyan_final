@@ -12,16 +12,23 @@ class ResultExamService {
       Auth auth = Auth();
       ApiConsumer api = DioConsumer(dio: Dio());
       String accesstoken = auth.token;
+print("token is ::::$accesstoken");
+// print(api.get("results/$result_Id/details"));
 
+print( "result id:: $result_Id");
       Response response = await api.get("results/$result_Id/details",
           options: Options(headers: {"Authorization": "Bearer $accesstoken"}));
+          print(response.statusCode);
       if (response.statusCode == 200) {
         ResultExam result = ResultExam.fromMap(response.data["data"]);
+        print("Result Exam : ");
+        print(result);
         return Right(result);
       } else {
         return Left(ErrorModel());
       }
     } catch (e) {
+      print(e);
       return Left(ErrorModel());
     }
   }
