@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:ibnhyanfinal/core/resourses/assets_manager.dart';
 
-class MyWidget extends StatelessWidget {
-   MyWidget({super.key});
+class ErrorUi extends StatelessWidget {
+   ErrorUi({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("ERROR Page"),),
-    );
+    return
+       Padding(
+         padding:  EdgeInsets.all(MediaQuery.of(context).size.width*0.1),
+         child: Center(child: Image.asset(error_Image),),
+       );
+    
   }
 }

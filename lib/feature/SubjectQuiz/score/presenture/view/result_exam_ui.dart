@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/resourses/assets_manager.dart';
+import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/core/widgets/useable_green_container.dart';
 import 'package:ibnhyanfinal/feature/Failed/Error.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/score/presenture/bloc/scorebloc_bloc.dart';
@@ -22,23 +23,40 @@ class ResultExamUI extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(flex: 1, child: Text("finsh exam").tr()),
-                Expanded(
+                SizedBox(
+                  height: MediaQuery.of(context).size.height*0.1
+                ),
+                Expanded(flex: 1, child: Text("finsh exam",style: TextStyle(color: green ,fontWeight: FontWeight.w700
+                ,
+                fontSize: MediaQuery.of(context).size.width*0.1),).tr(),),
+                
+                Row(
+                  children: [
+
+                    Container(
+                      child: Expanded(
                   flex: 1,
                   child: Row(
                     children: [
-                      Text(state.result.duration_minutes.toString()),
+                      Image.asset(clock2),
+                      Text(" "+state.result.duration_minutes.toString()),
                       Text("minute".tr()),
-                      Image.asset(clock2)
                     ],
                   ),
                 ),
-                Expanded(
+                    ),
+                    Container(
+                      child:   Expanded(
                     flex: 1,
                     child: Row(children: [
                       Image.asset(A_plus),
-                      Text("${state.result.total_score}/${state.result.score}")
+                      Text("  ${state.result.total_score}/${state.result.score}")
                     ])),
+                    )
+                  ],
+                ),
+                
+              
                 Expanded(flex: 4, child: Image.network(state.result.image)),
                 Padding(
                   padding:
@@ -57,7 +75,7 @@ class ResultExamUI extends StatelessWidget {
               ],
             );
           } else if (state is FailedGetResult) {
-            return MyWidget();
+            return ErrorUi();
           } else {
             return Center(child: CircularProgressIndicator());
           }

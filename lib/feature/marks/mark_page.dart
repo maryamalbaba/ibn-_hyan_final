@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/core/resourses/styles_manager.dart';
+import 'package:ibnhyanfinal/feature/Failed/Error.dart';
 import 'package:ibnhyanfinal/feature/marks/presenture/bloc/marks_bloc.dart';
 
 class MarksPage extends StatelessWidget {
@@ -214,7 +215,7 @@ class MarksPage extends StatelessWidget {
               ],
             );
           } else {
-            return Center(child: const CircularProgressIndicator());
+            return ErrorUi();
           }
         },
       ),
@@ -230,7 +231,7 @@ class verticalDivDer extends StatelessWidget {
     return RotatedBox(
         quarterTurns: 1,
         child: Container(
-          width: MediaQuery.of(context).size.width,
+      //    width: MediaQuery.of(context).size.width,
           child: Divider(
             color: Lightgreen,
             thickness: 1,

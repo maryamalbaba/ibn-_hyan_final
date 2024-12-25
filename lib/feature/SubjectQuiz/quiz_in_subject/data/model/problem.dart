@@ -43,7 +43,7 @@ class ProblemModel {
 factory ProblemModel.fromMap(Map<String, dynamic> map) {
   return ProblemModel(
     id: map['id'] as num?,
-    problem_text: map['problem_text'] as String?,
+    problem_text: map['problem_text'] !=null ?map['problem_text']as String :"",
     problem_image: map['problem_image'] as String?,
     questions: map['questions'] != null
         ? List<QuestionModel>.from(

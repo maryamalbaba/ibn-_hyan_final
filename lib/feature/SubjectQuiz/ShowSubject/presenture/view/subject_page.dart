@@ -63,7 +63,7 @@ class SubjectPage extends StatelessWidget {
             } 
             else if(state is ErrorGetSubject)
             {
-              return MyWidget();
+              return ErrorUi();
             }
             else {
               return const Center(child: CircularProgressIndicator());

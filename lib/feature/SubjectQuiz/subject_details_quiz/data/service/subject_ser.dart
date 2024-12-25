@@ -28,6 +28,7 @@ class SubjectDetailsQuiz {
             response.data["data"].length,
             (index) =>
                 SubjecDetailsQuizs.fromMap(response.data["data"][index]));
+                print(res);
         return Right(res);
       } else {
         return Left(

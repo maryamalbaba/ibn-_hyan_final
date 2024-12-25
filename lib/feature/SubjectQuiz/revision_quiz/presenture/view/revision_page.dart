@@ -227,7 +227,7 @@ class _RevisionPageState extends State<RevisionPage> {
                                           itemCount: state
                                               .question_with_answer
                                               .problems![index]
-                                              .questions![index]
+                                              .questions![indexQuestions]
                                               .answers
                                               .length,
                                           itemBuilder:
@@ -237,7 +237,7 @@ class _RevisionPageState extends State<RevisionPage> {
                                                     state
                                                         .question_with_answer
                                                         .problems![index]
-                                                        .questions![index]
+                                                        .questions![indexQuestions]
                                                         .answers
                                                         .length,
                                                     false);
@@ -323,41 +323,7 @@ class _RevisionPageState extends State<RevisionPage> {
                       if (index < totalindex) {
                         return Column(
                           children: [
-                            // ValueListenableBuilder(
-                            //   valueListenable: percent,
-                            //   builder: (context, value, child) =>
-                            //       Row(children: [
-                            //     Text("${widget.time_limit - value}"),
-                            //     Align(
-                            //       alignment: Alignment.center,
-                            //       child: Container(
-                            //         // padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.01),
-                            //         decoration: BoxDecoration(
-                            //           borderRadius:
-                            //               BorderRadius.all(Radius.circular(10)),
-                            //           boxShadow: [
-                            //             BoxShadow(
-                            //               color: Colors.grey.withOpacity(0.6),
-                            //               spreadRadius: 0.001,
-                            //               blurRadius: 10,
-                            //             )
-                            //           ],
-                            //         ),
-                            //         child: LinearPercentIndicator(
-                            //           backgroundColor: Colors.white,
-                            //           progressColor: yellow,
-                            //           width: MediaQuery.of(context).size.width *
-                            //               0.8,
-                            //           animationDuration: 2500,
-                            //           lineHeight: 14.0,
-                            //           percent:
-                            //               min(100, value / widget.time_limit),
-                            //           barRadius: const Radius.circular(10),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ]),
-                            // ),
+                           
                             //!container for Question for seprated Question
                             Container(
                                 width: MediaQuery.of(context).size.width * 0.90,
@@ -468,25 +434,11 @@ class _RevisionPageState extends State<RevisionPage> {
                             ////////////
                           ],
                         );
-                      } else {
-                        final list = getAnswersList2();
-                        return MyWidget();
-                        // return SendAnswerUI(
-                        //   timer: timer,
-                        //   // onTap: () {
-                        //   //   print("ops");
-                        //   //   print(selectedAnswers);
-
-                        //   // },
-                        //   itemcount: list.length,
-                        //   list: list,
-                        //   result_Id: state.question_with_answer.result_id,
-                        // );
-                      }
+                      } 
                     }
                   });
             } else if (state is SubjectRevError) {
-              return MyWidget();
+              return ErrorUi();
             } else {
               print("else in ui in RevPage");
               return const Center(child: CircularProgressIndicator());

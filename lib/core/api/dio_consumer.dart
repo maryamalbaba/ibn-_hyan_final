@@ -10,7 +10,8 @@ class DioConsumer implements ApiConsumer {
   DioConsumer({
     required this.dio,
   }) {
-    dio.options.baseUrl = "http://localhost:8000/api/v1/";
+   // http://ibn-hayyan.webmyidea.com/api/v1/my-exams
+    dio.options.baseUrl = "http://ibn-hayyan.webmyidea.com/api/v1/";
   }
   @override
   Future<Response> delete(String path,

@@ -40,7 +40,7 @@ ResultExam result_score;
   factory FullResRevivion.fromMap(Map<String, dynamic> map) {
     try{
 return FullResRevivion(
-      result_score: ResultExam.fromMap(map['result_score'] as Map<String,dynamic>),
+      result_score: ResultExam.fromMap(map as Map<String,dynamic>),
       separated_questions:  map['separated_questions'] != null
         ? List<QuestionModel>.from(
             (map['separated_questions'] as List)

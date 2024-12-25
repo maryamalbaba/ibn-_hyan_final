@@ -66,10 +66,10 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
   startTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (mounted) {
-        percent.value += percent.value;
+        percent.value += 1;
         if (percent.value >= widget.time_limit.toInt()) {
-          // timer.cancel();
-          // percent=0.0;
+          timer.cancel();
+          percent = ValueNotifier<double>(0.0);
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text("انتهى الوقت")));
         }
@@ -123,7 +123,11 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                               valueListenable: percent,
                               builder: (context, value, child) =>
                                   Row(children: [
-                                Text("${widget.time_limit - value}"),
+                                Expanded(
+                                    child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                            " ${widget.time_limit - value}"))),
                                 Align(
                                   alignment: Alignment.center,
                                   child: Container(
@@ -146,8 +150,11 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                           0.8,
                                       animationDuration: 2500,
                                       lineHeight: 14.0,
-                                      percent:
-                                          min(100, value / widget.time_limit),
+                                       percent:  min(1, value / widget.time_limit),
+                                       //value >= widget.time_limit
+                                      //     ? 1.0 // Ensure it doesn't exceed 1.0
+                                      //     : value / widget.time_limit,
+                                      
                                       barRadius: const Radius.circular(10),
                                     ),
                                   ),
@@ -273,12 +280,9 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                       .answers[indexforanswer]
                                                       .answer_image,
                                                   onTap: () {
-                                                   print(" Question id  in problem Quiz :${ state
-                                                            .question_with_answer
-                                                            .problems![index]
-                                                            .questions![indexQuestions]
-                                                            .id}");
-                                                        
+                                                    print(
+                                                        " Question id  in problem Quiz :${state.question_with_answer.problems![index].questions![indexQuestions].id}");
+
                                                     storeAnswer(SentAnswerModel(
                                                         answer_id: state
                                                             .question_with_answer
@@ -305,7 +309,8 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                         questionid: state
                                                             .question_with_answer
                                                             .problems![index]
-                                                            .questions![indexQuestions]
+                                                            .questions![
+                                                                indexQuestions]
                                                             .id));
                                                   }),
                                             );
@@ -335,7 +340,13 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                               valueListenable: percent,
                               builder: (context, value, child) =>
                                   Row(children: [
-                                Text("${widget.time_limit - value}"),
+                                Expanded(
+                                    // fit: BoxFit.contain,
+                                    child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          " ${widget.time_limit - value}",
+                                        ))),
                                 Align(
                                   alignment: Alignment.center,
                                   child: Container(
@@ -359,7 +370,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                       animationDuration: 2500,
                                       lineHeight: 14.0,
                                       percent:
-                                          min(100, value / widget.time_limit),
+                                          min(1, value / widget.time_limit),
                                       barRadius: const Radius.circular(10),
                                     ),
                                   ),
@@ -377,33 +388,36 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                     border: Border.all(
                                       color: Lightgreen,
                                     )),
-                                child: Column(
-                                  children: [
-                                    Text(state
-                                        .question_with_answer
-                                        .separated_questions[sepratedIndex]
-                                        .question_text),
-                                    state
-                                                    .question_with_answer
-                                                    .separated_questions[
-                                                        sepratedIndex]
-                                                    .question_image !=
-                                                null &&
-                                            state
-                                                .question_with_answer
-                                                .separated_questions[
-                                                    sepratedIndex]
-                                                .question_image!
-                                                .isNotEmpty
-                                        ? Image.network(state
-                                            .question_with_answer
-                                            .separated_questions[sepratedIndex]
-                                            .question_image!)
-                                        : const SizedBox(
-                                            height: 1,
-                                            width: 1,
-                                          )
-                                  ],
+                                child: Expanded(
+                                  child: Column(
+                                    children: [
+                                      Text(state
+                                          .question_with_answer
+                                          .separated_questions[sepratedIndex]
+                                          .question_text),
+                                      state
+                                                      .question_with_answer
+                                                      .separated_questions[
+                                                          sepratedIndex]
+                                                      .question_image !=
+                                                  null &&
+                                              state
+                                                  .question_with_answer
+                                                  .separated_questions[
+                                                      sepratedIndex]
+                                                  .question_image!
+                                                  .isNotEmpty
+                                          ? Image.network(state
+                                              .question_with_answer
+                                              .separated_questions[
+                                                  sepratedIndex]
+                                              .question_image!)
+                                          : const SizedBox(
+                                              height: 1,
+                                              width: 1,
+                                            )
+                                    ],
+                                  ),
                                 )),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.1,
@@ -432,9 +446,8 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                         .answers[index_for_seprated_answer]
                                         .answer_image,
                                     onTap: () {
-                                      print(" question id in seprated Q is :${state
-                                              .question_with_answer
-                                              .separated_questions[sepratedIndex].id}");
+                                      print(
+                                          " question id in seprated Q is :${state.question_with_answer.separated_questions[sepratedIndex].id}");
                                       storeAnswer(SentAnswerModel(
                                           answer_id: state
                                               .question_with_answer
@@ -455,13 +468,11 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                               .answer_text!,
                                           answer_tarqem:
                                               Label[index_for_seprated_answer],
-                                          questionid:
-                                          state
+                                          questionid: state
                                               .question_with_answer
-                                              .separated_questions[sepratedIndex].id
-                                            
-                                            //  state.question_with_answer.id
-                                              ));
+                                              .separated_questions[
+                                                  sepratedIndex]
+                                              .id));
                                     },
                                     // ispressesd: ispresse,
                                   );
@@ -480,11 +491,6 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                         final list = getAnswersList();
                         return SendAnswerUI(
                           timer: timer,
-                          // onTap: () {
-                          //   print("ops");
-                          //   print(selectedAnswers);
-
-                          // },
                           itemcount: list.length,
                           list: list,
                           result_Id: state.question_with_answer.result_id,
@@ -493,9 +499,10 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                     }
                   });
             } else if (state is SubjectQuestionError) {
-              return MyWidget();
+              return ErrorUi();
             } else {
-              return const Center(child: CircularProgressIndicator());
+              print("last if in  get question ");
+              return ErrorUi();
             }
           },
         );

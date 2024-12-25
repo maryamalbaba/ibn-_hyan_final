@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/resourses/assets_manager.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
+import 'package:ibnhyanfinal/feature/Failed/Error.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/ShowSubject/presenture/view/subject_page.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/answer_model.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view/question_page.dart';
@@ -71,17 +72,22 @@ class _CorePageState extends State<CorePage> {
 
               case "/SendAnswerUI":
                 final int itemcount = (setting.arguments as List)[0];
-                final List<SentAnswerModel> list = (setting.arguments as List)[1];
-                   
+                final List<SentAnswerModel> list =
+                    (setting.arguments as List)[1];
+
                 final num result_Id = (setting.arguments as List)[2];
-                 final Timer timer = (setting.arguments as List)[3];
+                final Timer timer = (setting.arguments as List)[3];
 
                 page = SendAnswerUI(
-                    itemcount: itemcount, list: list, result_Id: result_Id, timer: timer,);
+                  itemcount: itemcount,
+                  list: list,
+                  result_Id: result_Id,
+                  timer: timer,
+                );
 
-                    case "/ResultExamUI":
-                    final num result_Id=(setting.arguments ) as num;
-                    page=ResultExamUI(resultId: result_Id);
+              case "/ResultExamUI":
+                final num result_Id = (setting.arguments) as num;
+                page = ResultExamUI(resultId: result_Id);
 
               case "/QuizSubjectUi":
                 final num id2 = (setting.arguments as List)[0] as num;
@@ -91,9 +97,13 @@ class _CorePageState extends State<CorePage> {
                   time_limit: time_limit,
                 );
                 break;
-                case "/RevisionPage":
-                final num id=(setting.arguments ) as num;
-                page=RevisionPage(id: id,);
+              case "/RevisionPage":
+                final num id = (setting.arguments) as num;
+                page = RevisionPage(
+                  id: id,
+                );
+              case "/ErrorUi":
+                page = ErrorUi();
 
               default:
                 page = pages_in_Bar[currentIndex];

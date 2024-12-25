@@ -12,3 +12,5 @@ const String clock2="assets/image/clock2.png";
 const String A_plus="assets/image/Aplus.png";
 // ignore: constant_identifier_names
 const String no_internet="assets/image/noInternet.png";
+const String logo="assets/image/logo.png";
+const String error_Image="assets/image/error_image.png";

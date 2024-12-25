@@ -11,14 +11,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SendAnswerServices {
   ApiConsumer api = DioConsumer(dio: Dio());
-  Auth auth=Auth();
-  Future<Result> send_answer_service( List <SentAnswerModel>list1) async {
-     SharedPreferences pref = await SharedPreferences.getInstance();
+  Auth auth = Auth();
+  Future<Result> send_answer_service(List<SentAnswerModel> list1) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
 
-      String accesstoken = auth.token;
-      print("token issss $accesstoken");
-    Response response = await api.post(sendAnswer, options: Options(headers: {"Authorization": "Bearer $accesstoken"}) ,
-    data:{"solves":list1.map((item)=>item.toMap() ).toList()});
+    String accesstoken = auth.token;
+    print("token issss $accesstoken");
+    Response response = await api.post(sendAnswer,
+        options: Options(headers: {"Authorization": "Bearer $accesstoken"}),
+        data: {"solves": list1.map((item) => item.toMap()).toList()});
     try {
       if (response.statusCode == 200) {
         print(response.data["message"]);
@@ -26,7 +27,7 @@ class SendAnswerServices {
       } else {
         print(response.statusCode);
         print(response.data["message"]);
- print("error in send answer");
+        print("error in send answer");
         return ErrorModel();
       }
     } catch (e) {
