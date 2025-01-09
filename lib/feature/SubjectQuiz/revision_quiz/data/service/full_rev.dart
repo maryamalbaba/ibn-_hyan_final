@@ -16,7 +16,8 @@ class QuizinSubjectRev {
       num id) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
-    Response response = await api.get("results/$id/details",
+    Response response = await 
+    api.get("results/$id/details",
         options: Options(headers: {"Authorization": "Bearer ${auth.token}"}));
     print("student token : + ${auth.token}");
     print("before try in get__subject_Rev_");

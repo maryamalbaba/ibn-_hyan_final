@@ -4,6 +4,7 @@ late SharedPreferences pref;
 GetIt getIt = GetIt.instance;
 Setup() async {
 
+
   getIt.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
       pref =  await SharedPreferences.getInstance();

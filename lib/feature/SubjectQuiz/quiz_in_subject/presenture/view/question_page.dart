@@ -36,7 +36,8 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
 
   //map to store question answers { question_id: answer_model }
   Map<int, SentAnswerModel> questionsAnswers = {};
-
+  Map<int, Color> answerColors = {};
+  Color color = Lightgreen;
   initQuestionOrder(ResponseQuizAllSubject quiz) {
     for (var p in quiz.problems ?? <ProblemModel>[]) {
       for (var q in p.questions ?? <QuestionModel>[]) {
@@ -48,8 +49,13 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
     }
   }
 
-  storeAnswer(SentAnswerModel answer) {
+  Map<int, int> selectedAnswers = {};
+  storeAnswer(int questionId, int selectedIndex, SentAnswerModel answer) {
     setState(() {
+      print("lm");
+
+      selectedAnswers[questionId] = selectedIndex;
+      print(color!.value.toString());
       questionsAnswers[answer.questionid!.toInt()] = answer;
     });
   }
@@ -150,11 +156,12 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                           0.8,
                                       animationDuration: 2500,
                                       lineHeight: 14.0,
-                                       percent:  min(1, value / widget.time_limit),
-                                       //value >= widget.time_limit
+                                      percent:
+                                          min(1, value / widget.time_limit),
+                                      //value >= widget.time_limit
                                       //     ? 1.0 // Ensure it doesn't exceed 1.0
                                       //     : value / widget.time_limit,
-                                      
+
                                       barRadius: const Radius.circular(10),
                                     ),
                                   ),
@@ -264,6 +271,16 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                     0.01,
                                               ),
                                               child: AnswerContainer(
+                                                  color: selectedAnswers[state
+                                                              .question_with_answer
+                                                              .problems![index]
+                                                              .questions![
+                                                                  indexQuestions]
+                                                              .id] ==
+                                                          indexforanswer
+                                                      ? yellow
+                                                      // لون الإجابة المحددة
+                                                      : Lightgreen,
                                                   label: Label[indexforanswer],
                                                   answerText: state
                                                       .question_with_answer
@@ -283,35 +300,47 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                     print(
                                                         " Question id  in problem Quiz :${state.question_with_answer.problems![index].questions![indexQuestions].id}");
 
-                                                    storeAnswer(SentAnswerModel(
-                                                        answer_id: state
+                                                    storeAnswer(
+                                                        state
                                                             .question_with_answer
                                                             .problems![index]
                                                             .questions![
                                                                 indexQuestions]
-                                                            .answers[
-                                                                indexforanswer]
-                                                            .id!,
-                                                        result_id: state
-                                                            .question_with_answer
-                                                            .result_id
+                                                            .id
                                                             .toInt(),
-                                                        answer_tarqem: Label[
-                                                            indexforanswer],
-                                                        answer_text: state
-                                                            .question_with_answer
-                                                            .problems![index]
-                                                            .questions![
-                                                                indexQuestions]
-                                                            .answers[
-                                                                indexforanswer]
-                                                            .answer_text!,
-                                                        questionid: state
-                                                            .question_with_answer
-                                                            .problems![index]
-                                                            .questions![
-                                                                indexQuestions]
-                                                            .id));
+                                                        indexforanswer,
+                                                        SentAnswerModel(
+                                                            answer_id: state
+                                                                .question_with_answer
+                                                                .problems![
+                                                                    index]
+                                                                .questions![
+                                                                    indexQuestions]
+                                                                .answers[
+                                                                    indexforanswer]
+                                                                .id!,
+                                                            result_id: state
+                                                                .question_with_answer
+                                                                .result_id
+                                                                .toInt(),
+                                                            answer_tarqem: Label[
+                                                                indexforanswer],
+                                                            answer_text: state
+                                                                .question_with_answer
+                                                                .problems![
+                                                                    index]
+                                                                .questions![
+                                                                    indexQuestions]
+                                                                .answers[
+                                                                    indexforanswer]
+                                                                .answer_text!,
+                                                            questionid: state
+                                                                .question_with_answer
+                                                                .problems![
+                                                                    index]
+                                                                .questions![
+                                                                    indexQuestions]
+                                                                .id));
                                                   }),
                                             );
                                           }),
@@ -388,36 +417,33 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                     border: Border.all(
                                       color: Lightgreen,
                                     )),
-                                child: Expanded(
-                                  child: Column(
-                                    children: [
-                                      Text(state
-                                          .question_with_answer
-                                          .separated_questions[sepratedIndex]
-                                          .question_text),
-                                      state
-                                                      .question_with_answer
-                                                      .separated_questions[
-                                                          sepratedIndex]
-                                                      .question_image !=
-                                                  null &&
-                                              state
-                                                  .question_with_answer
-                                                  .separated_questions[
-                                                      sepratedIndex]
-                                                  .question_image!
-                                                  .isNotEmpty
-                                          ? Image.network(state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .question_image!)
-                                          : const SizedBox(
-                                              height: 1,
-                                              width: 1,
-                                            )
-                                    ],
-                                  ),
+                                child: Column(
+                                  children: [
+                                    Text(state
+                                        .question_with_answer
+                                        .separated_questions[sepratedIndex]
+                                        .question_text),
+                                    state
+                                                    .question_with_answer
+                                                    .separated_questions[
+                                                        sepratedIndex]
+                                                    .question_image !=
+                                                null &&
+                                            state
+                                                .question_with_answer
+                                                .separated_questions[
+                                                    sepratedIndex]
+                                                .question_image!
+                                                .isNotEmpty
+                                        ? Image.network(state
+                                            .question_with_answer
+                                            .separated_questions[sepratedIndex]
+                                            .question_image!)
+                                        : const SizedBox(
+                                            height: 1,
+                                            width: 1,
+                                          )
+                                  ],
                                 )),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.1,
@@ -434,6 +460,14 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                 itemBuilder:
                                     (context, index_for_seprated_answer) {
                                   return AnswerContainer(
+                                    color: selectedAnswers[state
+                                                .question_with_answer
+                                                .separated_questions[
+                                                    sepratedIndex]
+                                                .id] ==
+                                            index_for_seprated_answer
+                                        ? yellow
+                                        : Lightgreen,
                                     label: Label[index_for_seprated_answer],
                                     answerText: state
                                         .question_with_answer
@@ -448,31 +482,40 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                     onTap: () {
                                       print(
                                           " question id in seprated Q is :${state.question_with_answer.separated_questions[sepratedIndex].id}");
-                                      storeAnswer(SentAnswerModel(
-                                          answer_id: state
+                                      storeAnswer(
+                                          state
                                               .question_with_answer
                                               .separated_questions[
                                                   sepratedIndex]
-                                              .answers[
-                                                  index_for_seprated_answer]
-                                              .id!,
-                                          result_id: state
-                                              .question_with_answer.result_id
+                                              .id
                                               .toInt(),
-                                          answer_text: state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[
-                                                  index_for_seprated_answer]
-                                              .answer_text!,
-                                          answer_tarqem:
-                                              Label[index_for_seprated_answer],
-                                          questionid: state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .id));
+                                          index_for_seprated_answer,
+                                          SentAnswerModel(
+                                              answer_id: state
+                                                  .question_with_answer
+                                                  .separated_questions[
+                                                      sepratedIndex]
+                                                  .answers[
+                                                      index_for_seprated_answer]
+                                                  .id!,
+                                              result_id: state
+                                                  .question_with_answer
+                                                  .result_id
+                                                  .toInt(),
+                                              answer_text: state
+                                                  .question_with_answer
+                                                  .separated_questions[
+                                                      sepratedIndex]
+                                                  .answers[
+                                                      index_for_seprated_answer]
+                                                  .answer_text!,
+                                              answer_tarqem: Label[
+                                                  index_for_seprated_answer],
+                                              questionid: state
+                                                  .question_with_answer
+                                                  .separated_questions[
+                                                      sepratedIndex]
+                                                  .id));
                                     },
                                     // ispressesd: ispresse,
                                   );
@@ -516,15 +559,17 @@ class AnswerContainer extends StatelessWidget {
   final String? answerImage;
   final String label;
   final VoidCallback onTap;
-
-  const AnswerContainer({
-    Key? key,
-    required this.answerText,
-    required this.answerImage,
-    required this.label,
-    required this.onTap,
-    // required this.ispressesd,
-  }) : super(key: key);
+  Color? color;
+  AnswerContainer(
+      {Key? key,
+      required this.answerText,
+      required this.answerImage,
+      required this.label,
+      required this.onTap,
+      this.color
+      // required this.ispressesd,
+      })
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -539,7 +584,7 @@ class AnswerContainer extends StatelessWidget {
               babyblue,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: Lightgreen,
+            color: color!,
           ),
         ),
         child: answerText != null

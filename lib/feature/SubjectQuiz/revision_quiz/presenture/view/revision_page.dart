@@ -11,20 +11,21 @@ import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/prob
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/question_model.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/response_quiz.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/bloc/bloc/subject_question_bloc.dart';
+import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view/question_page.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/revision_quiz/data/Models/full_res_revivion.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/revision_quiz/presenture/bloc/fullrevision_bloc.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Model/answer.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/presenture/view/send_answer_page.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-
-
 class RevisionPage extends StatefulWidget {
   RevisionPage({
     super.key,
     this.id,
     // required this.time_limit,
-  }){print("constructure in RevPage UI");}
+  }) {
+    print("constructure in RevPage UI");
+  }
 
   final num? id;
   // final num time_limit;
@@ -64,13 +65,12 @@ class _RevisionPageState extends State<RevisionPage> {
   List<String> Label = ["أ", "ب", "ج", "د"];
   bool callintialzeanswe = false;
   ValueNotifier<double> percent = ValueNotifier<double>(0.0);
-
-
+  Color color = Colors.red;
 
   @override
   void initState() {
     super.initState();
- //   startTimer();
+    //   startTimer();
   }
 
   @override
@@ -82,7 +82,6 @@ class _RevisionPageState extends State<RevisionPage> {
         print("heerree");
         return BlocConsumer<FullrevisionBloc, FullrevisionState>(
           listener: (context, state) {
-
             // TODO: implement listener
             print("state is :::::::::");
             print(state);
@@ -96,7 +95,7 @@ class _RevisionPageState extends State<RevisionPage> {
           builder: (context, state) {
             if (state is SubjectRevSuccess) {
               print("count");
-              print(state.question_with_answer.problems!.length+
+              print(state.question_with_answer.problems!.length +
                   state.question_with_answer.separated_questions.length);
               return PageView.builder(
                   physics: AlwaysScrollableScrollPhysics(),
@@ -108,45 +107,6 @@ class _RevisionPageState extends State<RevisionPage> {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Padding(
-                          //   padding: EdgeInsets.all(
-                          //       MediaQuery.of(context).size.height * 0.01),
-                          //   child: ValueListenableBuilder(
-                          //     valueListenable: percent,
-                          //     builder: (context, value, child) =>
-                          //         Row(children: [
-                          //      // Text("${widget.time_limit - value}"),
-                          //       Align(
-                          //         alignment: Alignment.center,
-                          //         child: Container(
-                          //           // padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.01),
-                          //           decoration: BoxDecoration(
-                          //             borderRadius:
-                          //                 BorderRadius.all(Radius.circular(10)),
-                          //             boxShadow: [
-                          //               BoxShadow(
-                          //                 color: Colors.grey.withOpacity(0.6),
-                          //                 spreadRadius: 0.001,
-                          //                 blurRadius: 10,
-                          //               )
-                          //             ],
-                          //           ),
-                          //           child: LinearPercentIndicator(
-                          //             backgroundColor: Colors.white,
-                          //             progressColor: yellow,
-                          //             width: MediaQuery.of(context).size.width *
-                          //                 0.8,
-                          //             animationDuration: 2500,
-                          //             lineHeight: 14.0,
-                          //             percent:
-                          //                 min(100, value / widget.time_limit),
-                          //             barRadius: const Radius.circular(10),
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ]),
-                          //   ),
-                          // ),
                           //!container for problem
                           Container(
                             width: MediaQuery.of(context).size.width * 0.6,
@@ -237,10 +197,12 @@ class _RevisionPageState extends State<RevisionPage> {
                                                     state
                                                         .question_with_answer
                                                         .problems![index]
-                                                        .questions![indexQuestions]
+                                                        .questions![
+                                                            indexQuestions]
                                                         .answers
                                                         .length,
                                                     false);
+
                                             return Padding(
                                               padding: EdgeInsets.all(
                                                 MediaQuery.of(context)
@@ -248,30 +210,44 @@ class _RevisionPageState extends State<RevisionPage> {
                                                         .height *
                                                     0.01,
                                               ),
-                                              child: AnswerContainer(
-                                                  label: Label[indexforanswer],
-                                                  answerText: state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![
-                                                          indexQuestions]
-                                                      .answers[indexforanswer]
-                                                      .answer_text,
-                                                  answerImage: state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![
-                                                          indexQuestions]
-                                                      .answers[indexforanswer]
-                                                      .answer_image,
-                                                  onTap: () {
-                                                   print(" Question id  in problem Quiz :${ state
-                                                            .question_with_answer
-                                                            .problems![index]
-                                                            .questions![indexQuestions]
-                                                            .id}");
-                                                        
-                                                    storeAnswer2(SentAnswerModel(
+                                              child: Builder(
+                                                builder: (context) {
+                                                
+                                                  Color color = (state
+                                                              .question_with_answer
+                                                              .problems![index]
+                                                              .questions![
+                                                                  indexQuestions]
+                                                              .answers[
+                                                                  indexforanswer]
+                                                              .is_correct ==
+                                                          1)
+                                                      ? Colors.green
+                                                      : Colors.red;
+
+                                                 
+                                                  return AnswerContainer(
+                                                    label:
+                                                        Label[indexforanswer],
+                                                    answerText: state
+                                                        .question_with_answer
+                                                        .problems![index]
+                                                        .questions![
+                                                            indexQuestions]
+                                                        .answers[indexforanswer]
+                                                        .answer_text,
+                                                    answerImage: state
+                                                        .question_with_answer
+                                                        .problems![index]
+                                                        .questions![
+                                                            indexQuestions]
+                                                        .answers[indexforanswer]
+                                                        .answer_image,
+                                                    onTap: () {
+                                                      print(
+                                                          "Question id in problem Quiz : ${state.question_with_answer.problems![index].questions![indexQuestions].id}");
+                                                      storeAnswer2(
+                                                          SentAnswerModel(
                                                         answer_id: state
                                                             .question_with_answer
                                                             .problems![index]
@@ -281,7 +257,8 @@ class _RevisionPageState extends State<RevisionPage> {
                                                                 indexforanswer]
                                                             .id!,
                                                         result_id: state
-                                                            .question_with_answer.result_score
+                                                            .question_with_answer
+                                                            .result_score
                                                             .result_id
                                                             .toInt(),
                                                         answer_tarqem: Label[
@@ -297,9 +274,15 @@ class _RevisionPageState extends State<RevisionPage> {
                                                         questionid: state
                                                             .question_with_answer
                                                             .problems![index]
-                                                            .questions![indexQuestions]
-                                                            .id));
-                                                  }),
+                                                            .questions![
+                                                                indexQuestions]
+                                                            .id,
+                                                      ));
+                                                    },
+                                                    color: color,
+                                                  );
+                                                },
+                                              ),
                                             );
                                           }),
                                     )
@@ -323,7 +306,6 @@ class _RevisionPageState extends State<RevisionPage> {
                       if (index < totalindex) {
                         return Column(
                           children: [
-                           
                             //!container for Question for seprated Question
                             Container(
                                 width: MediaQuery.of(context).size.width * 0.90,
@@ -377,52 +359,67 @@ class _RevisionPageState extends State<RevisionPage> {
                                         mainAxisSpacing: 30),
                                 itemBuilder:
                                     (context, index_for_seprated_answer) {
-                                  return AnswerContainer(
-                                    label: Label[index_for_seprated_answer],
-                                    answerText: state
-                                        .question_with_answer
-                                        .separated_questions[sepratedIndex]
-                                        .answers[index_for_seprated_answer]
-                                        .answer_text,
-                                    answerImage: state
-                                        .question_with_answer
-                                        .separated_questions[sepratedIndex]
-                                        .answers[index_for_seprated_answer]
-                                        .answer_image,
-                                    onTap: () {
-                                      print(" question id in seprated Q is :${state
-                                              .question_with_answer
-                                              .separated_questions[sepratedIndex].id}");
-                                      storeAnswer2(SentAnswerModel(
-                                          answer_id: state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[
-                                                  index_for_seprated_answer]
-                                              .id!,
-                                          result_id: state
-                                              .question_with_answer.result_score.result_id
-                                              .toInt(),
-                                          answer_text: state
-                                              .question_with_answer
-                                              .separated_questions[
-                                                  sepratedIndex]
-                                              .answers[
-                                                  index_for_seprated_answer]
-                                              .answer_text!,
-                                          answer_tarqem:
-                                              Label[index_for_seprated_answer],
-                                          questionid:
-                                          state
-                                              .question_with_answer
-                                              .separated_questions[sepratedIndex].id
-                                            
+                                  return Builder(builder: (context) {
+                                    Color color = (state
+                                                .question_with_answer
+                                                .separated_questions[
+                                                    sepratedIndex]
+                                                .answers[
+                                                    index_for_seprated_answer]
+                                                .is_correct ==
+                                            1)
+                                        ? Colors.green
+                                        : Colors.red;
+                                    return AnswerContainer(
+                                      color: color,
+                                      label: Label[index_for_seprated_answer],
+                                      answerText: state
+                                          .question_with_answer
+                                          .separated_questions[sepratedIndex]
+                                          .answers[index_for_seprated_answer]
+                                          .answer_text,
+                                      answerImage: state
+                                          .question_with_answer
+                                          .separated_questions[sepratedIndex]
+                                          .answers[index_for_seprated_answer]
+                                          .answer_image,
+                                      onTap: () {
+                                        print(
+                                            " question id in seprated Q is :${state.question_with_answer.separated_questions[sepratedIndex].id}");
+                                        storeAnswer2(SentAnswerModel(
+                                            answer_id: state
+                                                .question_with_answer
+                                                .separated_questions[
+                                                    sepratedIndex]
+                                                .answers[
+                                                    index_for_seprated_answer]
+                                                .id!,
+                                            result_id: state
+                                                .question_with_answer
+                                                .result_score
+                                                .result_id
+                                                .toInt(),
+                                            answer_text: state
+                                                .question_with_answer
+                                                .separated_questions[
+                                                    sepratedIndex]
+                                                .answers[
+                                                    index_for_seprated_answer]
+                                                .answer_text!,
+                                            answer_tarqem: Label[
+                                                index_for_seprated_answer],
+                                            questionid: state
+                                                .question_with_answer
+                                                .separated_questions[
+                                                    sepratedIndex]
+                                                .id
+
                                             //  state.question_with_answer.id
-                                              ));
-                                    },
-                                    // ispressesd: ispresse,
-                                  );
+                                            ));
+                                      },
+                                      // ispressesd: ispresse,
+                                    );
+                                  });
                                 },
                                 itemCount: state
                                     .question_with_answer
@@ -434,7 +431,7 @@ class _RevisionPageState extends State<RevisionPage> {
                             ////////////
                           ],
                         );
-                      } 
+                      }
                     }
                   });
             } else if (state is SubjectRevError) {
@@ -449,51 +446,3 @@ class _RevisionPageState extends State<RevisionPage> {
     );
   }
 }
-
-class AnswerContainer extends StatelessWidget {
-  final String? answerText;
-  final String? answerImage;
-  final String label;
-  final VoidCallback onTap;
-
-  const AnswerContainer({
-    Key? key,
-    required this.answerText,
-    required this.answerImage,
-    required this.label,
-    required this.onTap,
-    // required this.ispressesd,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.1,
-        height: MediaQuery.of(context).size.height * 0.06,
-        decoration: BoxDecoration(
-          color:
-              // ispressesd ? greygreen
-              babyblue,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: Lightgreen,
-          ),
-        ),
-        child: answerText != null
-            ? Text(
-                "  $label   $answerText",
-                style: const TextStyle(fontSize: 16),
-              )
-            : Image.network(answerImage!),
-      ),
-    );
-  }
-}
-//   q id_index >page view builder+>to know when i have to go _aswertext_answer tarqem
-//controleeler jump to index page .....
-//controller have to pass
-///list from new model by index stoarge
-///must to color my answer and right answer
-///
