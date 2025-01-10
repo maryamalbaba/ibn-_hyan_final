@@ -51,7 +51,7 @@ class _CorePageState extends State<CorePage> {
           animationDuration: const Duration(seconds: 1),
           destinations: [
             NavigationDestination(
-                icon: Image.asset(examsIcon), label: "اختبارات"),
+                icon: Image.asset(examsIcon), label: "اختبارات",),
             NavigationDestination(
                 icon: Image.asset(marksIcon), label: "علامات"),
             NavigationDestination(
