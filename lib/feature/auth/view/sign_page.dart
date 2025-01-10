@@ -14,11 +14,8 @@ import 'package:ibnhyanfinal/feature/auth/bloc/auth_bloc.dart';
 import 'package:ibnhyanfinal/feature/auth/model/usermodel.dart';
 
 class SignPage extends StatelessWidget {
-  const SignPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    TextEditingController controller1 = TextEditingController();
+   SignPage({super.key});
+  TextEditingController controller1 = TextEditingController();
     TextEditingController controller2 = TextEditingController();
     TextEditingController controller3 = TextEditingController();
     TextEditingController controller4 = TextEditingController();
@@ -27,6 +24,9 @@ class SignPage extends StatelessWidget {
     TextEditingController controller7 = TextEditingController();
     TextEditingController controller8 = TextEditingController();
 
+  @override
+  Widget build(BuildContext context) {
+  
     Future<String> getAndroidId() async {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       // AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;

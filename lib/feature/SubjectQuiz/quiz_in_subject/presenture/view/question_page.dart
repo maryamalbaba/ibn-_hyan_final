@@ -16,6 +16,9 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../data/model/response_quiz.dart';
 
+String testImage =
+    'https://hips.hearstapps.com/hmg-prod/images/lightbulb-moment-royalty-free-image-176565702-1563363264.jpg?crop=0.665xw:1.00xh;0.228xw,0&resize=1200:*';
+
 class QuizSubjectUi extends StatefulWidget {
   QuizSubjectUi({
     super.key,
@@ -137,7 +140,6 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Container(
-                                    // padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.01),
                                     decoration: BoxDecoration(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -170,38 +172,60 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                             ),
                           ),
                           //!container for problem
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            height: MediaQuery.of(context).size.height * 0.1,
-                            decoration: BoxDecoration(
-                                color: babyblue,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: Lightgreen,
-                                )),
-                            child: Column(
-                              children: [
-                                Text(state.question_with_answer.problems![index]
-                                    .problem_text!),
-                                state.question_with_answer.problems![index]
-                                                .problem_image !=
-                                            null &&
-                                        state
-                                            .question_with_answer
-                                            .problems![index]
-                                            .questions![index]
-                                            .question_image!
+                          SingleChildScrollView(
+                            child: Container(
+                              // width: MediaQuery.of(context).size.width * 0.6,
+                              // height: MediaQuery.of(context).size.height * 0.1,
+                              decoration: BoxDecoration(
+                                  color: babyblue,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: Lightgreen,
+                                  )),
+                              child: Flexible(
+                                child: Column(
+                                  children: [
+                                    Text(state.question_with_answer.problems![index]
+                                        .problem_text!),
+                                    state.question_with_answer.problems![index]
+                                                    .problem_image
+                                    //testImage 
+                                    != null &&
+                                            state
+                                                .question_with_answer
+                                                .problems![index]
+                                                .questions![index]
+                                                .question_image!
+                                            //testImage
                                             .isNotEmpty
-                                    ? Image.network(state
-                                        .question_with_answer
-                                        .problems![index]
-                                        .questions![index]
-                                        .question_image!)
-                                    : const SizedBox(
-                                        height: 1,
-                                        width: 1,
-                                      )
-                              ],
+                                        ? Padding(
+                                            padding: EdgeInsets.all(
+                                                MediaQuery.of(context).size.height *
+                                                    0.01),
+                                            child: Image.network(
+                                              state
+                                                .question_with_answer
+                                                .problems![index]
+                                                .questions![index]
+                                                .question_image!,
+                                            //  testImage,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.6,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.1,fit: BoxFit.scaleDown,
+                                            ),
+                                          )
+                                        : const SizedBox(
+                                            height: 1,
+                                            width: 1,
+                                          )
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                           //!container for Questions the problems
@@ -212,140 +236,147 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                   .problems![index].questions!.length,
                               itemBuilder:
                                   (BuildContext context, int indexQuestions) {
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(state
-                                        .question_with_answer
-                                        .problems![index]
-                                        .questions![indexQuestions]
-                                        .question_text),
-                                    state
-                                                    .question_with_answer
-                                                    .problems![index]
-                                                    .questions![indexQuestions]
-                                                    .question_image !=
-                                                null &&
-                                            state
+                                return SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(state
+                                          .question_with_answer
+                                          .problems![index]
+                                          .questions![indexQuestions]
+                                          .question_text),
+                                      state
+                                                      .question_with_answer
+                                                      .problems![index]
+                                                      .questions![indexQuestions]
+                                                      .question_image
+                                    //  testImage 
+                                      != null &&
+                                              state
+                                                  .question_with_answer
+                                                  .problems![index]
+                                                  .questions![indexQuestions]
+                                                  .question_image!
+                                              // testImage
+                                              .isNotEmpty
+                                          ? Image.network(
+                                              state
                                                 .question_with_answer
                                                 .problems![index]
                                                 .questions![indexQuestions]
-                                                .question_image!
-                                                .isNotEmpty
-                                        ? Image.network(state
-                                            .question_with_answer
-                                            .problems![index]
-                                            .questions![indexQuestions]
-                                            .question_image!)
-                                        : const SizedBox(
-                                            height: 5,
-                                            width: 5,
-                                          ),
-
-                                    //!answers
-                                    Flexible(
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: state
-                                              .question_with_answer
-                                              .problems![index]
-                                              .questions![index]
-                                              .answers
-                                              .length,
-                                          itemBuilder:
-                                              (contxt, indexforanswer) {
-                                            List<bool> isPressedList =
-                                                List.filled(
+                                                .question_image!,
+                                             // testImage,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.6,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.1,
+                                            )
+                                          : const SizedBox(
+                                              height: 5,
+                                              width: 5,
+                                            ),
+                                  
+                                      //!answers
+                                      Flexible(
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: state
+                                                .question_with_answer
+                                                .problems![index]
+                                                .questions![index]
+                                                .answers
+                                                .length,
+                                            itemBuilder:
+                                                (contxt, indexforanswer) {
+                                              return Padding(
+                                                padding: EdgeInsets.all(
+                                                  MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.01,
+                                                ),
+                                                child: AnswerContainer(
+                                                    color: selectedAnswers[state
+                                                                .question_with_answer
+                                                                .problems![index]
+                                                                .questions![
+                                                                    indexQuestions]
+                                                                .id] ==
+                                                            indexforanswer
+                                                        ? yellow
+                                                            : Lightgreen,
+                                                    label: Label[indexforanswer],
+                                                    answerText: state
+                                                        .question_with_answer
+                                                        .problems![index]
+                                                        .questions![
+                                                            indexQuestions]
+                                                        .answers[indexforanswer]
+                                                        .answer_text,
+                                                    answerImage:
+                                                    // testImage,
                                                     state
                                                         .question_with_answer
                                                         .problems![index]
-                                                        .questions![index]
-                                                        .answers
-                                                        .length,
-                                                    false);
-                                            return Padding(
-                                              padding: EdgeInsets.all(
-                                                MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.01,
-                                              ),
-                                              child: AnswerContainer(
-                                                  color: selectedAnswers[state
+                                                        .questions![
+                                                            indexQuestions]
+                                                        .answers[indexforanswer]
+                                                        .answer_image,
+                                                    onTap: () {
+                                                      print(
+                                                          " Question id  in problem Quiz :${state.question_with_answer.problems![index].questions![indexQuestions].id}");
+                                  
+                                                      storeAnswer(
+                                                          state
                                                               .question_with_answer
                                                               .problems![index]
                                                               .questions![
                                                                   indexQuestions]
-                                                              .id] ==
-                                                          indexforanswer
-                                                      ? yellow
-                                                      // لون الإجابة المحددة
-                                                      : Lightgreen,
-                                                  label: Label[indexforanswer],
-                                                  answerText: state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![
-                                                          indexQuestions]
-                                                      .answers[indexforanswer]
-                                                      .answer_text,
-                                                  answerImage: state
-                                                      .question_with_answer
-                                                      .problems![index]
-                                                      .questions![
-                                                          indexQuestions]
-                                                      .answers[indexforanswer]
-                                                      .answer_image,
-                                                  onTap: () {
-                                                    print(
-                                                        " Question id  in problem Quiz :${state.question_with_answer.problems![index].questions![indexQuestions].id}");
-
-                                                    storeAnswer(
-                                                        state
-                                                            .question_with_answer
-                                                            .problems![index]
-                                                            .questions![
-                                                                indexQuestions]
-                                                            .id
-                                                            .toInt(),
-                                                        indexforanswer,
-                                                        SentAnswerModel(
-                                                            answer_id: state
-                                                                .question_with_answer
-                                                                .problems![
-                                                                    index]
-                                                                .questions![
-                                                                    indexQuestions]
-                                                                .answers[
-                                                                    indexforanswer]
-                                                                .id!,
-                                                            result_id: state
-                                                                .question_with_answer
-                                                                .result_id
-                                                                .toInt(),
-                                                            answer_tarqem: Label[
-                                                                indexforanswer],
-                                                            answer_text: state
-                                                                .question_with_answer
-                                                                .problems![
-                                                                    index]
-                                                                .questions![
-                                                                    indexQuestions]
-                                                                .answers[
-                                                                    indexforanswer]
-                                                                .answer_text!,
-                                                            questionid: state
-                                                                .question_with_answer
-                                                                .problems![
-                                                                    index]
-                                                                .questions![
-                                                                    indexQuestions]
-                                                                .id));
-                                                  }),
-                                            );
-                                          }),
-                                    )
-                                  ],
+                                                              .id
+                                                              .toInt(),
+                                                          indexforanswer,
+                                                          SentAnswerModel(
+                                                              answer_id: state
+                                                                  .question_with_answer
+                                                                  .problems![
+                                                                      index]
+                                                                  .questions![
+                                                                      indexQuestions]
+                                                                  .answers[
+                                                                      indexforanswer]
+                                                                  .id!,
+                                                              result_id: state
+                                                                  .question_with_answer
+                                                                  .result_id
+                                                                  .toInt(),
+                                                              answer_tarqem: Label[
+                                                                  indexforanswer],
+                                                              answer_text: state
+                                                                  .question_with_answer
+                                                                  .problems![
+                                                                      index]
+                                                                  .questions![
+                                                                      indexQuestions]
+                                                                  .answers[
+                                                                      indexforanswer]
+                                                                  .answer_text!,
+                                                              questionid: state
+                                                                  .question_with_answer
+                                                                  .problems![
+                                                                      index]
+                                                                  .questions![
+                                                                      indexQuestions]
+                                                                  .id));
+                                                    }),
+                                              );
+                                            }),
+                                      )
+                                    ],
+                                  ),
                                 );
                               },
                             ),
@@ -409,44 +440,59 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                             //!container for Question for seprated Question
                             Container(
                                 width: MediaQuery.of(context).size.width * 0.90,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.45,
+                                // height:
+                                //     MediaQuery.of(context).size.height * 0.45,
                                 decoration: BoxDecoration(
                                     color: babyblue,
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
                                       color: Lightgreen,
                                     )),
-                                child: Column(
-                                  children: [
-                                    Text(state
-                                        .question_with_answer
-                                        .separated_questions[sepratedIndex]
-                                        .question_text),
-                                    state
-                                                    .question_with_answer
-                                                    .separated_questions[
-                                                        sepratedIndex]
-                                                    .question_image !=
-                                                null &&
-                                            state
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      
+                                      Text(state
+                                          .question_with_answer
+                                          .separated_questions[sepratedIndex]
+                                          .question_text),
+                                      state
+                                                      .question_with_answer
+                                                      .separated_questions[
+                                                          sepratedIndex]
+                                                      .question_image 
+                                                // testImage 
+                                                     !=
+                                                  null &&
+                                              state
+                                                  .question_with_answer
+                                                  .separated_questions[
+                                                      sepratedIndex]
+                                                  .question_image!
+                                                 //testImage 
+                                                 .isNotEmpty
+                                          ? Padding(
+                                            padding:  EdgeInsets.all(MediaQuery.of(context).size.height * 0.01 ),
+                                            child: Image.network(
+                                              //testImage
+                                              state
                                                 .question_with_answer
-                                                .separated_questions[
-                                                    sepratedIndex]
+                                                .separated_questions[sepratedIndex]
                                                 .question_image!
-                                                .isNotEmpty
-                                        ? Image.network(state
-                                            .question_with_answer
-                                            .separated_questions[sepratedIndex]
-                                            .question_image!)
-                                        : const SizedBox(
-                                            height: 1,
-                                            width: 1,
+                                               ,height: MediaQuery.of(context).size.height * 0.15 ,
+                                               width:  MediaQuery.of(context).size.width * 0.6,
+                                               fit: BoxFit.fill,
+                                                ),
                                           )
-                                  ],
+                                          : const SizedBox(
+                                              height: 0.001,
+                                              width: 0.001,
+                                            )
+                                    ],
+                                  ),
                                 )),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.1,
+                              height: MediaQuery.of(context).size.height * 0.01,
                             ),
 //!answers for seprated Question
 
@@ -455,8 +501,9 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
-                                        crossAxisSpacing: 50,
-                                        mainAxisSpacing: 30),
+                                        crossAxisSpacing: MediaQuery.of(context).size.height * 0.1, 
+                                        mainAxisSpacing: MediaQuery.of(context).size.height * 0.1 
+                                        ),
                                 itemBuilder:
                                     (context, index_for_seprated_answer) {
                                   return AnswerContainer(
@@ -517,7 +564,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                                       sepratedIndex]
                                                   .id));
                                     },
-                                    // ispressesd: ispresse,
+                                  
                                   );
                                 },
                                 itemCount: state
@@ -575,24 +622,36 @@ class AnswerContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.1,
-        height: MediaQuery.of(context).size.height * 0.06,
-        decoration: BoxDecoration(
-          color:
-              // ispressesd ? greygreen
-              babyblue,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: color!,
-          ),
-        ),
-        child: answerText != null
-            ? Text(
-                "  $label   $answerText",
-                style: const TextStyle(fontSize: 16),
-              )
-            : Image.network(answerImage!),
+      child: SingleChildScrollView(
+        child: Container(
+            width: MediaQuery.of(context).size.width * 0.1,
+            height: MediaQuery.of(context).size.height * 0.2,
+            decoration: BoxDecoration(
+              color:
+                  // ispressesd ? greygreen
+                  babyblue,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: color!,
+              ),
+            ),
+            child: Column(
+              children: [
+                answerText != null
+                    ? Text(
+                        "  $label   $answerText",
+                        style: const TextStyle(fontSize: 16),
+                      )
+                    : Text(""),
+                answerImage != null
+                    ? Image.network(answerImage!,width:  MediaQuery.of(context).size.width * 0.6,
+                    height:MediaQuery.of(context).size.height * 0.1 ,)
+                    : SizedBox(
+                        height: 0.001,
+                        width: 0.001,
+                      )
+              ],
+            )),
       ),
     );
   }

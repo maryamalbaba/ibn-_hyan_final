@@ -19,7 +19,7 @@ class OtpField extends StatelessWidget {
       ),
       child: Center(
         child: TextFormField(
-          obscureText: true,
+          obscureText: false,
           
           decoration: InputDecoration(
             isDense: true,
