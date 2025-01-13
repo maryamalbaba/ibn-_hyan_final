@@ -8,3 +8,4 @@ const String get_detail_subject_quizes_url = "quizzes/subject/";
 const String get_Quiz_Subject_Id_url = "questions/";
 const String marks="my-exams";
 const String sendAnswer="solves";
+const String statistics="user/results";

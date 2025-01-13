@@ -13,7 +13,7 @@ import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Mo
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/presenture/view/send_answer_page.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/subject_details_quiz/presenture/view/subject_page.dart';
 import 'package:ibnhyanfinal/feature/marks/mark_page.dart';
-import 'package:ibnhyanfinal/feature/statistics/statistics.dart';
+import 'package:ibnhyanfinal/feature/statistics/presenture/view/statistics.dart';
 
 class CorePage extends StatefulWidget {
   CorePage({super.key});
@@ -27,7 +27,7 @@ class _CorePageState extends State<CorePage> {
   List<Widget> pages_in_Bar = [
     const SubjectPage(),
     const MarksPage(),
-    const StatisticsPage(),
+     StatisticsPage(),
   ];
 
   int currentIndex = 2;
