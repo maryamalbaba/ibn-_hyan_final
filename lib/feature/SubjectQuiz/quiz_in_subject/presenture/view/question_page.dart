@@ -177,8 +177,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                           SingleChildScrollView(
                             child: Flexible(
                               child: Container(
-                                // width: MediaQuery.of(context).size.width * 0.6,
-                                // height: MediaQuery.of(context).size.height * 0.1,
+                                
                                 decoration: BoxDecoration(
                                     color: babyblue,
                                     borderRadius: BorderRadius.circular(10),

@@ -41,7 +41,7 @@ class AnswerModel {
       id: map['id'] != null ? map['id'] as num : null,
       answer_text: map['answer_text'] != null ? map['answer_text'] as String : null,
       is_correct: map['is_correct'] != null ? map['is_correct'] as num : null,
-      answer_image: map['answer_image'] != null ? map['answer_image'] as String : null,
+      answer_image: map['answer_image'] != null ? map['answer_image'] as String : "",
     );
   }
 
