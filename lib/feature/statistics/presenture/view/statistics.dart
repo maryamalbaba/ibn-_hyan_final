@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/feature/statistics/presenture/bloc/statisics_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:shimmer/shimmer.dart';
 
 class StatisticsPage extends StatelessWidget {
-  StatisticsPage({super.key});
+  const StatisticsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,17 +30,13 @@ class StatisticsPage extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.22,
                   child: Row(
                     children: [
-                      Flexible(
-                        flex: 1,
-                        child:
-                            Lottie.network(state.List_Statistics[index].image),
-                        fit: FlexFit.loose,
-                      ),
+                      const SizedBox(width: 30),
                       Flexible(
                         flex: 2,
-                        fit: FlexFit.loose,
+                        fit: FlexFit.tight,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
@@ -51,25 +46,30 @@ class StatisticsPage extends StatelessWidget {
                               ),
                               child: Text(
                                 state.List_Statistics[index].quiz_name!,
-                                style: TextStyle(
-                                    color: green, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    color: green, fontWeight: FontWeight.w700, fontSize: 17),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Text(state.List_Statistics[index].subject_name!,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: green,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600
                                 )),
                             Text(
-                              state.List_Statistics[index].score.toString() +
-                                  "/" +
-                                  state.List_Statistics[index].total_score
-                                      .toString(),
-                              style: TextStyle(color: Colors.red),
+                              "${state.List_Statistics[index].score}/${state.List_Statistics[index].total_score}",
+                              style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w700, fontSize: 17),
                             )
                           ],
                         ),
-                      )
+                      ),
+                      Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child:
+                        Lottie.network(state.List_Statistics[index].image),
+                      ),
                     ],
                   ),
                 );

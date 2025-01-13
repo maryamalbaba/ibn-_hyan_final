@@ -13,35 +13,35 @@ import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view
 import 'package:ibnhyanfinal/feature/SubjectQuiz/subject_details_quiz/presenture/bloc/bloc/subject_bloc.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/subject_details_quiz/presenture/view/subject_quiz_card.dart';
 
-enum QuizPageType{
-  subject,
-  unit,
-  lesson
-}
+enum QuizPageType { subject, unit, lesson }
+
 class SubjectQuizzesPage extends StatelessWidget {
   const SubjectQuizzesPage({
     super.key,
-    required this.id, required this.type,
+    required this.id,
+    required this.type,
   });
+
   final num id;
   final QuizPageType type;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) =>
-            SubjectdetailsBloc()..add((GetAllSubjectDetailsQuiz(id: id, type: type))),
+        create: (context) => SubjectdetailsBloc()
+          ..add((GetAllSubjectDetailsQuiz(id: id, type: type))),
         child: Builder(builder: (context) {
           return BlocBuilder<SubjectdetailsBloc, SubjectdetailsQuizState>(
             builder: (context, state) {
               if (state is SuucessGetSubjectDetailsQuiz) {
-                if(state.quizzes.isEmpty){
+                if (state.quizzes.isEmpty) {
                   return const EmptyListMsg();
                 }
                 return Column(
                   children: [
                     Expanded(
                       child: ListView.builder(
+                          padding: const EdgeInsets.all(10),
                           itemCount: state.quizzes.length,
                           itemBuilder: (context, index) {
                             // print(index);
@@ -51,11 +51,11 @@ class SubjectQuizzesPage extends StatelessWidget {
                                   "/QuizSubjectUi",
                                   arguments: [
                                     state.quizzes[index].id,
-                                    state.quizzes[index].time_limit
+                                    state.quizzes[index].time_limit,
                                   ],
                                 );
                               },
-                              child: SubjectQuizCard(quiz: state.quizzes[index]),
+                              child: QuizCard(quiz: state.quizzes[index]),
                               // ? start
                               // child: Padding(
                               //     padding: EdgeInsets.all(

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 
 class ContainerSubject extends StatelessWidget {
-  const ContainerSubject({super.key, required this.widget});
-
+  const ContainerSubject({super.key, required this.widget, this.height = 130});
   final Widget widget;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
       child: Container(
-        height: 130,
+        height: height,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(

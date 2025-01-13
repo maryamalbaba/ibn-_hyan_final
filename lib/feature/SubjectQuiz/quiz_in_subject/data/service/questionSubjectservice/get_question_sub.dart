@@ -37,11 +37,9 @@ class QuizinSubject {
       } else {
         return Left(ErrorModel());
       }
-    } catch (e) {
-      if (e is TypeError) {
-        print(e.stackTrace);
-      }
+    } catch (e, s) {
       print(e);
+      print(s);
       return Left((ErrorModel()));
     }
   }

@@ -12,7 +12,7 @@ import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Mo
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/presenture/view/send_answer_page.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/subject_details_quiz/presenture/view/subject_details_page.dart';
 import 'package:ibnhyanfinal/feature/marks/mark_page.dart';
-import 'package:ibnhyanfinal/feature/statistics/statistics.dart';
+import 'package:ibnhyanfinal/feature/statistics/presenture/view/statistics.dart';
 
 class CorePage extends StatefulWidget {
   CorePage({super.key});
@@ -29,6 +29,17 @@ class _CorePageState extends State<CorePage> {
     const StatisticsPage(),
   ];
 
+  static const routesTitles = {
+    "/SubjectQuizzesPage": "SubjectQuizzesPage",
+    "/SubjectUnitsQuizzesPage": "SubjectUnitsQuizzesPage",
+    "/SubjectLessonsQuizzesPage": "SubjectLessonsQuizzesPage",
+    "/SendAnswerUI": "SendAnswerUI",
+    "/ResultExamUI": "ResultExamUI",
+    "/QuizSubjectUi": "QuizSubjectUi",
+    "/RevisionPage": "RevisionPage",
+    "/ErrorUi": "ErrorUi",
+  };
+  String title = "";
   int currentIndex = 2;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -66,6 +77,7 @@ class _CorePageState extends State<CorePage> {
           ]),
       appBar: AppBar(
         backgroundColor: green,
+        title: Text(title),
       ),
       body: Navigator(
           key: navigatorKey,
@@ -103,8 +115,9 @@ class _CorePageState extends State<CorePage> {
                 );
 
               case "/ResultExamUI":
-                final num result_Id = (setting.arguments) as num;
-                page = ResultExamUI(resultId: result_Id);
+                final num result_Id = (setting.arguments as List)[0] as num;
+                final List<SentAnswerModel?> list = (setting.arguments as List)[1];
+                page = ResultExamUI(resultId: result_Id, list: list);
 
               case "/QuizSubjectUi":
                 final num id2 = (setting.arguments as List)[0] as num;
@@ -115,9 +128,11 @@ class _CorePageState extends State<CorePage> {
                 );
                 break;
               case "/RevisionPage":
-                final num id = (setting.arguments) as num;
+                final num id = (setting.arguments as List)[0] as num;
+                final List<SentAnswerModel?> list = (setting.arguments as List)[1];
                 page = RevisionPage(
                   id: id,
+                  list: list
                 );
               case "/ErrorUi":
                 page = ErrorUi();
@@ -126,6 +141,9 @@ class _CorePageState extends State<CorePage> {
                 page = pages_in_Bar[currentIndex];
                 break;
             }
+            // setState(() {
+              title = routesTitles[setting.name]??"";
+            // });
             return MaterialPageRoute(builder: (context) => page);
           }),
     );

@@ -42,7 +42,10 @@ class SubjectPage extends StatelessWidget {
                                         MediaQuery.of(context).size.width *
                                             0.02),
                                     child: ImageContainer(
-                                        imageUrl: state.subjects[index].image),
+                                      imageUrl: state.subjects[index].image,
+                                      height: 40,
+                                      width: 40,
+                                    ),
                                   ),
                                   Text(state.subjects[index].name,
                                       style: style_subject_word),
