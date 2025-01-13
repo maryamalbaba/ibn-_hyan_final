@@ -5,15 +5,14 @@ import 'package:ibnhyanfinal/core/resourses/assets_manager.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/feature/Failed/Error.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/ShowSubject/presenture/view/subject_page.dart';
-import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/answer_model.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view/question_page.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/revision_quiz/presenture/view/revision_page.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/score/presenture/view/result_exam_ui.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Model/answer.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/presenture/view/send_answer_page.dart';
-import 'package:ibnhyanfinal/feature/SubjectQuiz/subject_details_quiz/presenture/view/subject_page.dart';
+import 'package:ibnhyanfinal/feature/SubjectQuiz/subject_details_quiz/presenture/view/subject_details_page.dart';
 import 'package:ibnhyanfinal/feature/marks/mark_page.dart';
-import 'package:ibnhyanfinal/feature/statistics/presenture/view/statistics.dart';
+import 'package:ibnhyanfinal/feature/statistics/statistics.dart';
 
 class CorePage extends StatefulWidget {
   CorePage({super.key});
@@ -27,11 +26,12 @@ class _CorePageState extends State<CorePage> {
   List<Widget> pages_in_Bar = [
     const SubjectPage(),
     const MarksPage(),
-     StatisticsPage(),
+    const StatisticsPage(),
   ];
 
   int currentIndex = 2;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,11 +51,18 @@ class _CorePageState extends State<CorePage> {
           animationDuration: const Duration(seconds: 1),
           destinations: [
             NavigationDestination(
-                icon: Image.asset(examsIcon), label: "اختبارات",),
+              icon: Image.asset(
+                examsIcon,
+                color: Colors.white,
+              ),
+              label: "اختبارات",
+            ),
             NavigationDestination(
-                icon: Image.asset(marksIcon), label: "علامات"),
+                icon: Image.asset(marksIcon, color: Colors.white),
+                label: "علامات"),
             NavigationDestination(
-                icon: Image.asset(staisticsIcon), label: "احصائيات")
+                icon: Image.asset(staisticsIcon, color: Colors.white),
+                label: "احصائيات")
           ]),
       appBar: AppBar(
         backgroundColor: green,
@@ -65,9 +72,19 @@ class _CorePageState extends State<CorePage> {
           onGenerateRoute: (RouteSettings setting) {
             Widget page;
             switch (setting.name) {
-              case "/SubjectdetailsQuizPage":
+              case "/SubjectQuizzesPage":
                 final num id1 = setting.arguments as num;
-                page = SubjectdetailsQuizPage(id: id1);
+                page = SubjectQuizzesPage(id: id1, type: QuizPageType.subject);
+                break;
+
+              case "/SubjectUnitsQuizzesPage":
+                final num id1 = setting.arguments as num;
+                page = SubjectQuizzesPage(id: id1, type: QuizPageType.unit);
+                break;
+
+              case "/SubjectLessonsQuizzesPage":
+                final num id1 = setting.arguments as num;
+                page = SubjectQuizzesPage(id: id1, type: QuizPageType.lesson);
                 break;
 
               case "/SendAnswerUI":

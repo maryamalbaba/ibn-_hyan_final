@@ -7,9 +7,9 @@ sealed class SubjectdetailsQuizState {}
 final class SubjectDetailsQuizInitial extends SubjectdetailsQuizState {}
 
 class SuucessGetSubjectDetailsQuiz extends SubjectdetailsQuizState {
- List< SubjecDetailsQuizs> subjects;
+ List< SubjecDetailsQuizs> quizzes;
   SuucessGetSubjectDetailsQuiz({
-    required this.subjects,
+    required this.quizzes,
   });
 }
 

@@ -23,40 +23,43 @@ class ResultExamUI extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height*0.1
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    "finsh exam",
+                    style: TextStyle(
+                        color: green,
+                        fontWeight: FontWeight.w700,
+                        fontSize: MediaQuery.of(context).size.width * 0.1),
+                  ).tr(),
                 ),
-                Expanded(flex: 1, child: Text("finsh exam",style: TextStyle(color: green ,fontWeight: FontWeight.w700
-                ,
-                fontSize: MediaQuery.of(context).size.width*0.1),).tr(),),
-                
                 Row(
                   children: [
-
                     Container(
                       child: Expanded(
-                  flex: 1,
-                  child: Row(
-                    children: [
-                      Image.asset(clock2),
-                      Text(" "+state.result.duration_minutes.toString()),
-                      Text("minute".tr()),
-                    ],
-                  ),
-                ),
+                        flex: 1,
+                        child: Row(
+                          children: [
+                            Image.asset(clock2),
+                            Text(
+                                " " + state.result.duration_minutes.toString()),
+                            Text("minute".tr()),
+                          ],
+                        ),
+                      ),
                     ),
                     Container(
-                      child:   Expanded(
-                    flex: 1,
-                    child: Row(children: [
-                      Image.asset(A_plus),
-                      Text("  ${state.result.total_score}/${state.result.score}")
-                    ])),
+                      child: Expanded(
+                          flex: 1,
+                          child: Row(children: [
+                            Image.asset(A_plus),
+                            Text(
+                                "  ${state.result.total_score}/${state.result.score}")
+                          ])),
                     )
                   ],
                 ),
-                
-              
                 Expanded(flex: 4, child: Image.network(state.result.image)),
                 Padding(
                   padding:
@@ -67,7 +70,7 @@ class ResultExamUI extends StatelessWidget {
                       Navigator.pushNamed(context, "/RevisionPage",
                           arguments: resultId);
                     },
-                    child: Useable_Green_container(
+                    child: UseableGreenContainer(
                       text: 'read answers'.tr(),
                     ),
                   ),

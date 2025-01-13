@@ -11,4 +11,5 @@ const Color Lightgrey = Color(0xff8F8D7D);
 const Color babyblue = Color(0xffE9FFFB);
 const Color yellow = Color(0xffFFAF00);
 const Color greygreen = Color(0xffCDEAE5);
+const Color red = Color(0xffed4141);
 

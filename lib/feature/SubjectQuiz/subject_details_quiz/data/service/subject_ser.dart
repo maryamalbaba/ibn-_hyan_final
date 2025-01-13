@@ -13,11 +13,11 @@ ApiConsumer api = DioConsumer(dio: Dio());
 
 class SubjectDetailsQuiz {
   Future<Either<ErrorModel, List<SubjecDetailsQuizs>>>
-      get_subject_detail_quizes(num id) async {
+      get_subject_detail_quizes(String endpoint) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String accesstoken = Auth().token;
     Response response = await api.get(
-        get_detail_subject_quizes_url + id.toString(),
+        endpoint,
         options: Options(headers: {"Authorization": "Bearer $accesstoken"}));
     print("student token :" + accesstoken);
     print("before try in get_detail_subject_quizes_");
@@ -34,9 +34,10 @@ class SubjectDetailsQuiz {
         return Left(
           ErrorModel());
       }
-    } catch (e) {
+    } catch (e, s) {
       print("error");
       print(e);
+      print(s);
       return Left((ErrorModel()));
     }
   }

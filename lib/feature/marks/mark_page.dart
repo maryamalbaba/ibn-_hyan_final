@@ -214,8 +214,15 @@ class MarksPage extends StatelessWidget {
                 ),
               ],
             );
-          } else {
+            // ! Refactor the states of Failed and Re-Order it
+          } else if (state is FailedGetMarks) {
             return ErrorUi();
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                color: green,
+              ),
+            );
           }
         },
       ),
@@ -231,7 +238,7 @@ class verticalDivDer extends StatelessWidget {
     return RotatedBox(
         quarterTurns: 1,
         child: Container(
-      //    width: MediaQuery.of(context).size.width,
+          //    width: MediaQuery.of(context).size.width,
           child: Divider(
             color: Lightgreen,
             thickness: 1,

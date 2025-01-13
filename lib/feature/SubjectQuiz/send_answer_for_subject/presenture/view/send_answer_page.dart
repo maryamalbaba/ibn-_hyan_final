@@ -33,7 +33,9 @@ class SendAnswerUI extends StatelessWidget {
         builder: (context, state) {
           return Column(
             children: [
-              Spacer(flex: 1,),
+              Spacer(
+                flex: 1,
+              ),
               Expanded(
                 flex: 6,
                 child: ListView.builder(
@@ -46,31 +48,26 @@ class SendAnswerUI extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: babyblue,
                             border: Border(
-                              bottom: BorderSide(
-                              color: Lightgreen,
-                              ),
+                                bottom: BorderSide(
+                                  color: Lightgreen,
+                                ),
                                 top: BorderSide(
-                              color: Lightgreen,
-                              
-                              
-                            ))),
+                                  color: Lightgreen,
+                                ))),
                         child: Row(
                           children: [
                             Expanded(
                                 flex: 1,
-                              
-                                child: Text("   ${index+1}",
+                                child: Text("   ${index + 1}",
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2)),
                             verticalDivDer(),
                             Expanded(
                                 flex: 1,
-                               
                                 child: Text(list[index]?.answer_tarqem ?? "-",
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2)),
                             SizedBox(
-                             
                               width: MediaQuery.of(context).size.height * 0.1,
                               child: verticalDivDer(),
                             ),
@@ -83,31 +80,29 @@ class SendAnswerUI extends StatelessWidget {
                       );
                     }),
               ),
-              
               BlocListener<SendAnswerBloc, SendAnswerState>(
                   listener: (context, state) {
                     // TODO: implement listener
                     if (state is SendAnswerSuccess) {
-                     
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("تم الارسال بنجاح")));
                       Navigator.of(context)
                           .pushNamed("/ResultExamUI", arguments: result_Id);
                     } else {
-                       if(!list.any((element) => element == null) )
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("يجب الاجابة على كل الاسئلة ")));
+                      if (!list.any((element) => element == null))
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("يجب الاجابة على كل الاسئلة ")));
                       print("error in sendig list $list");
                     }
                   },
                   child: InkWell(
                       onTap: () {
-                       timer.cancel();
+                        timer.cancel();
                         context
                             .read<SendAnswerBloc>()
                             .add(SendAnswer(list.nonNulls.toList()));
                       },
-                      child: Useable_Green_container(text: "تسليم الاختبار"))
+                      child: UseableGreenContainer(text: "تسليم الاختبار"))
 
                   // ElevatedButton(
                   //     onPressed: () {
