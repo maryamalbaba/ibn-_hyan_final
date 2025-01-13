@@ -7,6 +7,7 @@ import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/core/widgets/useable_green_container.dart';
 import 'package:ibnhyanfinal/feature/Failed/Error.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/score/presenture/bloc/scorebloc_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class ResultExamUI extends StatelessWidget {
   ResultExamUI({super.key, required this.resultId});
@@ -57,7 +58,7 @@ class ResultExamUI extends StatelessWidget {
                 ),
                 
               
-                Expanded(flex: 4, child: Image.network(state.result.image)),
+                Expanded(flex: 4, child: Lottie.network(state.result.image)),
                 Padding(
                   padding:
                       EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),

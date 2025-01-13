@@ -43,7 +43,7 @@ class SubjectdetailsQuizPage extends StatelessWidget {
                                   MediaQuery.of(context).size.width * 0.02),
                               child: Container(
                                   height:
-                                      MediaQuery.of(context).size.width * 0.3,
+                                      MediaQuery.of(context).size.width * 0.4,
                                   decoration: BoxDecoration(
                                       boxShadow: [
                                         BoxShadow(
@@ -58,41 +58,71 @@ class SubjectdetailsQuizPage extends StatelessWidget {
                                           Radius.circular(8)),
                                       border: Border.all(color: Lightgreen)),
                                   child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Text(state.subjects[index].name,overflow: TextOverflow.ellipsis,),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          right: MediaQuery.of(context).size.width*0.09,
+                                          top:MediaQuery.of(context).size.width*0.09,
+                                         
+                                        )
+                                        ,
+
+                                        child: FittedBox(
+                                           fit: BoxFit.fill,
+                                          child: Text(
+                                            state.subjects[index].name,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(color: green),
+                                          ),
+                                        ),
+                                      ),
                                       FittedBox(
                                         fit: BoxFit.fill,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                          // crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.09, ),
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    MediaQuery.of(context)
+                                                            .size
+                                                            .width *
+                                                        0.09,
+                                              ),
                                               child: Container(
                                                 child: Row(
                                                   children: [
-                                                     Image.asset(clock),
-                                                    Text( ": "+state.subjects[index]
-                                                            .time_limit
-                                                            .toString() +
-                                                        "دقيقة" 
-                                                        )
-                                                   
+                                                    Image.asset(clock),
+                                                    Text(
+                                                      ": " +
+                                                          state.subjects[index]
+                                                              .time_limit
+                                                              .toString() +
+                                                          "دقيقة",
+                                                      style: TextStyle(
+                                                          color: green),
+                                                    )
                                                   ],
                                                 ),
                                               ),
                                             ),
-                                            
-                                            //SizedBox(width:  MediaQuery.of(context).size.width * 0.01,) ,// Responsive width
-     
-                                            
                                             Container(
                                               child: Row(
                                                 children: [
                                                   Image.asset(questionmark),
-                                                  Text(": "+state.subjects[index]
-                                                      .question_count
-                                                      .toString()+"سؤال"),
+                                                  Text(
+                                                    ": " +
+                                                        state.subjects[index]
+                                                            .question_count
+                                                            .toString() +
+                                                        "سؤال",
+                                                    style:
+                                                        TextStyle(color: green),
+                                                  ),
                                                 ],
                                               ),
                                             )
@@ -102,28 +132,7 @@ class SubjectdetailsQuizPage extends StatelessWidget {
                                     ],
                                   )))
 
-                          //  ContainerSubject(
-                          //     widget: Directionality(
-                          //   textDirection: TextDirection.ltr,
-                          //   child: ListTile(
-                          //     trailing: Text(state.subjects[index].name),
-                          //     title: Row(
-                          //       children: [
-                          //         Text(state.subjects[index].time_limit.toString()+"دقيقة"+":"
-                          //             ),
-                          //          Image.asset(clock),
-
-                          //       ],
-                          //     ),
-                          //     subtitle: Row(
-                          //       children: [
-                          //         Image.asset(questionmark),
-                          //         Text(state.subjects[index].question_count
-                          //             .toString()),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // )),
+                        
                           );
                     });
               } else if (state is ErrorGetSubjectDetailsQuiz) {
