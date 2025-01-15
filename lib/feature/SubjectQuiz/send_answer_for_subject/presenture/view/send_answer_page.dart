@@ -65,7 +65,7 @@ class SendAnswerUI extends StatelessWidget {
                                     style: const TextStyle(fontSize: 13, color: darkergreen, fontWeight: FontWeight.w600),
                                   ),
                                 )),
-                            const verticalDivDer(),
+                            const verticalDivDer(),100
                             SizedBox(
                               width: 30,
                                 child: Center(

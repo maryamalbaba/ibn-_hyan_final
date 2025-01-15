@@ -70,15 +70,42 @@ class _welcomePageState extends State<welcomePage> {
             children: [
               // if (isLoggedIn)
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.40,
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.s,
                   children: [
-                    Image.asset(logo,
-                      height: MediaQuery.of(context).size.height * 0.30,
+                    // SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    const Spacer(),
+                    Expanded(
+                      flex: 2,
+                      child: Image.asset(
+                        logo,
+                        height: MediaQuery.of(context).size.height * 0.30,
+                      ),
                     ),
                     const SizedBox(height: 10),
-                    const Text("مرحبا بك في الشامل", style: TextStyle(fontSize: 26, color: green,  fontWeight: FontWeight.w700),),
+                    const Expanded(
+                      child: FittedBox(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Text(
+                            "مرحبا بك في الشامل",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                shadows: [
+                                  BoxShadow(
+                                      blurRadius: 2,
+                                      spreadRadius: .2,
+                                      offset: Offset(0, -2),
+                                      color: yellow)
+                                ],
+                                fontSize: 42,
+                                color: green,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
