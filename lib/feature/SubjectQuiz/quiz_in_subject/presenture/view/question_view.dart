@@ -59,6 +59,21 @@ class QuestionView extends StatelessWidget {
                   Flexible(child: Text(question.question_text)),
                 ],
               ),
+              Row(
+                children: [
+                  Flexible(
+                      fit: FlexFit.tight,
+                      child: Row(
+                        children: [
+                          const Text("المصدر: ",
+                              style: TextStyle(color: green)),
+                          Text(question.source),
+                        ],
+                      )),
+                  const SizedBox(width: 15),
+                  Text("${question.score} درجة"),
+                ],
+              ),
               question.question_image
                           // testImage
                           !=
@@ -109,11 +124,17 @@ class QuestionView extends StatelessWidget {
                     result && selected != answer.id && answer.is_correct == 1;
                 return AnswerContainer(
                   borderColor: correction
-                      ? correctBorder : selected_wrong? wrongBorder
-                      : selected_correct || answer_selected
-                                  ? yellow
-                                  : Lightgreen,
-                  color: selected_wrong? wrong:correction || selected_correct? correct: null,
+                      ? correctBorder
+                      : selected_wrong
+                          ? wrongBorder
+                          : selected_correct || answer_selected
+                              ? yellow
+                              : Lightgreen,
+                  color: selected_wrong
+                      ? wrong
+                      : correction || selected_correct
+                          ? correct
+                          : null,
                   borderWidth: correction ||
                           answer_selected ||
                           selected_wrong ||

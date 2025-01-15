@@ -15,7 +15,9 @@ import 'package:ibnhyanfinal/feature/marks/mark_page.dart';
 import 'package:ibnhyanfinal/feature/statistics/presenture/view/statistics.dart';
 
 class CorePage extends StatefulWidget {
-  CorePage({super.key});
+  const CorePage({super.key});
+
+  static final ValueNotifier<String> page = ValueNotifier<String>("/SubjectPage");
 
   @override
   State<CorePage> createState() => _CorePageState();
@@ -30,17 +32,19 @@ class _CorePageState extends State<CorePage> {
   ];
 
   static const routesTitles = {
-    "/SubjectQuizzesPage": "SubjectQuizzesPage",
-    "/SubjectUnitsQuizzesPage": "SubjectUnitsQuizzesPage",
-    "/SubjectLessonsQuizzesPage": "SubjectLessonsQuizzesPage",
-    "/SendAnswerUI": "SendAnswerUI",
-    "/ResultExamUI": "ResultExamUI",
-    "/QuizSubjectUi": "QuizSubjectUi",
-    "/RevisionPage": "RevisionPage",
-    "/ErrorUi": "ErrorUi",
+    "/SubjectPage": "المواد",
+    "/MarksPage": "العلامات",
+    "/StatisticsPage": "الإحصائيات",
+    "/SubjectQuizzesPage": "الاختبارات الشاملة",
+    "/SubjectUnitsQuizzesPage": "اختبارات الوحدات",
+    "/SubjectLessonsQuizzesPage": "اختبارات الدروس",
+    "/SendAnswerUI": "إرسال الإجابة",
+    "/ResultExamUI": "نتيجة الاختبار",
+    "/QuizSubjectUi": "اختبار",
+    "/RevisionPage": "مراجعة الاختبار",
+    "/ErrorUi": "حصل خطأ",
   };
-  String title = "";
-  int currentIndex = 2;
+  int currentIndex = 0;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
@@ -55,35 +59,67 @@ class _CorePageState extends State<CorePage> {
             setState(() {
               currentIndex = newDestenaition;
             });
-            navigatorKey.currentState?.pushReplacement(MaterialPageRoute(
-                builder: (context) => pages_in_Bar[currentIndex]));
+            final route = routesTitles.keys.toList()[currentIndex];
+            // CorePage.page.value = route;
+            navigatorKey.currentState?.pushReplacementNamed(route);
           },
           selectedIndex: currentIndex,
           animationDuration: const Duration(seconds: 1),
           destinations: [
             NavigationDestination(
-              icon: Image.asset(
-                examsIcon,
-                color: Colors.white,
+              icon: SizedBox.square(
+                dimension: 30,
+                child: Image.asset(
+                  examsIcon,
+                  color: Colors.white,
+                ),
               ),
               label: "اختبارات",
             ),
             NavigationDestination(
-                icon: Image.asset(marksIcon, color: Colors.white),
+                icon: SizedBox.square(
+                    dimension: 30,
+                    child: Image.asset(marksIcon, color: Colors.white)),
                 label: "علامات"),
             NavigationDestination(
-                icon: Image.asset(staisticsIcon, color: Colors.white),
-                label: "احصائيات")
+              icon: SizedBox.square(
+                  dimension: 30,
+                  child: Image.asset(staisticsIcon, color: Colors.white)),
+              label: "احصائيات",
+            )
           ]),
-      appBar: AppBar(
-        backgroundColor: green,
-        title: Text(title),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100),
+        child: ValueListenableBuilder(
+          valueListenable: CorePage.page,
+          builder: (BuildContext context, String value, Widget? child) {
+            print(CorePage.page);
+            print(routesTitles[CorePage.page.value]);
+            return AppBar(
+              backgroundColor: green,
+              title: Text(routesTitles[value]??value),
+            );
+          },
+        ),
       ),
       body: Navigator(
           key: navigatorKey,
+          initialRoute: "/SubjectPage",
           onGenerateRoute: (RouteSettings setting) {
             Widget page;
             switch (setting.name) {
+              case "/SubjectPage":
+                page = pages_in_Bar[0];
+                break;
+
+              case "/MarksPage":
+                page = pages_in_Bar[1];
+                break;
+
+              case "/StatisticsPage":
+                page = pages_in_Bar[2];
+                break;
+
               case "/SubjectQuizzesPage":
                 final num id1 = setting.arguments as num;
                 page = SubjectQuizzesPage(id: id1, type: QuizPageType.subject);
@@ -116,7 +152,8 @@ class _CorePageState extends State<CorePage> {
 
               case "/ResultExamUI":
                 final num result_Id = (setting.arguments as List)[0] as num;
-                final List<SentAnswerModel?> list = (setting.arguments as List)[1];
+                final List<SentAnswerModel?> list =
+                    (setting.arguments as List)[1];
                 page = ResultExamUI(resultId: result_Id, list: list);
 
               case "/QuizSubjectUi":
@@ -129,11 +166,9 @@ class _CorePageState extends State<CorePage> {
                 break;
               case "/RevisionPage":
                 final num id = (setting.arguments as List)[0] as num;
-                final List<SentAnswerModel?> list = (setting.arguments as List)[1];
-                page = RevisionPage(
-                  id: id,
-                  list: list
-                );
+                final List<SentAnswerModel?> list =
+                    (setting.arguments as List)[1];
+                page = RevisionPage(id: id, list: list);
               case "/ErrorUi":
                 page = ErrorUi();
 
@@ -141,11 +176,19 @@ class _CorePageState extends State<CorePage> {
                 page = pages_in_Bar[currentIndex];
                 break;
             }
-            // setState(() {
-              title = routesTitles[setting.name]??"";
-            // });
-            return MaterialPageRoute(builder: (context) => page);
+            CorePage.page.value = setting.name??"";
+            return PageRouteBuilder(
+                // pageBuilder: (context, animation, secondaryAnimation) => FadeTransition(opacity: animation, child: page),
+                pageBuilder: (context, animation, secondaryAnimation) {
+                  return page;
+                },
+                transitionDuration: const Duration(milliseconds: 500),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                });
           }),
     );
   }
 }
+

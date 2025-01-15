@@ -80,6 +80,12 @@ flutter:
     - assets/image/
     - assets/translate/
 
+  fonts:
+    - family: motlaq
+      fonts:
+        - asset: assets/fonts/motlaq-regular.ttf
+        - asset: assets/fonts/motlaq-bold.ttf
+          weight: 700
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

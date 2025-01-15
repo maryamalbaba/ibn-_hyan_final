@@ -36,20 +36,21 @@ class _welcomePageState extends State<welcomePage> {
   Future<void> checkLoginState() async {
     setState(() {
       final token = pref.getString("token");
-      print("token saved is " + token.toString());
-      print("tokenlist:" + listtokens.toString());
 
       List<String> userStrings = pref.getStringList("users") ?? [];
 
       users = userStrings.map((e) => RespoonseModel.fromJson((e))).toList();
-      print("users are :" + users.toString());
       isLoggedIn = users.isNotEmpty;
 //!edit
 
       tokens = users.map((user) => user.token).toList();
       pref.setStringList("savedtokens", tokens);
-      print(isLoggedIn);
     });
+  }
+
+  login(int index){
+    auth.token = users[index].token;
+    pref.setString("token", auth.token);
   }
 
   @override
@@ -93,11 +94,11 @@ class _welcomePageState extends State<welcomePage> {
                           onTap: () {
                             //!extract  one token
 
-                            auth.token = users[index].token;
+                            login(index);
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CorePage(),
+                                builder: (context) => const CorePage(),
                               ),
                             );
                           },
@@ -145,7 +146,7 @@ class _welcomePageState extends State<welcomePage> {
                                       child: Text(
                                         overflow: TextOverflow.ellipsis,
                                         users[index].user.signIn_code,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.grey,
                                         ),
                                       ),
@@ -163,7 +164,6 @@ class _welcomePageState extends State<welcomePage> {
               ),
               InkWell(
                 onTap: () {
-                  print("fffffff");
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(

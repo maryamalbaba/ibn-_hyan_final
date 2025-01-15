@@ -11,6 +11,8 @@ class QuestionModel {
   String question_text;
   // ignore: non_constant_identifier_names
   String? question_image;
+  final int score;
+  final String source;
   List<AnswerModel> answers;
    // ignore: non_constant_identifier_names
    num? user_answer_id;
@@ -19,34 +21,21 @@ class QuestionModel {
     required this.id,
     required this.question_text,
     this.question_image,
-   
+    required this.score,
+    required this.source,
+
     required this.answers,
      this.user_answer_id,
   });
 
-  QuestionModel copyWith({
-    num? id,
-    // ignore: non_constant_identifier_names
-    String? question_text,
-    // ignore: non_constant_identifier_names
-    String? question_image,
-    List<AnswerModel>? answers,
-    num? user_answer_id,
-  }) {
-    return QuestionModel(
-      id: id ?? this.id,
-      question_text: question_text ?? this.question_text,
-      question_image: question_image ?? this.question_image,
-      answers: answers ?? this.answers,
-      user_answer_id:user_answer_id ?? this.user_answer_id,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
       'question_text': question_text,
       'question_image': question_image,
+      'score': score,
+      'source': source,
       'answers': answers.map((x) => x.toMap()).toList(),
       'user_answer_id': user_answer_id,
     };
@@ -57,6 +46,8 @@ class QuestionModel {
       return QuestionModel(
           id: map['id'] as num? ?? 0,
           question_text: map['question_text'] as String? ?? "",
+          score: map['score'] as int? ?? 0,
+          source: map['source'] as String? ?? "",
           question_image: map['question_image'] != null
               ? map['question_image'] as String
               : null,
@@ -74,13 +65,7 @@ class QuestionModel {
     } catch (e, stackTrace) {
       print("we are in  question model catch");
       
-      return QuestionModel(
-        id: 0,
-        question_text: "",
-        question_image: "",
-        answers: [],
-        user_answer_id:0,
-      );
+      rethrow;
     }
   }
 
