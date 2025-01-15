@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ibnhyanfinal/core/widgets/tex_text_widget.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/problem.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/question_model.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view/question_view.dart';
@@ -35,7 +36,7 @@ class ProblemView extends StatelessWidget {
               )),
           child: Column(
             children: [
-              Center(child: Text(problem.problem_text!)),
+              Center(child: TexTextWidget(problem.problem_text!)),
               if (problem.problem_image != null)
                 Padding(
                   padding:
@@ -53,7 +54,7 @@ class ProblemView extends StatelessWidget {
         ...problem.questions!.map((e) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: QuestionView(
-                  result: true,
+                  result: result,
                   nameWithoutCard: true,
                   question: e,
                   selected: selected(e),

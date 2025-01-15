@@ -48,7 +48,7 @@ class _welcomePageState extends State<welcomePage> {
     });
   }
 
-  login(int index){
+  login(int index) {
     auth.token = users[index].token;
     pref.setString("token", auth.token);
   }
@@ -68,10 +68,20 @@ class _welcomePageState extends State<welcomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              if (isLoggedIn)
-                SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.30,
-                    child: Image.asset(logo)),
+              // if (isLoggedIn)
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.40,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(logo,
+                      height: MediaQuery.of(context).size.height * 0.30,
+                    ),
+                    const SizedBox(height: 10),
+                    const Text("مرحبا بك في الشامل", style: TextStyle(fontSize: 26, color: green,  fontWeight: FontWeight.w700),),
+                  ],
+                ),
+              ),
               Expanded(
                 child: ListView.builder(
                   reverse: true,

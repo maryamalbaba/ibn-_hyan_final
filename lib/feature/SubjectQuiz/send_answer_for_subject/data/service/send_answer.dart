@@ -16,7 +16,7 @@ class SendAnswerServices {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
     String accesstoken = auth.token;
-    print("token issss $accesstoken");
+    // print("token issss $accesstoken");
     Response response = await api.post(sendAnswer,
         options: Options(headers: {"Authorization": "Bearer $accesstoken"}),
         data: {"solves": list1.map((item) => item.toMap()).toList()});

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ibnhyanfinal/core/widgets/tex_text_widget.dart';
 
 import '../../../../../core/resourses/colors_manager.dart';
 
@@ -46,7 +47,7 @@ class AnswerContainer extends StatelessWidget {
           child: Column(
             children: [
               answerText != null
-                  ? Text(
+                  ? TexTextWidget(
                       "  $label   $answerText",
                       style: const TextStyle(fontSize: 16),
                     )

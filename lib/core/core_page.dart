@@ -60,7 +60,6 @@ class _CorePageState extends State<CorePage> {
               currentIndex = newDestenaition;
             });
             final route = routesTitles.keys.toList()[currentIndex];
-            // CorePage.page.value = route;
             navigatorKey.currentState?.pushReplacementNamed(route);
           },
           selectedIndex: currentIndex,
@@ -89,12 +88,10 @@ class _CorePageState extends State<CorePage> {
             )
           ]),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
+        preferredSize: const Size.fromHeight(70),
         child: ValueListenableBuilder(
           valueListenable: CorePage.page,
           builder: (BuildContext context, String value, Widget? child) {
-            print(CorePage.page);
-            print(routesTitles[CorePage.page.value]);
             return AppBar(
               backgroundColor: green,
               title: Text(routesTitles[value]??value),
