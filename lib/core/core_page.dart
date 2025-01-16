@@ -93,8 +93,12 @@ class _CorePageState extends State<CorePage> {
           valueListenable: CorePage.page,
           builder: (BuildContext context, String value, Widget? child) {
             return AppBar(
+              actions: [
+                if (navigatorKey.currentState?.canPop() ?? false)
+                  BackButton(onPressed: () => navigatorKey.currentState?.pop()),
+              ],
               backgroundColor: green,
-              title: Text(routesTitles[value]??value),
+              title: Text(routesTitles[value] ?? value),
             );
           },
         ),
@@ -173,7 +177,7 @@ class _CorePageState extends State<CorePage> {
                 page = pages_in_Bar[currentIndex];
                 break;
             }
-            CorePage.page.value = setting.name??"";
+            CorePage.page.value = setting.name ?? "";
             return PageRouteBuilder(
                 // pageBuilder: (context, animation, secondaryAnimation) => FadeTransition(opacity: animation, child: page),
                 pageBuilder: (context, animation, secondaryAnimation) {
@@ -188,4 +192,3 @@ class _CorePageState extends State<CorePage> {
     );
   }
 }
-
