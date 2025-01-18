@@ -14,19 +14,18 @@ import 'package:ibnhyanfinal/feature/auth/bloc/auth_bloc.dart';
 import 'package:ibnhyanfinal/feature/auth/model/usermodel.dart';
 
 class SignPage extends StatelessWidget {
-   SignPage({super.key});
+  SignPage({super.key});
   TextEditingController controller1 = TextEditingController();
-    TextEditingController controller2 = TextEditingController();
-    TextEditingController controller3 = TextEditingController();
-    TextEditingController controller4 = TextEditingController();
-    TextEditingController controller5 = TextEditingController();
-    TextEditingController controller6 = TextEditingController();
-    TextEditingController controller7 = TextEditingController();
-    TextEditingController controller8 = TextEditingController();
+  TextEditingController controller2 = TextEditingController();
+  TextEditingController controller3 = TextEditingController();
+  TextEditingController controller4 = TextEditingController();
+  TextEditingController controller5 = TextEditingController();
+  TextEditingController controller6 = TextEditingController();
+  TextEditingController controller7 = TextEditingController();
+  TextEditingController controller8 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-  
     Future<String> getAndroidId() async {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       // AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -68,9 +67,9 @@ class SignPage extends StatelessWidget {
                   ),
                   child: Align(
                       alignment: Alignment.centerRight,
-                      child:
-                          const Text("erter your code", style: style_enter_yourcode)
-                              .tr()),
+                      child: const Text("erter your code",
+                              style: style_enter_yourcode)
+                          .tr()),
                 ),
                 const Spacer(
                   flex: 1,
@@ -141,53 +140,54 @@ class SignPage extends StatelessWidget {
                 BlocListener<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state is SuccessSign) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(content: Text("succ")));
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CorePage()));
-                    } 
-                     else if (state is WronginputException){
-                       ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(content: Text(" wrong enter value")));
-                    }
-                      else if( state is nointernetException){
-                         ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(content: Text("no internet")));
-                      }
-                     else {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(content: Text("error")));
+                      // ! Replace with pushReplacemenent
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CorePage(),
+                        ),
+                        (route) => !(Navigator.of(context).canPop()),
+                      );
+                    } else if (state is WronginputException) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text(" wrong enter value")));
+                    } else if (state is nointernetException) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("no internet")));
                     }
                   },
                   child: InkWell(
-                      onTap: () async {
-                        String signincode = controller1.text +
-                            controller2.text +
-                            controller3.text +
-                            controller4.text +
-                            controller5.text +
-                            controller6.text +
-                            controller7.text +
-                            controller8.text;
+                    onTap: () async {
+                      String signincode = controller1.text +
+                          controller2.text +
+                          controller3.text +
+                          controller4.text +
+                          controller5.text +
+                          controller6.text +
+                          controller7.text +
+                          controller8.text;
 
-                        String devceid = await getAndroidId();
-                        // ignore: use_build_context_synchronously
-                        context.read<AuthBloc>().add(SignEvent(
-                            user: UserRequest(
-                                device_id: devceid, signIn_code: signincode)));
+                      String devceid = await getAndroidId();
+                      // ignore: use_build_context_synchronously
+                      context.read<AuthBloc>().add(SignEvent(
+                          user: UserRequest(
+                              device_id: devceid, signIn_code: signincode)));
 
-                        print("some thing is sender" +
-                            devceid +
-                            controller1.text +
-                            controller2.text +
-                            controller3.text +
-                            controller4.text +
-                            controller5.text +
-                            controller6.text +
-                            controller7.text +
-                            controller8.text);
-                      },
-                      child: InkWell(
-                        child: const Useable_Green_container(text: "تحققق"))),
+                      print("some thing is sender" +
+                          devceid +
+                          controller1.text +
+                          controller2.text +
+                          controller3.text +
+                          controller4.text +
+                          controller5.text +
+                          controller6.text +
+                          controller7.text +
+                          controller8.text);
+                    },
+                    child: InkWell(
+                      child: const UseableGreenContainer(text: "تحقق"),
+                    ),
+                  ),
                 ),
                 const Spacer(
                   flex: 1,

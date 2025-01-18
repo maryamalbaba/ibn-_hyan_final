@@ -20,202 +20,191 @@ class MarksPage extends StatelessWidget {
           if (state is SuccessGetMarks) {
             return Column(
               children: [
-                Container(
+                Row(children: [
+                  SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width * 0.2,
-                    child: Row(children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: FittedBox(
-                                  fit: BoxFit.fill,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(
-                                        MediaQuery.of(context).size.width *
-                                            0.03),
-                                    child: Text(
-                                      "التاريخ",
-                                      style: style_font_marks,
-                                    ),
-                                  )),
+                    height: 60,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: EdgeInsets.all(2),
+                            child: Center(
+                              child: Text(
+                                "التاريخ",
+                                style: style_font_marks,
+                              ),
                             ),
-                            verticalDivDer(),
-                            Expanded(
-                              flex: 1,
-                              child: FittedBox(
-                                  fit: BoxFit.fill,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(
-                                        MediaQuery.of(context).size.width *
-                                            0.01),
-                                    child: Text(
-                                      "س/م",
-                                      style: style_font_marks,
-                                    ),
-                                  )),
-                            ),
-                            verticalDivDer(),
-                            Expanded(
-                              flex: 2,
-                              child: FittedBox(
-                                  fit: BoxFit.fill,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(
-                                        MediaQuery.of(context).size.width *
-                                            0.03),
-                                    child: Text(
-                                      "المادة",
-                                      style: style_font_marks,
-                                    ),
-                                  )),
-                            ),
-                            verticalDivDer(),
-                            Expanded(
-                              flex: 2,
-                              child: FittedBox(
-                                  fit: BoxFit.fill,
-                                  child: Text(
-                                    "العلامة المستحقة",
-                                    style: style_font_marks,
-                                  )),
-                            ),
-                            verticalDivDer(),
-                            Expanded(
-                              flex: 2,
-                              child: FittedBox(
-                                  fit: BoxFit.fill,
-                                  child: Text(
-                                    "العلامة العظمى",
-                                    style: style_font_marks,
-                                  )),
-                            ),
-                          ],
+                          ),
                         ),
-                      )
-                    ])),
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Divider(
-                      color: Lightgreen,
-                    )),
+                        verticalDivDer(),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: EdgeInsets.all(2),
+                            child: Center(
+                              child: Text(
+                                "اسم الاختبار",
+                                style: style_font_marks,
+                              ),
+                            ),
+                          ),
+                        ),
+                        verticalDivDer(),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: EdgeInsets.all(2),
+                            child: Center(
+                              child: Text(
+                                "المادة",
+                                textAlign: TextAlign.center,
+                                style: style_font_marks,
+                              ),
+                            ),
+                          ),
+                        ),
+                        verticalDivDer(),
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: EdgeInsets.all(2),
+                            child: Center(
+                              child: Text(
+                                "الدرجة",
+                                style: style_font_marks,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // const verticalDivDer(),
+                        // Expanded(
+                        //   flex: 2,
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.all(0),
+                        //     child: Center(
+                        //       child: Text(
+                        //         "العلامة العظمى",
+                        //         textAlign: TextAlign.center,
+                        //         style: style_font_marks.copyWith(fontSize: 12),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  )
+                ]),
+                const Divider(color: Lightgreen, height: 0),
                 Expanded(
                   child: ListView.builder(
                       itemCount: state.list.length,
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
-                            Container(
+                            SizedBox(
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.2,
+                              height: 60,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     flex: 2,
-                                    child: FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.01),
-                                          child: Text(
-                                            state.list[index].date,
-                                            style: style_font_marks,
-                                          ),
-                                        )),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2),
+                                      child: Text(
+                                        state.list[index].date,
+                                        textAlign: TextAlign.center,
+                                        style: style_font_marks,
+                                      ),
+                                    ),
                                   ),
-                                  verticalDivDer(),
+                                  const verticalDivDer(),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2),
+
+                                      child: Text(
+                                        state.list[index].exam_name,
+                                        textAlign: TextAlign.center,
+                                        style: style_font_marks,
+                                      ),
+                                    ),
+                                  ),
+                                  const verticalDivDer(),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2),
+
+                                      child: Text(
+                                        textAlign: TextAlign.center,
+                                        state.list[index].subject_name,
+                                        style: style_font_marks,
+                                      ),
+                                    ),
+                                  ),
+                                  const verticalDivDer(),
                                   Expanded(
                                     flex: 1,
-                                    child: FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.01),
-                                          child: Text(
-                                            state.list[index].exam_name,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "${state.list[index].my_score}",
+                                            textAlign: TextAlign.center,
                                             style: style_font_marks,
                                           ),
-                                        )),
-                                  ),
-                                  verticalDivDer(),
-                                  Expanded(
-                                    flex: 2,
-                                    child: FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.01),
-                                          child: Text(
-                                            state.list[index].subject_name,
+                                          const Divider(color: Colors.black, height: 2, indent: 5, endIndent: 5),
+                                          Text(
+                                            "${state.list[index].total_score}",
+                                            textAlign: TextAlign.center,
                                             style: style_font_marks,
                                           ),
-                                        )),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                  verticalDivDer(),
-                                  Expanded(
-                                    flex: 2,
-                                    child: FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.04),
-                                          child: Text(
-                                            state.list[index].my_score
-                                                .toString(),
-                                            style: style_font_marks,
-                                          ),
-                                        )),
-                                  ),
-                                  verticalDivDer(),
-                                  Expanded(
-                                    flex: 2,
-                                    child: FittedBox(
-                                        fit: BoxFit.fill,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.04),
-                                          child: Text(
-                                            state.list[index].total_score
-                                                .toString(),
-                                            style: style_font_marks,
-                                          ),
-                                        )),
-                                  ),
+                                  // const verticalDivDer(),
+                                  // Expanded(
+                                  //   flex: 2,
+                                  //   child: Padding(
+                                  //     padding: EdgeInsets.all(
+                                  //         MediaQuery.of(context).size.width *
+                                  //             0.04),
+                                  //     child: Text(
+                                  //       state.list[index].total_score
+                                  //           .toString(),
+                                  //       style: style_font_marks,
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ),
-                            Divider(
-                              color: Lightgreen,
-                            )
+                            const Divider(color: Lightgreen, height: 0),
                           ],
                         );
                       }),
                 ),
               ],
             );
-          } else {
+            // ! Refactor the states of Failed and Re-Order it
+          } else if (state is FailedGetMarks) {
             return ErrorUi();
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: green,
+              ),
+            );
           }
         },
       ),
@@ -231,9 +220,9 @@ class verticalDivDer extends StatelessWidget {
     return RotatedBox(
         quarterTurns: 1,
         child: Container(
-      //    width: MediaQuery.of(context).size.width,
-          child: Divider(
+          child: const Divider(
             color: Lightgreen,
+            height: 0,
             thickness: 1,
           ),
         ));

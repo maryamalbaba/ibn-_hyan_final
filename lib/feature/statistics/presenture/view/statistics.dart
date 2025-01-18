@@ -4,11 +4,10 @@ import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/core/widgets/statisics_container.dart';
 import 'package:ibnhyanfinal/feature/statistics/presenture/bloc/statisics_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:shimmer/shimmer.dart';
 
 class StatisticsPage extends StatelessWidget {
-  StatisticsPage({super.key});
+  const StatisticsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

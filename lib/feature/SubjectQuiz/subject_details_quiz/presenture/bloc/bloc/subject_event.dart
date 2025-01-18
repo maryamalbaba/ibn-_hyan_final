@@ -5,8 +5,9 @@ part of 'subject_bloc.dart';
 sealed class SubjectDetailsEvent {}
 
 class GetAllSubjectDetailsQuiz extends SubjectDetailsEvent {
- num id;
+ final num id;
+ final QuizPageType type;
   GetAllSubjectDetailsQuiz({
-    required this.id,
+    required this.id, required this.type,
   });
 }

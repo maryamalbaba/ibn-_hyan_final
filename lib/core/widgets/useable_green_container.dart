@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
+class UseableGreenContainer extends StatelessWidget {
+  const UseableGreenContainer({super.key, required this.text});
 
+  final String text;
 
-
-class Useable_Green_container extends StatelessWidget {
-  const Useable_Green_container({super.key, required this.text});
-final String text;
   @override
   Widget build(BuildContext context) {
-    return  Padding(
-      padding:   EdgeInsets.all(
-                                MediaQuery.of(context).size.width * 0.02),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical:  MediaQuery.of(context).size.width * 0.02, horizontal: 20),
       child: Container(
-                 // width: 
-                height: MediaQuery.of(context).size.height*0.1,
-                  decoration: BoxDecoration(color: green,
-                borderRadius: BorderRadius.circular(10)),
-                
-                child: Center(child: Text(text,style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,color: Colors.white),)),),
+        // width:
+        height: 60,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(begin: Alignment.bottomCenter,end: Alignment.topCenter, colors: [
+            green,
+            lighterGreen
+          ]),
+          borderRadius: BorderRadius.circular(10),
+        ),
+
+        child: Center(
+            child: Text(
+          text,
+          style: TextStyle(
+              fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white),
+        )),
+      ),
     );
-            
   }
 }
