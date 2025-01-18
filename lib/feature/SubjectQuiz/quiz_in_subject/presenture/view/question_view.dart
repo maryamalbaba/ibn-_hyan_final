@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:ibnhyanfinal/core/widgets/tex_text_widget.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/answer_model.dart';
 
 import '../../../../../core/resourses/colors_manager.dart';
@@ -56,7 +57,22 @@ class QuestionView extends StatelessWidget {
                         width: 15,
                         decoration: const ShapeDecoration(
                             color: green, shape: CircleBorder())),
-                  Flexible(child: Text(question.question_text)),
+                  Flexible(child: TexTextWidget(question.question_text)),
+                ],
+              ),
+              Row(
+                children: [
+                  Flexible(
+                      fit: FlexFit.tight,
+                      child: Row(
+                        children: [
+                          const Text("المصدر: ",
+                              style: TextStyle(color: green)),
+                          Text(question.source),
+                        ],
+                      )),
+                  const SizedBox(width: 15),
+                  Text("${question.score} درجة"),
                 ],
               ),
               question.question_image
@@ -109,11 +125,17 @@ class QuestionView extends StatelessWidget {
                     result && selected != answer.id && answer.is_correct == 1;
                 return AnswerContainer(
                   borderColor: correction
-                      ? correctBorder : selected_wrong? wrongBorder
-                      : selected_correct || answer_selected
-                                  ? yellow
-                                  : Lightgreen,
-                  color: selected_wrong? wrong:correction || selected_correct? correct: null,
+                      ? correctBorder
+                      : selected_wrong
+                          ? wrongBorder
+                          : selected_correct || answer_selected
+                              ? yellow
+                              : Lightgreen,
+                  color: selected_wrong
+                      ? wrong
+                      : correction || selected_correct
+                          ? correct
+                          : null,
                   borderWidth: correction ||
                           answer_selected ||
                           selected_wrong ||

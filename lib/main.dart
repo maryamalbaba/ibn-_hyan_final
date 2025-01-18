@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/config/sharedpref.dart';
 import 'package:ibnhyanfinal/feature/auth/view/firstPage.dart';
 
-void main() async{
-   WidgetsFlutterBinding.ensureInitialized();
-   await EasyLocalization.ensureInitialized();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await Setup();
-  runApp(EasyLocalization(
-      supportedLocales: const [ Locale('ar')],
-      path: 'assets/translate', // <-- change the path of the translation files 
-      fallbackLocale: Locale('ar',),
-      child: const MyApp()
-    ),);
+  runApp(
+    EasyLocalization(
+        supportedLocales: const [Locale('ar')],
+        path:
+            'assets/translate', // <-- change the path of the translation files
+        fallbackLocale: Locale(
+          'ar',
+        ),
+        child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -21,15 +25,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-     return MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-    localizationsDelegates: context.localizationDelegates,
+      localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      
-    home: welcomePage(),
-    
-  //  welcomePage()
+      theme: ThemeData(
+        fontFamily: "motlaq",
+        navigationBarTheme: const NavigationBarThemeData(
+          labelTextStyle: WidgetStatePropertyAll(TextStyle(fontSize: 14, color: Colors.white))
+        ),
+        appBarTheme: const AppBarTheme(titleTextStyle: TextStyle(color: Colors.white, fontSize: 28))
+      ),
+      home: welcomePage(),
+
+      //  welcomePage()
     );
   }
 }

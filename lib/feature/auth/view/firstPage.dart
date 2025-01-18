@@ -36,20 +36,21 @@ class _welcomePageState extends State<welcomePage> {
   Future<void> checkLoginState() async {
     setState(() {
       final token = pref.getString("token");
-      print("token saved is " + token.toString());
-      print("tokenlist:" + listtokens.toString());
 
       List<String> userStrings = pref.getStringList("users") ?? [];
 
       users = userStrings.map((e) => RespoonseModel.fromJson((e))).toList();
-      print("users are :" + users.toString());
       isLoggedIn = users.isNotEmpty;
 //!edit
 
       tokens = users.map((user) => user.token).toList();
       pref.setStringList("savedtokens", tokens);
-      print(isLoggedIn);
     });
+  }
+
+  login(int index) {
+    auth.token = users[index].token;
+    pref.setString("token", auth.token);
   }
 
   @override
@@ -67,10 +68,47 @@ class _welcomePageState extends State<welcomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              if (isLoggedIn)
-                SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.30,
-                    child: Image.asset(logo)),
+              // if (isLoggedIn)
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.5,
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.s,
+                  children: [
+                    // SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    const Spacer(),
+                    Expanded(
+                      flex: 2,
+                      child: Image.asset(
+                        logo,
+                        height: MediaQuery.of(context).size.height * 0.30,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    const Expanded(
+                      child: FittedBox(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Text(
+                            "مرحبا بك في الشامل",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                shadows: [
+                                  BoxShadow(
+                                      blurRadius: 2,
+                                      spreadRadius: .2,
+                                      offset: Offset(0, -2),
+                                      color: yellow)
+                                ],
+                                fontSize: 42,
+                                color: green,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: ListView.builder(
                   reverse: true,
@@ -93,11 +131,11 @@ class _welcomePageState extends State<welcomePage> {
                           onTap: () {
                             //!extract  one token
 
-                            auth.token = users[index].token;
+                            login(index);
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CorePage(),
+                                builder: (context) => const CorePage(),
                               ),
                             );
                           },
@@ -145,7 +183,7 @@ class _welcomePageState extends State<welcomePage> {
                                       child: Text(
                                         overflow: TextOverflow.ellipsis,
                                         users[index].user.signIn_code,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.grey,
                                         ),
                                       ),
@@ -163,7 +201,6 @@ class _welcomePageState extends State<welcomePage> {
               ),
               InkWell(
                 onTap: () {
-                  print("fffffff");
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(

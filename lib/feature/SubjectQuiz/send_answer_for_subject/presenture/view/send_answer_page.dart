@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
+import 'package:ibnhyanfinal/core/widgets/tex_text_widget.dart';
 import 'package:ibnhyanfinal/core/widgets/useable_green_container.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Model/answer.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/presenture/view/bloc/send_answer_bloc.dart';
@@ -68,7 +69,7 @@ class SendAnswerUI extends StatelessWidget {
                             SizedBox(
                               width: 30,
                                 child: Center(
-                                  child: Text("${list[index]?.answer_tarqem}-",
+                                  child: Text("${list[index]?.answer_tarqem ?? ""}-",
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(fontSize: 18),
                                       maxLines: 2),
@@ -76,9 +77,10 @@ class SendAnswerUI extends StatelessWidget {
                             const verticalDivDer(),
                             Expanded(
                                 flex: 8,
-                                child: Text(list[index]?.answer_text ?? "",
+                                child: TexTextWidget(list[index]?.answer_text ?? "",
                                     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                                    overflow: TextOverflow.clip, maxLines: 2)),
+                                    // overflow: TextOverflow.clip, maxLines: 2.
+                                )),
                           ],
                         ),
                       );
@@ -94,10 +96,11 @@ class SendAnswerUI extends StatelessWidget {
                       Navigator.of(context)
                           .pushNamed("/ResultExamUI", arguments: [result_Id, list]);
                     } else {
-                      if (!list.any((element) => element == null))
+                      if (!list.any((element) => element == null)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content: Text("يجب الاجابة على كل الاسئلة ")));
+                      }
                       print("error in sendig list $list");
                     }
                   },

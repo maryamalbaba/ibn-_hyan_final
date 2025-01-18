@@ -11,6 +11,7 @@ import 'package:ibnhyanfinal/feature/auth/model/response_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/Error/noInternet.dart';
+import '../../model/usermodel.dart';
 
 class Auth {
   List<String> userList = [];
@@ -26,7 +27,7 @@ class Auth {
   factory Auth() {
     return _instance;
   }
-  Future<Result> sign(user_request) async {
+  Future<Result> sign(UserRequest user_request) async {
     try {
       Response response =
           await api.post(user_sign_url, data: user_request.toMap());
@@ -39,9 +40,14 @@ class Auth {
         token = pref.getString("token") ?? "";
 
         userList = pref.getStringList("users") ?? [];
-
-        userList.add(res.toJson());
-        pref.setStringList("users", userList);
+        final users = userList.map((e) => RespoonseModel.fromJson((e))).toList();
+        final existsIndex = users.indexWhere((element) => element.user.signIn_code == user_request.signIn_code);
+        if(existsIndex != -1){
+          userList[existsIndex] = res.toJson();
+        }else{
+          userList.add(res.toJson());
+          pref.setStringList("users", userList);
+        }
         print("the updated  old list" + userList.toString());
 
         return res;

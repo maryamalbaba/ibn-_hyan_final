@@ -45,14 +45,18 @@ class ResultExamUI extends StatelessWidget {
                     Text(
                       "  ${state.result.total_score}/${state.result.score}",
                       style: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 18, color: grey),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: grey),
                     ),
                     const Spacer(),
                     Image.asset(clock2, height: 24),
                     Text(
                       " ${state.result.duration_minutes} ${"minute".tr()}",
                       style: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 18, color: grey),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: grey),
                     ),
                     const Spacer(),
                   ],
@@ -64,8 +68,11 @@ class ResultExamUI extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       print("push named");
-                      Navigator.pushNamed(context, "/RevisionPage",
-                          arguments: [resultId, list]);
+                      Navigator.pushNamed(
+                        context,
+                        "/RevisionPage",
+                        arguments: [resultId, list]
+                      );
                     },
                     child: UseableGreenContainer(
                       text: 'read answers'.tr(),
