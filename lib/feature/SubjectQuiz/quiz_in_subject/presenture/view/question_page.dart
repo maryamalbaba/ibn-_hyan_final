@@ -76,7 +76,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
   late Timer timer;
 
   startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+    timer = Timer.periodic(const Duration(minutes: 1), (_) {
       if (mounted) {
         percent.value += 1;
         if (percent.value >= widget.time_limit.toInt()) {

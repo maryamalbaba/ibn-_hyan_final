@@ -79,12 +79,12 @@ class _CorePageState extends State<CorePage> {
                 icon: SizedBox.square(
                     dimension: 30,
                     child: Image.asset(marksIcon, color: Colors.white)),
-                label: "علامات"),
+                label: "علامات المعهد"),
             NavigationDestination(
               icon: SizedBox.square(
                   dimension: 30,
                   child: Image.asset(staisticsIcon, color: Colors.white)),
-              label: "احصائيات",
+              label: "نتائج الاتمتة",
             )
           ]),
       appBar: PreferredSize(

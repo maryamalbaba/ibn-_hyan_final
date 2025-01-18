@@ -2,27 +2,30 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/core_page.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/core/resourses/styles_manager.dart';
+import 'package:ibnhyanfinal/core/widgets/bigotp.dart';
 import 'package:ibnhyanfinal/core/widgets/otp_field.dart';
 import 'package:ibnhyanfinal/core/widgets/useable_green_container.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/ShowSubject/presenture/view/subject_page.dart';
 import 'package:ibnhyanfinal/feature/auth/bloc/auth_bloc.dart';
 import 'package:ibnhyanfinal/feature/auth/model/usermodel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignPage extends StatelessWidget {
   SignPage({super.key});
   TextEditingController controller1 = TextEditingController();
-  TextEditingController controller2 = TextEditingController();
-  TextEditingController controller3 = TextEditingController();
-  TextEditingController controller4 = TextEditingController();
-  TextEditingController controller5 = TextEditingController();
-  TextEditingController controller6 = TextEditingController();
-  TextEditingController controller7 = TextEditingController();
-  TextEditingController controller8 = TextEditingController();
+  // TextEditingController controller2 = TextEditingController();
+  // TextEditingController controller3 = TextEditingController();
+  // TextEditingController controller4 = TextEditingController();
+  // TextEditingController controller5 = TextEditingController();
+  // TextEditingController controller6 = TextEditingController();
+  // TextEditingController controller7 = TextEditingController();
+  // TextEditingController controller8 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -92,30 +95,30 @@ class SignPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       // spacing: 5,
                       children: [
-                        OtpField(
+                        Bigotp(
                           controller: controller1,
                         ),
-                        OtpField(
-                          controller: controller2,
-                        ),
-                        OtpField(
-                          controller: controller3,
-                        ),
-                        OtpField(
-                          controller: controller4,
-                        ),
-                        OtpField(
-                          controller: controller5,
-                        ),
-                        OtpField(
-                          controller: controller6,
-                        ),
-                        OtpField(
-                          controller: controller7,
-                        ),
-                        OtpField(
-                          controller: controller8,
-                        )
+                        // OtpField(
+                        //   controller: controller2,
+                        // ),
+                        // OtpField(
+                        //   controller: controller3,
+                        // ),
+                        // OtpField(
+                        //   controller: controller4,
+                        // ),
+                        // OtpField(
+                        //   controller: controller5,
+                        // ),
+                        // OtpField(
+                        //   controller: controller6,
+                        // ),
+                        // OtpField(
+                        //   controller: controller7,
+                        // ),
+                        // OtpField(
+                        //   controller: controller8,
+                        // )
                       ],
                     ),
                   ),
@@ -124,16 +127,33 @@ class SignPage extends StatelessWidget {
                   flex: 1,
                 ),
                 Center(
-                  child: Text.rich(
-                    TextSpan(
-                        text: "did you forget your code".tr(),
-                        style: forget_pass,
-                        children: [
-                          const TextSpan(text: "   "),
-                          TextSpan(text: "resend".tr(), style: underLine_resend)
-                        ]),
+                  
+                    child: Text.rich(
+
+                      TextSpan(
+                          text: "أعد ارسال الكود",
+                          style: forget_pass,
+                          children: [
+                            
+                             TextSpan(text: "   "),
+                            TextSpan(
+                              recognizer: TapGestureRecognizer()
+                    ..onTap= () async {
+                      final Uri url=Uri(
+                        scheme: 'tel',
+                        path: '0934906018',
+                      );
+                      if (await  canLaunchUrl(url)) {
+                        await launchUrl(url);
+                      } else {
+                        print('Can not lunch this url');
+                      }
+                    },
+                              text: "اتصل بنا", style: underLine_resend)
+                          ]),
+                    ),
                   ),
-                ),
+                
                 const Spacer(
                   flex: 2,
                 ),
@@ -158,14 +178,15 @@ class SignPage extends StatelessWidget {
                   },
                   child: InkWell(
                     onTap: () async {
-                      String signincode = controller1.text +
-                          controller2.text +
-                          controller3.text +
-                          controller4.text +
-                          controller5.text +
-                          controller6.text +
-                          controller7.text +
-                          controller8.text;
+                      String signincode = 
+                      controller1.text ;
+                          // controller2.text +
+                          // controller3.text +
+                          // controller4.text +
+                          // controller5.text +
+                          // controller6.text +
+                          // controller7.text +
+                          // controller8.text;
 
                       String devceid = await getAndroidId();
                       // ignore: use_build_context_synchronously
@@ -175,14 +196,15 @@ class SignPage extends StatelessWidget {
 
                       print("some thing is sender" +
                           devceid +
-                          controller1.text +
-                          controller2.text +
-                          controller3.text +
-                          controller4.text +
-                          controller5.text +
-                          controller6.text +
-                          controller7.text +
-                          controller8.text);
+                          controller1.text 
+                          // controller2.text +
+                          // controller3.text +
+                          // controller4.text +
+                          // controller5.text +
+                          // controller6.text +
+                          // controller7.text +
+                          // controller8.text
+                          );
                     },
                     child: InkWell(
                       child: const UseableGreenContainer(text: "تحقق"),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/config/sharedpref.dart';
 import 'package:ibnhyanfinal/core/core_page.dart';
@@ -18,8 +20,11 @@ class welcomePage extends StatefulWidget {
 }
 
 // ignore: camel_case_types
-class _welcomePageState extends State<welcomePage> {
+class _welcomePageState extends State<welcomePage>with SingleTickerProviderStateMixin {
   Auth auth = Auth();
+bool _showText = false;
+ late AnimationController _controller;
+  late Animation<Offset> _animation;
 
   bool isLoggedIn = false;
   List<String> tokens = [];
@@ -31,7 +36,30 @@ class _welcomePageState extends State<welcomePage> {
     // TODO: implement initState
     super.initState();
     checkLoginState();
+    _controller = AnimationController(
+      duration: Duration(seconds: 2), 
+      vsync: this,
+    );
+    _animation = Tween<Offset>(
+      begin: Offset(1.0, 0), 
+      end: Offset(0.0, 0.0),    
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    // Start the animation
+    _controller.forward();
+
+    Timer(Duration(seconds: 1), () {
+      setState(() {
+        _showText = true;
+      });
+    });
+    
   }
+   void dispose() {
+    _controller.dispose(); // Dispose the controller to free resources
+    super.dispose();
+  }
+
 
   Future<void> checkLoginState() async {
     setState(() {
@@ -52,6 +80,8 @@ class _welcomePageState extends State<welcomePage> {
     auth.token = users[index].token;
     pref.setString("token", auth.token);
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +105,7 @@ class _welcomePageState extends State<welcomePage> {
                   // mainAxisAlignment: MainAxisAlignment.s,
                   children: [
                     // SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                    const Spacer(),
+                    const Spacer(flex: 1,),
                     Expanded(
                       flex: 2,
                       child: Image.asset(
@@ -84,27 +114,30 @@ class _welcomePageState extends State<welcomePage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Expanded(
-                      child: FittedBox(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: Text(
-                            "مرحبا بك في الشامل",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                shadows: [
-                                  BoxShadow(
-                                      blurRadius: 2,
-                                      spreadRadius: .2,
-                                      offset: Offset(0, -2),
-                                      color: yellow)
-                                ],
-                                fontSize: 42,
-                                color: green,
-                                fontWeight: FontWeight.w700),
+                     Expanded(
+                      child: _showText? SlideTransition(
+                        position: _animation,
+                        child: FittedBox(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            child: Text(
+                              "مرحبا بك في الشامل",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  shadows: [
+                                    BoxShadow(
+                                        blurRadius: 0.5,
+                                        spreadRadius: 0.6,
+                                        offset: Offset(0, -1),
+                                        )
+                                  ],
+                                  fontSize: 15,
+                                  color:const Color.fromARGB(255, 197, 192, 146),
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
                         ),
-                      ),
+                      ):Container()
                     ),
                   ],
                 ),
