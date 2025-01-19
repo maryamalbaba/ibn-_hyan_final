@@ -10,6 +10,9 @@ const Color whitegreen = Color(0xffE9FFFB);
 const Color grey = Color(0xff7D7C73);
 // ignore: constant_identifier_names
 const Color Lightgrey = Color(0xff8F8D7D);
+const Color amber = Color(0xffD7AB4A);
+const Color cardYellow = Color(0xffFFF1D4);
+const Color cardYellowBorder = Color(0xffE2BC68);
 const Color babyblue = Color(0xffE9FFFB);
 const Color yellow = Color(0xffFFAF00);
 const Color greygreen = Color(0xffCDEAE5);

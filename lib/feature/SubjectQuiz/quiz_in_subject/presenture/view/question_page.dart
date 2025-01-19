@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view/problem_card.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view/problem_view.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view/question_view.dart';
 
 import '../../data/model/answer_model.dart';
-import 'answer_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
@@ -23,7 +23,7 @@ String testImage =
     'https://hips.hearstapps.com/hmg-prod/images/lightbulb-moment-royalty-free-image-176565702-1563363264.jpg?crop=0.665xw:1.00xh;0.228xw,0&resize=1200:*';
 
 class QuizSubjectUi extends StatefulWidget {
-  QuizSubjectUi({
+  const QuizSubjectUi({
     super.key,
     this.id,
     required this.time_limit,
@@ -114,7 +114,6 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
             }
           },
           builder: (context, state) {
-            print(state);
             if (state is SubjectQuestionSuccess) {
               return Column(
                 children: [
@@ -160,7 +159,12 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                       ]),
                     ),
                   ),
-                  // const SizedBox(height: 5),
+                  ValueListenableBuilder(valueListenable: state.pinnedProblem, builder: (context, value, child) {
+                    if(value == null){
+                      return const SizedBox();
+                    }
+                    return ProblemCard(pinned: true, problem: value);
+                  }),
                   Expanded(
                     child: PageView.builder(
                         itemCount: 2,
@@ -255,6 +259,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                           );
                                         },
                                       ),
+                                      const SizedBox(height: 8),
                                       const Divider(color: green),
                                     ],
                                   );

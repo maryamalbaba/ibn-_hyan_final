@@ -33,14 +33,15 @@ class QuestionView extends StatelessWidget {
     return Column(children: [
       Container(
           padding: const EdgeInsets.all(8),
-          width: MediaQuery.of(context).size.width * 0.9,
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          // width: MediaQuery.of(context).size.width * 0.9,
           decoration: nameWithoutCard
               ? null
               : BoxDecoration(
-                  color: babyblue,
+                  color: cardYellow,
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: Lightgreen,
+                    color: cardYellowBorder,
                   )),
           // alignment: nameWithoutCard? AlignmentDirectional.centerStart: null,
           child: Column(
@@ -58,21 +59,6 @@ class QuestionView extends StatelessWidget {
                         decoration: const ShapeDecoration(
                             color: green, shape: CircleBorder())),
                   Flexible(child: TexTextWidget(question.question_text)),
-                ],
-              ),
-              Row(
-                children: [
-                  Flexible(
-                      fit: FlexFit.tight,
-                      child: Row(
-                        children: [
-                          const Text("المصدر: ",
-                              style: TextStyle(color: green)),
-                          Text(question.source),
-                        ],
-                      )),
-                  const SizedBox(width: 15),
-                  Text("${question.score} درجة"),
                 ],
               ),
               question.question_image
@@ -100,8 +86,24 @@ class QuestionView extends StatelessWidget {
                     )
             ],
           )),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.04,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+        child: Row(
+          children: [
+
+            Text("${question.score} درجة", style: const TextStyle(color: darkergreen, fontWeight: FontWeight.w700,decoration: TextDecoration.underline)),
+            const SizedBox(width: 15),
+            Flexible(
+                fit: FlexFit.tight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    // const Text("المصدر: ",
+                    //     style: TextStyle(color: green, decoration: TextDecoration.underline)),
+                    Text(question.source, style: const TextStyle(color: darkergreen, fontWeight: FontWeight.w700, decoration: TextDecoration.underline)),
+                  ],
+                )),  ],
+        ),
       ),
       //!answers for seprated Question
       SizedBox(

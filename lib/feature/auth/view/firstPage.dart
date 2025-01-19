@@ -128,7 +128,7 @@ bool _showText = false;
                                     BoxShadow(
                                         blurRadius: 0.5,
                                         spreadRadius: 0.6,
-                                        offset: Offset(0, -1),
+                                        offset: Offset(0, 1),
                                         )
                                   ],
                                   fontSize: 15,
@@ -161,6 +161,9 @@ bool _showText = false;
                           color: const Color(0xffE9FFFB),
                         ),
                         child: InkWell(
+                          onLongPress: () {
+                            //TODO remove user
+                          },
                           onTap: () {
                             //!extract  one token
 
@@ -198,7 +201,7 @@ bool _showText = false;
                                     SizedBox(
                                       width:
                                           MediaQuery.of(context).size.height *
-                                              0.1,
+                                              0.3,
                                       // height: MediaQuery.of(context).size.height*0.1,
                                       child: Text(
                                         overflow: TextOverflow.ellipsis,

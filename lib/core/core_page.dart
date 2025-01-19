@@ -17,7 +17,8 @@ import 'package:ibnhyanfinal/feature/statistics/presenture/view/statistics.dart'
 class CorePage extends StatefulWidget {
   const CorePage({super.key});
 
-  static final ValueNotifier<String> page = ValueNotifier<String>("/SubjectPage");
+  static final ValueNotifier<String> page =
+      ValueNotifier<String>("/SubjectPage");
 
   @override
   State<CorePage> createState() => _CorePageState();
@@ -60,7 +61,10 @@ class _CorePageState extends State<CorePage> {
               currentIndex = newDestenaition;
             });
             final route = routesTitles.keys.toList()[currentIndex];
-            navigatorKey.currentState?.pushReplacementNamed(route);
+            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+              route,
+              (route) => !(Navigator.of(context).canPop()),
+            );
           },
           selectedIndex: currentIndex,
           animationDuration: const Duration(seconds: 1),
@@ -94,8 +98,11 @@ class _CorePageState extends State<CorePage> {
           builder: (BuildContext context, String value, Widget? child) {
             return AppBar(
               actions: [
-                if (navigatorKey.currentState?.canPop() ?? false)
-                  BackButton(onPressed: () => navigatorKey.currentState?.pop()),
+                // if (navigatorKey.currentState?.canPop() ?? false)
+                //   BackButton(onPressed: () {
+                //     navigatorKey.currentState?.pop();
+                //     CorePage.page.value = "";
+                //   }),
               ],
               backgroundColor: green,
               title: Text(routesTitles[value] ?? value),

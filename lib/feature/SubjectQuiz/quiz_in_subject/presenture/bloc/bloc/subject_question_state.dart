@@ -6,8 +6,9 @@ sealed class SubjectQuestionState {}
 final class SubjectQuestionInitial extends SubjectQuestionState {}
 
 // ignore: must_be_immutable
-final class SubjectQuestionSuccess extends SubjectQuestionState {
+class SubjectQuestionSuccess extends SubjectQuestionState {
   ResponseQuizAllSubject question_with_answer;
+  ValueNotifier<ProblemModel?> pinnedProblem = ValueNotifier<ProblemModel?>(null);
 
   SubjectQuestionSuccess({required this.question_with_answer});
 }
