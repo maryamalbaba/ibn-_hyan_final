@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 const Color lighterGreen = Color(0xff00B9B4);
 const Color darkergreen = Color(0xff044E59);
+const Color darkerrgreen = Color(0xff0D4240);
 const Color green = Color(0xff058E8A);
 const Color offwhite = Color(0xffFFFBE7);
 // ignore: constant_identifier_names

@@ -5,6 +5,7 @@ import 'package:ibnhyanfinal/core/config/sharedpref.dart';
 import 'package:ibnhyanfinal/core/core_page.dart';
 import 'package:ibnhyanfinal/core/resourses/assets_manager.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
+import 'package:ibnhyanfinal/core/widgets/confirm_dialog.dart';
 import 'package:ibnhyanfinal/core/widgets/useable_green_container.dart';
 import 'package:ibnhyanfinal/feature/auth/model/response_model.dart';
 import 'package:ibnhyanfinal/feature/auth/service/real/sign_ser.dart';
@@ -20,10 +21,11 @@ class welcomePage extends StatefulWidget {
 }
 
 // ignore: camel_case_types
-class _welcomePageState extends State<welcomePage>with SingleTickerProviderStateMixin {
+class _welcomePageState extends State<welcomePage>
+    with SingleTickerProviderStateMixin {
   Auth auth = Auth();
-bool _showText = false;
- late AnimationController _controller;
+  bool _showText = false;
+  late AnimationController _controller;
   late Animation<Offset> _animation;
 
   bool isLoggedIn = false;
@@ -37,12 +39,12 @@ bool _showText = false;
     super.initState();
     checkLoginState();
     _controller = AnimationController(
-      duration: Duration(seconds: 2), 
+      duration: Duration(seconds: 2),
       vsync: this,
     );
     _animation = Tween<Offset>(
-      begin: Offset(1.0, 0), 
-      end: Offset(0.0, 0.0),    
+      begin: Offset(1.0, 0),
+      end: Offset(0.0, 0.0),
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
     // Start the animation
@@ -53,13 +55,12 @@ bool _showText = false;
         _showText = true;
       });
     });
-    
   }
-   void dispose() {
+
+  void dispose() {
     _controller.dispose(); // Dispose the controller to free resources
     super.dispose();
   }
-
 
   Future<void> checkLoginState() async {
     setState(() {
@@ -76,25 +77,31 @@ bool _showText = false;
     });
   }
 
+  removeUser(int index) async {
+    final strings = pref.getStringList("users") ?? [];
+    strings.removeAt(index);
+    final res = await pref.setStringList("users", strings);
+    users = strings.map((e) => RespoonseModel.fromJson((e))).toList();
+    setState(() {});
+  }
+
   login(int index) {
     auth.token = users[index].token;
     pref.setString("token", auth.token);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            color: offwhite,
-            image: DecorationImage(
-                image: AssetImage(background), fit: BoxFit.fill),
-          ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          color: offwhite,
+          image: DecorationImage(
+              image: AssetImage(background), fit: BoxFit.fill),
+        ),
+        child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -105,44 +112,54 @@ bool _showText = false;
                   // mainAxisAlignment: MainAxisAlignment.s,
                   children: [
                     // SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                    const Spacer(flex: 1,),
+                    const Spacer(
+                      flex: 1,
+                    ),
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: Image.asset(
                         logo,
-                        height: MediaQuery.of(context).size.height * 0.30,
+                        // height: MediaQuery.of(context).size.height * 0.4,
                       ),
                     ),
                     const SizedBox(height: 10),
-                     Expanded(
-                      child: _showText? SlideTransition(
-                        position: _animation,
-                        child: FittedBox(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            child: Text(
-                              "مرحبا بك في الشامل",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  shadows: [
-                                    BoxShadow(
-                                        blurRadius: 0.5,
-                                        spreadRadius: 0.6,
-                                        offset: Offset(0, 1),
-                                        )
-                                  ],
-                                  fontSize: 15,
-                                  color:const Color.fromARGB(255, 197, 192, 146),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ):Container()
-                    ),
+                    Expanded(
+                        child: _showText
+                            ? SlideTransition(
+                                position: _animation,
+                                child: const FittedBox(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 15),
+                                    child: Text(
+                                      "أهلاً بك في الشامل !",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: "motlaq",
+                                        shadows: [
+                                          BoxShadow(
+                                            color: Color(0x40000000),
+                                            blurRadius: 12,
+                                            spreadRadius: 0,
+                                            offset: Offset(0, 4),
+                                          )
+                                        ],
+                                        fontSize: 28,
+                                        height: 2,
+                                        color: darkerrgreen,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Container()),
                   ],
                 ),
               ),
+              const SizedBox(height: 10),
               Expanded(
+                flex: 2,
                 child: ListView.builder(
                   reverse: true,
                   itemCount: users.length,
@@ -162,7 +179,14 @@ bool _showText = false;
                         ),
                         child: InkWell(
                           onLongPress: () {
-                            //TODO remove user
+                            showDialog(
+                                context: context,
+                                builder: (context) => ConfirmDialog(
+                                      title: "من إزالة الحساب",
+                                      onConfirm: () async {
+                                        removeUser(index);
+                                      },
+                                    ));
                           },
                           onTap: () {
                             //!extract  one token

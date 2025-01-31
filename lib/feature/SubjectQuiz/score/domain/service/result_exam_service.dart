@@ -28,8 +28,9 @@ print( "result id:: $result_Id");
       } else {
         return Left(ErrorModel());
       }
-    } catch (e) {
+    } catch (e,s) {
       print(e);
+      print(s);
       return Left(ErrorModel());
     }
   }

@@ -16,7 +16,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SignPage extends StatelessWidget {
   SignPage({super.key});
+
   TextEditingController controller1 = TextEditingController();
+
   // TextEditingController controller2 = TextEditingController();
   // TextEditingController controller3 = TextEditingController();
   // TextEditingController controller4 = TextEditingController();
@@ -125,33 +127,31 @@ class SignPage extends StatelessWidget {
                   flex: 1,
                 ),
                 Center(
-                  
-                    child: Text.rich(
-
-                      TextSpan(
-                          text: "أعد ارسال الكود",
-                          style: forget_pass,
-                          children: [
-                            
-                             TextSpan(text: "   "),
-                            TextSpan(
+                  child: Text.rich(
+                    TextSpan(
+                        text: "أعد ارسال الكود",
+                        style: forget_pass,
+                        children: [
+                          const TextSpan(text: "   "),
+                          TextSpan(
                               recognizer: TapGestureRecognizer()
-                    ..onTap= () async {
-                      final Uri url=Uri(
-                        scheme: 'tel',
-                        path: '0934906018',
-                      );
-                      if (await  canLaunchUrl(url)) {
-                        await launchUrl(url);
-                      } else {
-                        print('Can not lunch this url');
-                      }
-                    },
-                              text: "اتصل بنا", style: underLine_resend)
-                          ]),
-                    ),
+                                ..onTap = () async {
+                                  final Uri url = Uri(
+                                    scheme: 'tel',
+                                    path: '0934906018',
+                                  );
+                                  if (await canLaunchUrl(url)) {
+                                    await launchUrl(url);
+                                  } else {
+                                    print('Can not lunch this url');
+                                  }
+                                },
+                              text: "اتصل بنا",
+                              style: underLine_resend)
+                        ]),
                   ),
-                
+                ),
+
                 const Spacer(
                   flex: 2,
                 ),
@@ -176,15 +176,14 @@ class SignPage extends StatelessWidget {
                   },
                   child: InkWell(
                     onTap: () async {
-                      String signincode = 
-                      controller1.text ;
-                          // controller2.text +
-                          // controller3.text +
-                          // controller4.text +
-                          // controller5.text +
-                          // controller6.text +
-                          // controller7.text +
-                          // controller8.text;
+                      String signincode = controller1.text;
+                      // controller2.text +
+                      // controller3.text +
+                      // controller4.text +
+                      // controller5.text +
+                      // controller6.text +
+                      // controller7.text +
+                      // controller8.text;
 
                       String devceid = await getAndroidId();
                       // ignore: use_build_context_synchronously
@@ -192,9 +191,7 @@ class SignPage extends StatelessWidget {
                           user: UserRequest(
                               device_id: devceid, signIn_code: signincode)));
 
-                      print("some thing is sender" +
-                          devceid +
-                          controller1.text 
+                      print("some thing is sender" + devceid + controller1.text
                           // controller2.text +
                           // controller3.text +
                           // controller4.text +

@@ -14,12 +14,13 @@ class ProblemView extends StatelessWidget {
     required this.problem,
     required this.selected,
     this.onAnswer,
-    this.result = false,
+    this.result = false, required this.questionOrder,
   });
 
   final ProblemModel problem;
   final int? Function(QuestionModel question) selected;
   final bool result;
+  final List<int> questionOrder;
   final void Function(
       QuestionModel question, int answer_index, AnswerModel answer)? onAnswer;
 
@@ -31,6 +32,7 @@ class ProblemView extends StatelessWidget {
         ...problem.questions!.map((e) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: QuestionView(
+                index: questionOrder.indexOf(e.id.toInt()),
                   result: result,
                   nameWithoutCard: true,
                   question: e,

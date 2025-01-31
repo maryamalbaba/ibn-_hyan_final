@@ -13,70 +13,63 @@ class StatisicsContainer extends StatelessWidget {
     required this.totalscore,
     required this.myscore,
   }) : super(key: key);
- final String imageUrl;
- final String Text_quizName;
-final String Text_SubjectName;
-final num totalscore;
-final num myscore;
+  final String imageUrl;
+  final String Text_quizName;
+  final String Text_SubjectName;
+  final num totalscore;
+  final num myscore;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-                  margin: EdgeInsets.all(
-                    MediaQuery.of(context).size.width * 0.04,
+      margin: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+          color: babyblue,
+          border: Border.all(color: greygreen),
+          borderRadius: BorderRadius.circular(10)),
+      width: MediaQuery.of(context).size.width * 0.8,
+      // height: MediaQuery.of(context).size.height * 0.22,
+      child: Row(
+        children: [
+          Flexible(
+            flex: 1,
+            fit: FlexFit.loose,
+            child: Lottie.network(imageUrl),
+          ),
+          Flexible(
+            flex: 2,
+            fit: FlexFit.loose,
+            child: Padding(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.width * 0.04,
+                      bottom: MediaQuery.of(context).size.width * 0.005,
+                    ),
+                    child: Text(
+                      Text_quizName,
+                      style:
+                          const TextStyle(color: green, fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  decoration: BoxDecoration(
-                      color: babyblue,
-                      border: Border.all(color: greygreen),
-                      borderRadius: BorderRadius.circular(10)),
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  height: MediaQuery.of(context).size.height * 0.22,
-                  child: Row(
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child:
-                            Lottie.network(imageUrl),
-                        fit: FlexFit.loose,
-                      ),
-                      Flexible(
-                        flex: 2,
-                        fit: FlexFit.loose,
-                        child: Padding(
-                          padding:  EdgeInsets.all(MediaQuery.of(context).size.width*0.04,),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.width * 0.04,
-                                  bottom:
-                                      MediaQuery.of(context).size.width * 0.005,
-                                ),
-                                child: Text(Text_quizName
-                                 ,
-                                  style: TextStyle(
-                                      color: green, fontWeight: FontWeight.bold),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              Text(Text_SubjectName,
-                                  style: TextStyle(
-                                    color: green,
-                                  )),
-                              Text(totalscore
-                              .toString() +
-                                    "/" +
-                                   
-                                       myscore .toString(),
-                                style: TextStyle(color: Colors.red),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                );
+                  Text(Text_SubjectName,
+                      style: const TextStyle(
+                        color: green,
+                      )),
+                  Text(
+                    "$totalscore/$myscore",
+                    style: TextStyle(color: myscore/(totalscore==0? 1:totalscore) < .5 ? Colors.red : Colors.green),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

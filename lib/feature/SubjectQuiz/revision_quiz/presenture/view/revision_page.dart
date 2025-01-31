@@ -104,6 +104,7 @@ class _RevisionPageState extends State<RevisionPage> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ProblemView(
+                          questionOrder:questionOrder,
                           problem: state.question_with_answer.problems![index],
                           selected: (question) {
                             return widget.list
@@ -313,6 +314,7 @@ class _RevisionPageState extends State<RevisionPage> {
                       final question = state.question_with_answer
                           .separated_questions[sepratedIndex];
                       return QuestionView(
+                        index: questionOrder.indexOf(question.id.toInt()),
                         question: question,
                         result: true,
                         selected: widget.list

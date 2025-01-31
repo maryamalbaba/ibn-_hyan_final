@@ -1,3 +1,5 @@
+//deprecated
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'dart:async';
@@ -11,15 +13,17 @@ import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/data/Mo
 import 'package:ibnhyanfinal/feature/SubjectQuiz/send_answer_for_subject/presenture/view/bloc/send_answer_bloc.dart';
 import 'package:ibnhyanfinal/feature/marks/mark_page.dart';
 
+
+///Deprecated --
 class SendAnswerUI extends StatelessWidget {
   const SendAnswerUI({
-    Key? key,
+    super.key,
     //  this.onTap,
     required this.itemcount,
     required this.list,
     required this.result_Id,
     required this.timer,
-  }) : super(key: key);
+  });
 
   //  VoidCallback? onTap;
   final Timer timer;

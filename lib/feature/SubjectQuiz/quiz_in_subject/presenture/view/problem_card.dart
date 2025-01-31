@@ -38,11 +38,24 @@ class ProblemCard extends StatelessWidget {
                     Padding(
                       padding:
                           EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),
-                      child: Image.network(
-                        problem.problem_image!,
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: MediaQuery.of(context).size.height * 0.1,
-                        fit: BoxFit.scaleDown,
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(context: context, builder: (context) => Dialog(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InteractiveViewer(child: Image.network(
+                                problem.problem_image!,
+                                fit: BoxFit.fill,
+                              )),
+                            ),
+                          ));
+                        },
+                        child: Image.network(
+                          problem.problem_image!,
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                 ],

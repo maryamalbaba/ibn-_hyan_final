@@ -18,15 +18,17 @@ class QuestionView extends StatelessWidget {
     required this.selected,
     this.onAnswer,
     this.result = false,
+    required this.index,
   });
 
   final QuestionModel question;
   final bool nameWithoutCard;
   final int? selected;
   final bool result;
+  final int index;
   final void Function(
       QuestionModel question, int answer_index, AnswerModel answer)? onAnswer;
-  static const List<String> label = ["أ", "ب", "جـ", "د"];
+  static const List<String> label = ["A", "B", "C", "D"];
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +53,22 @@ class QuestionView extends StatelessWidget {
                     ? MainAxisAlignment.start
                     : MainAxisAlignment.center,
                 children: [
-                  if (nameWithoutCard)
-                    Container(
-                        margin: const EdgeInsetsDirectional.only(end: 8),
-                        height: 15,
-                        width: 15,
-                        decoration: const ShapeDecoration(
-                            color: green, shape: CircleBorder())),
-                  Flexible(child: TexTextWidget(question.question_text)),
+                  Container(
+                    margin: const EdgeInsetsDirectional.only(end: 8),
+                    height: 20,
+                    width: 20,
+                    decoration: nameWithoutCard
+                        ? const ShapeDecoration(
+                            color: green, shape: CircleBorder())
+                        : null,
+                    alignment: Alignment.center,
+                    child: Text("${index + 1}",
+                        style: TextStyle(
+                            color: nameWithoutCard ? Colors.white : amber)),
+                  ),
+                  Flexible(
+                      fit: FlexFit.tight,
+                      child: TexTextWidget(question.question_text)),
                 ],
               ),
               question.question_image
@@ -72,12 +82,26 @@ class QuestionView extends StatelessWidget {
                   ? Padding(
                       padding: EdgeInsets.all(
                           MediaQuery.of(context).size.height * 0.01),
-                      child: Image.network(
-                        // testImage,
-                        question.question_image!,
-                        height: MediaQuery.of(context).size.height * 0.15,
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        fit: BoxFit.fill,
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => Dialog(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: InteractiveViewer(
+                                          child: Image.network(
+                                        question.question_image!,
+                                        fit: BoxFit.fill,
+                                      )),
+                                    ),
+                                  ));
+                        },
+                        child: Image.network(
+                          // testImage,
+                          question.question_image!,
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     )
                   : const SizedBox(
@@ -90,19 +114,23 @@ class QuestionView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         child: Row(
           children: [
-
-            Text("${question.score} درجة", style: const TextStyle(color: darkergreen, fontWeight: FontWeight.w700,decoration: TextDecoration.underline)),
+            Text("${question.score} درجة",
+                style: const TextStyle(
+                    color: darkergreen,
+                    fontWeight: FontWeight.w700)),
             const SizedBox(width: 15),
             Flexible(
                 fit: FlexFit.tight,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // const Text("المصدر: ",
-                    //     style: TextStyle(color: green, decoration: TextDecoration.underline)),
-                    Text(question.source, style: const TextStyle(color: darkergreen, fontWeight: FontWeight.w700, decoration: TextDecoration.underline)),
+                    Text(question.source,
+                        style: const TextStyle(
+                            color: darkergreen,
+                            fontWeight: FontWeight.w700)),
                   ],
-                )),  ],
+                )),
+          ],
         ),
       ),
       //!answers for seprated Question
