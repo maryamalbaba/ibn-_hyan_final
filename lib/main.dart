@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         navigationBarTheme: const NavigationBarThemeData(
           labelTextStyle: WidgetStatePropertyAll(TextStyle(fontSize: 14, color: Colors.white))
         ),
-        appBarTheme: const AppBarTheme(titleTextStyle: TextStyle(color: Colors.white, fontSize: 28))
+        appBarTheme: const AppBarTheme(titleTextStyle: TextStyle(color: Colors.white, fontSize: 24))
       ),
       home: welcomePage(),
 

@@ -18,14 +18,14 @@ class QuizCard extends StatelessWidget {
     final parentImage = quiz.lesson_image ?? quiz.unit_image ?? "";
     if (quiz.subject_id == null) {
       return ContainerSubject(
-        height: 83,
+        // height: 83,
         widget: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
                 borderRadius:
                     const BorderRadius.horizontal(right: Radius.circular(8)),
-                child: ImageContainer(imageUrl: parentImage, width: 83)),
-            // const SizedBox(width: 20),
+                child: ImageContainer(imageUrl: parentImage, width: 83, height: 83)),
             Expanded(
                 child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -38,13 +38,16 @@ class QuizCard extends StatelessWidget {
                           color: green,
                           fontSize: 18,
                           fontWeight: FontWeight.w400)),
+                  const SizedBox(height: 8),
                   Row(children: [
-                    Text(parentName,
-                        style: const TextStyle(
-                            color: green,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400)),
-                    const Spacer(),
+                    Expanded(
+                      child: Text(parentName,
+                          style: const TextStyle(
+                              color: green,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                    const SizedBox(width: 5),
                     Image.asset(clock, height: 18),
                     Text(": ${quiz.time_limit} دقيقة",
                         style: const TextStyle(
@@ -60,7 +63,6 @@ class QuizCard extends StatelessWidget {
       );
     }
     return ContainerSubject(
-      height: 83,
       widget: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 40),
         titleTextStyle: const TextStyle(

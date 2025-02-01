@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 
 class ContainerSubject extends StatelessWidget {
-  const ContainerSubject({super.key, required this.widget, this.height = 130});
+  const ContainerSubject({super.key, required this.widget, this.height});
   final Widget widget;
-  final double height;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {

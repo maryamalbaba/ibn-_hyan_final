@@ -37,7 +37,7 @@ class AnswerContainer extends StatelessWidget {
           ),
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: color??babyblue,
+            color: color ?? babyblue,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: borderColor!,
@@ -46,22 +46,32 @@ class AnswerContainer extends StatelessWidget {
           ),
           child: Column(
             children: [
-              answerText != null
-                  ? TexTextWidget(
-                      "  $label   $answerText",
-                      style: const TextStyle(fontSize: 16),
-                    )
-                  : const Text(""),
-              answerImage != null
-                  ? Image.network(
-                      answerImage!,
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                    )
-                  : const SizedBox(
-                      height: 0.001,
-                      width: 0.001,
-                    )
+              if (answerText != null)
+                TexTextWidget(
+                  "  $label   ${answerText ?? ""}",
+                ),
+              if (answerImage != null)
+                InkWell(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InteractiveViewer(
+                                    child: Image.network(
+                                  answerImage!,
+                                  fit: BoxFit.fill,
+                                )),
+                              ),
+                            ));
+                  },
+                  child: Image.network(
+                    answerImage!,
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                  ),
+                )
             ],
           )),
     );

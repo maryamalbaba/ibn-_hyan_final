@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/widgets/tex_text_widget.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/problem.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/question_model.dart';
+import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view/problem_card.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/view/question_view.dart';
 
 import '../../../../../core/resourses/colors_manager.dart';
@@ -13,12 +14,13 @@ class ProblemView extends StatelessWidget {
     required this.problem,
     required this.selected,
     this.onAnswer,
-    this.result = false,
+    this.result = false, required this.questionOrder,
   });
 
   final ProblemModel problem;
   final int? Function(QuestionModel question) selected;
   final bool result;
+  final List<int> questionOrder;
   final void Function(
       QuestionModel question, int answer_index, AnswerModel answer)? onAnswer;
 
@@ -26,34 +28,11 @@ class ProblemView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: babyblue,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: Lightgreen,
-              )),
-          child: Column(
-            children: [
-              Center(child: TexTextWidget(problem.problem_text!)),
-              if (problem.problem_image != null)
-                Padding(
-                  padding:
-                      EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),
-                  child: Image.network(
-                    problem.problem_image!,
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    fit: BoxFit.scaleDown,
-                  ),
-                )
-            ],
-          ),
-        ),
+        ProblemCard(problem: problem, pinned: false),
         ...problem.questions!.map((e) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: QuestionView(
+                index: questionOrder.indexOf(e.id.toInt()),
                   result: result,
                   nameWithoutCard: true,
                   question: e,

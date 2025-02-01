@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibnhyanfinal/core/resourses/colors_manager.dart';
 import 'package:ibnhyanfinal/core/widgets/statisics_container.dart';
 import 'package:ibnhyanfinal/feature/statistics/presenture/bloc/statisics_bloc.dart';
-import 'package:lottie/lottie.dart';
+import 'package:ibnhyanfinal/feature/statistics/presenture/view/statistics_list.dart';
 import 'package:shimmer/shimmer.dart';
 
 class StatisticsPage extends StatelessWidget {
@@ -16,16 +16,7 @@ class StatisticsPage extends StatelessWidget {
       child: BlocBuilder<StatisicsBloc, StatisicsState>(
         builder: (context, state) {
           if (state is SuucessGetStatisics) {
-            return ListView.builder(
-              itemCount: state.List_Statistics.length,
-              itemBuilder: (BuildContext context, int index) {
-                return StatisicsContainer(imageUrl: state.List_Statistics[index].image,
-                 Text_quizName:  state.List_Statistics[index].quiz_name!,
-                  Text_SubjectName: state.List_Statistics[index].subject_name!,
-                   totalscore:  state.List_Statistics[index].score,
-                    myscore:  state.List_Statistics[index].total_score,);
-              },
-            );
+            return StatisticsList(listStatistics: state.List_Statistics);
           } else {
             return ListView.builder(
                 itemCount: 3,
