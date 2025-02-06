@@ -29,6 +29,21 @@ class AnswerContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      onDoubleTap: (){
+         if (answerImage != null)
+         showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InteractiveViewer(
+                                    child: Image.network(
+                                  answerImage!,
+                                  fit: BoxFit.fill,
+                                )),
+                              ),
+                            ));
+      },
       borderRadius: BorderRadius.circular(10),
       child: Container(
           constraints: BoxConstraints(
@@ -51,27 +66,29 @@ class AnswerContainer extends StatelessWidget {
                   "  $label   ${answerText ?? ""}",
                 ),
               if (answerImage != null)
-                InkWell(
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => Dialog(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InteractiveViewer(
-                                    child: Image.network(
-                                  answerImage!,
-                                  fit: BoxFit.fill,
-                                )),
-                              ),
-                            ));
-                  },
-                  child: Image.network(
+                // InkWell(
+                //   onDoubleTap: () {
+                //   //  onTap;
+                //     showDialog(
+                //         context: context,
+                //         builder: (context) => Dialog(
+                //               child: Padding(
+                //                 padding: const EdgeInsets.all(8.0),
+                //                 child: InteractiveViewer(
+                //                     child: Image.network(
+                //                   answerImage!,
+                //                   fit: BoxFit.fill,
+                //                 )),
+                //               ),
+                //             ));
+                 // },
+                // child:
+                   Image.network(
                     answerImage!,
                     width: MediaQuery.of(context).size.width * 0.6,
                     height: MediaQuery.of(context).size.height * 0.1,
                   ),
-                )
+              // )
             ],
           )),
     );
