@@ -144,7 +144,7 @@ class QuestionView extends StatelessWidget {
               question.answers.length,
               (answer_index) {
                 final answer = question.answers[answer_index];
-                print("$selected:${answer.id}");
+                // print("$selected:${answer.id}");
                 final answer_selected = !result && selected == answer_index;
                 final selected_wrong = result &&
                     selected == answer.id &&

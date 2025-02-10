@@ -14,17 +14,25 @@ class StatisticsList extends StatefulWidget {
 }
 
 class _StatisticsListState extends State<StatisticsList> {
-  late List<StatiscisModel> shownList = widget.listStatistics;
-  late final Set<String?> subjects =
-      widget.listStatistics.map((e) => e.subject_name).toSet();
+  late List<StatiscisModel> shownList;
+  late final Set<String?> subjects;
   String? selected;
 
+  @override
+  void initState() {
+    shownList = widget.listStatistics;
+    subjects = widget.listStatistics.map((e) => e.subject_name).toSet();
+    super.initState();
+  }
+
   onChanged(String? value) {
-    if(value==null){
+    if (value == null) {
       shownList = widget.listStatistics;
       return;
     }
-    shownList = widget.listStatistics.where((element) => element.subject_name == value).toList();
+    shownList = widget.listStatistics
+        .where((element) => element.subject_name == value)
+        .toList();
   }
 
   @override
@@ -47,8 +55,8 @@ class _StatisticsListState extends State<StatisticsList> {
                 value: selected,
                 items: [
                   const DropdownMenuItem(value: null, child: Text("الكل")),
-                  ...subjects
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e??"-")))
+                  ...subjects.map(
+                      (e) => DropdownMenuItem(value: e, child: Text(e ?? "-")))
                 ],
                 onChanged: (value) {
                   onChanged(value);

@@ -95,6 +95,7 @@ class _CorePageState extends State<CorePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        print(routeObs.currentRoute.value);
         if (navigatorKey.currentState?.canPop() ?? false) {
           if (routeObs.currentRoute.value == "/QuizSubjectUi") {
             if (await _showExitConfirmationDialog(context)) {

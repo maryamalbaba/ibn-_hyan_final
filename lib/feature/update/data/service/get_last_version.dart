@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -43,12 +42,18 @@ Future<Either<ErrorModel, Version>> updateversion_service() async {
 void checkUpdate(BuildContext context) async {
   Version v = Version(version_num: "", version_url: "");
   String currentversion = await getLocalversion();
+  print(currentversion);
   Either<ErrorModel, Version> upddate = await updateversion_service();
   upddate.fold((error) {
     print("failed");
   }, (lastversion) {
     if (lastversion.version_num != currentversion) {
-      showDialogUpdate(context: context, url: lastversion.version_url);
+      showDialogUpdate(
+        context: context,
+        url: lastversion.version_url,
+        currentversion: currentversion,
+        comingVersion: lastversion.version_num,
+      );
     } else {
       print("Current version: $currentversion");
       print("the same version");
@@ -56,7 +61,12 @@ void checkUpdate(BuildContext context) async {
   });
 }
 
-void showDialogUpdate({required BuildContext context, required String url}) {
+void showDialogUpdate({
+  required BuildContext context,
+  required String url,
+  required String currentversion,
+  required String comingVersion,
+}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -65,7 +75,6 @@ void showDialogUpdate({required BuildContext context, required String url}) {
           builder: (context, constraints) {
             double dialogWidth = constraints.maxWidth * 0.9;
             double dialogHeight = constraints.maxHeight * 0.4;
-
             return SingleChildScrollView(
               child: AlertDialog(
                 title: Center(
@@ -77,14 +86,31 @@ void showDialogUpdate({required BuildContext context, required String url}) {
                 content: Container(
                   // width: dialogWidth,
                   constraints: BoxConstraints(
-                    maxHeight: dialogHeight, //
+                    maxHeight: dialogHeight,
+                    maxWidth: dialogWidth
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(" تحديث جديد ✨ \n حدثي التطبيق  فضلاً",
+                      const Text(" تحديث جديد ✨ \n حدثي التطبيق  فضلاً",
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis),
+                      const SizedBox(height: 15),
+                      Text(
+                        "التحديث الحالي $currentversion",
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        "التحديث الجديد $comingVersion",
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -121,6 +147,7 @@ void showDialogUpdate({required BuildContext context, required String url}) {
     },
   );
 }
+
 void _launchURL(String url) async {
   if (await canLaunch(url)) {
     await launch(url);

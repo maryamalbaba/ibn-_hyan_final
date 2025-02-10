@@ -199,7 +199,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                       const SnackBar(
                                           content: Text("تم الارسال بنجاح")));
                                   Navigator.of(context)
-                                      .pushNamed("/ResultExamUI", arguments: [
+                                      .pushReplacementNamed("/ResultExamUI", arguments: [
                                     state.question_with_answer.result_id
                                         .toInt(),
                                     list
@@ -315,7 +315,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                             .toInt(),
                                         answer_text: question
                                             .answers[answer_index]
-                                            .answer_text!,
+                                            .answer_text,
                                         answer_tarqem:
                                             QuestionView.label[answer_index],
                                         questionid: question.id,

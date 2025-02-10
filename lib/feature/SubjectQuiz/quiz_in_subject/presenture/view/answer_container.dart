@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/widgets/tex_text_widget.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../../core/resourses/colors_manager.dart';
 
@@ -29,20 +30,24 @@ class AnswerContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      onDoubleTap: (){
-         if (answerImage != null)
-         showDialog(
-                        context: context,
-                        builder: (context) => Dialog(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InteractiveViewer(
-                                    child: Image.network(
-                                  answerImage!,
-                                  fit: BoxFit.fill,
-                                )),
-                              ),
-                            ));
+      onDoubleTap: () {
+        if (answerImage != null) {
+          showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                    shape: const RoundedRectangleBorder(
+                        side: BorderSide(color: green, width: 3)),
+                    insetPadding: EdgeInsets.zero,
+                    child: FractionallySizedBox(
+                      widthFactor: .95,
+                      child: InteractiveViewer(
+                          child: Image.network(
+                            answerImage!,
+                            fit: BoxFit.fill,
+                          )),
+                    ),
+                  ));
+        }
       },
       borderRadius: BorderRadius.circular(10),
       child: Container(
@@ -81,13 +86,13 @@ class AnswerContainer extends StatelessWidget {
                 //                 )),
                 //               ),
                 //             ));
-                 // },
+                // },
                 // child:
-                   Image.network(
-                    answerImage!,
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                  ),
+                Image.network(
+                  answerImage!,
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
               // )
             ],
           )),

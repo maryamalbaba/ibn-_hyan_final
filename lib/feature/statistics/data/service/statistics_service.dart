@@ -22,6 +22,7 @@ class StatisticsService {
         options: Options(headers: {"Authorization": "Bearer $accesstoken"}));
     print(" student token : " + accesstoken);
     print("before try in subject");
+    response.data['data'].forEach((e)=>print(e));
     try {
       if (response.statusCode == 200) {
         print("200 in subject");
