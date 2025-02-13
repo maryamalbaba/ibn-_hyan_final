@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:ibnhyanfinal/core/widgets/interactive_image.dart';
 import 'package:ibnhyanfinal/core/widgets/tex_text_widget.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/answer_model.dart';
 
@@ -86,16 +87,8 @@ class QuestionView extends StatelessWidget {
                         onTap: () {
                           showDialog(
                               context: context,
-                              builder: (context) => Dialog(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: InteractiveViewer(
-                                          child: Image.network(
-                                        question.question_image!,
-                                        fit: BoxFit.fill,
-                                      )),
-                                    ),
-                                  ));
+                              builder: (context) => InteractiveImage(
+                                  image: question.question_image!));
                         },
                         child: Image.network(
                           // testImage,
@@ -116,8 +109,7 @@ class QuestionView extends StatelessWidget {
           children: [
             Text("${question.score} درجة",
                 style: const TextStyle(
-                    color: darkergreen,
-                    fontWeight: FontWeight.w700)),
+                    color: darkergreen, fontWeight: FontWeight.w700)),
             const SizedBox(width: 15),
             Flexible(
                 fit: FlexFit.tight,
@@ -126,8 +118,7 @@ class QuestionView extends StatelessWidget {
                   children: [
                     Text(question.source,
                         style: const TextStyle(
-                            color: darkergreen,
-                            fontWeight: FontWeight.w700)),
+                            color: darkergreen, fontWeight: FontWeight.w700)),
                   ],
                 )),
           ],

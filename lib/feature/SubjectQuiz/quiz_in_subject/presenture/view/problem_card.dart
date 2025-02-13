@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibnhyanfinal/core/widgets/interactive_image.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/data/model/problem.dart';
 import 'package:ibnhyanfinal/feature/SubjectQuiz/quiz_in_subject/presenture/bloc/bloc/subject_question_bloc.dart';
 
@@ -40,15 +41,7 @@ class ProblemCard extends StatelessWidget {
                           EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),
                       child: InkWell(
                         onTap: () {
-                          showDialog(context: context, builder: (context) => Dialog(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: InteractiveViewer(child: Image.network(
-                                problem.problem_image!,
-                                fit: BoxFit.fill,
-                              )),
-                            ),
-                          ));
+                          showDialog(context: context, builder: (context) => InteractiveImage(image: problem.problem_image!));
                         },
                         child: Image.network(
                           problem.problem_image!,

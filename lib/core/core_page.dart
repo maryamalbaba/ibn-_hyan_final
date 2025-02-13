@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ibnhyanfinal/core/resourses/assets_manager.dart';
@@ -14,6 +15,7 @@ import 'package:ibnhyanfinal/feature/SubjectQuiz/subject_details_quiz/presenture
 import 'package:ibnhyanfinal/feature/marks/mark_page.dart';
 import 'package:ibnhyanfinal/feature/statistics/presenture/view/statistics.dart';
 import 'package:ibnhyanfinal/feature/update/data/service/get_last_version.dart';
+import 'package:sizer/sizer.dart';
 
 import 'route_obeserver.dart';
 
@@ -25,13 +27,13 @@ class CorePage extends StatefulWidget {
 }
 
 class _CorePageState extends State<CorePage> {
-
   @override
   void initState() {
-     checkUpdate(context);
-     print("kmknk;nnknn;");
+    checkUpdate(context);
+    print("kmknk;nnknn;");
     super.initState();
   }
+
   // ignore: non_constant_identifier_names
   List<Widget> pages_in_Bar = [
     const SubjectPage(),
@@ -114,8 +116,13 @@ class _CorePageState extends State<CorePage> {
             indicatorColor: green,
             backgroundColor: green,
             labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-            onDestinationSelected: (newDestenaition) {
+            onDestinationSelected: (newDestenaition) async {
               setState(() => currentIndex = newDestenaition);
+              if (routeObs.currentRoute.value == "/QuizSubjectUi") {
+                if (!await _showExitConfirmationDialog(context)) {
+                  return;
+                }
+              }
               final route = routesTitles.keys.toList()[currentIndex];
               navigatorKey.currentState?.pushNamedAndRemoveUntil(
                 route,

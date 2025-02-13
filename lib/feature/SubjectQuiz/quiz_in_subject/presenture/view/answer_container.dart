@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ibnhyanfinal/core/widgets/interactive_image.dart';
 import 'package:ibnhyanfinal/core/widgets/tex_text_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -34,19 +35,7 @@ class AnswerContainer extends StatelessWidget {
         if (answerImage != null) {
           showDialog(
               context: context,
-              builder: (context) => Dialog(
-                    shape: const RoundedRectangleBorder(
-                        side: BorderSide(color: green, width: 3)),
-                    insetPadding: EdgeInsets.zero,
-                    child: FractionallySizedBox(
-                      widthFactor: .95,
-                      child: InteractiveViewer(
-                          child: Image.network(
-                            answerImage!,
-                            fit: BoxFit.fill,
-                          )),
-                    ),
-                  ));
+              builder: (context) => InteractiveImage(image: answerImage!));
         }
       },
       borderRadius: BorderRadius.circular(10),
