@@ -278,7 +278,7 @@ class _QuizSubjectUiState extends State<QuizSubjectUi> {
                                               answer_tarqem: QuestionView
                                                   .label[answer_index],
                                               answer_text:
-                                                  answer.answer_text!,
+                                                  answer.answer_text,
                                               questionid: question.id));
                                     },
                                   ),
