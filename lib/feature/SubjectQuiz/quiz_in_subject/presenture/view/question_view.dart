@@ -69,7 +69,7 @@ class QuestionView extends StatelessWidget {
                   ),
                   Flexible(
                       fit: FlexFit.tight,
-                      child: TexTextWidget(question.question_text)),
+                      child: TexTextWidget2(question.question_text)),
                 ],
               ),
               question.question_image
