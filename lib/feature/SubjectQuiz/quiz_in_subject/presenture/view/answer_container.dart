@@ -67,7 +67,7 @@ class AnswerContainer extends StatelessWidget {
           child: Column(
             children: [
               if (answerText != null)
-                TexTextWidget(
+                TexTextWidget2(
                   "  $label   ${answerText ?? ""}",
                 ),
               if (answerImage != null)

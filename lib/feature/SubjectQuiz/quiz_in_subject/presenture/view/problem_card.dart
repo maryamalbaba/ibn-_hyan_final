@@ -33,7 +33,7 @@ class ProblemCard extends StatelessWidget {
                   )),
               child: Column(
                 children: [
-                  Center(child: TexTextWidget(problem.problem_text!)),
+                  Center(child: TexTextWidget2(problem.problem_text!)),
                   if (problem.problem_image != null)
                     Padding(
                       padding:

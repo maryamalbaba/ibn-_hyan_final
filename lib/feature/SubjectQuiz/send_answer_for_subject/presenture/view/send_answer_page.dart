@@ -81,7 +81,7 @@ class SendAnswerUI extends StatelessWidget {
                             const verticalDivDer(),
                             Expanded(
                                 flex: 8,
-                                child: TexTextWidget(list[index]?.answer_text ?? "",
+                                child: TexTextWidget2(list[index]?.answer_text ?? "",
                                     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                                     // overflow: TextOverflow.clip, maxLines: 2.
                                 )),
