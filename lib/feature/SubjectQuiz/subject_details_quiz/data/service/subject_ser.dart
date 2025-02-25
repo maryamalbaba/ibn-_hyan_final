@@ -24,10 +24,12 @@ class SubjectDetailsQuiz {
     try {
       if (response.statusCode == 200) {
         print("200 in get_detail_subject_quizes_");
+        final data = response.data["data"];
+        final list = data is Map? data.values.toList(): data;
         List<SubjecDetailsQuizs> res = List.generate(
             response.data["data"].length,
             (index) =>
-                SubjecDetailsQuizs.fromMap(response.data["data"][index]));
+                SubjecDetailsQuizs.fromMap(list[index]));
                 print(res);
         return Right(res);
       } else {
