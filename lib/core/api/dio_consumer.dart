@@ -14,6 +14,7 @@ class DioConsumer implements ApiConsumer {
     dio.options.baseUrl = "http://ibn-hayyan.webmyidea.com/api/v1/";
   }
   @override
+  
   Future<Response> delete(String path,
       {bool is_need_data_to_map = false,
       Object? data,
