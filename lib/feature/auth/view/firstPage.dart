@@ -11,6 +11,7 @@ import 'package:ibnhyanfinal/feature/auth/model/response_model.dart';
 import 'package:ibnhyanfinal/feature/auth/service/real/sign_ser.dart';
 import 'package:ibnhyanfinal/feature/auth/view/sign_page.dart';
 import 'package:ibnhyanfinal/feature/update/data/service/get_last_version.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: camel_case_types
 
@@ -109,6 +110,29 @@ class _welcomePageState extends State<welcomePage>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+
+Align(
+  alignment:Alignment.topLeft,
+  child: InkWell(
+                  onTap: () async{
+                  
+                                    final Uri url = Uri(
+                                      scheme: 'tel',
+                                      path: '0934906018',
+                                    );
+                                    if (await canLaunchUrl(url)) {
+                                      await launchUrl(url);
+                                    } else {
+                                      print('Can not lunch this url');
+                                    }
+                                  
+                  },
+                  child: Padding(
+                    padding:  EdgeInsets.all(MediaQuery.of(context).size.height*0.04),
+                    child: Text("تواصل معنا"),
+                  )),
+),
+              //
               // if (isLoggedIn)
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
@@ -277,6 +301,7 @@ class _welcomePageState extends State<welcomePage>
                   text: "تسجيل الدخول",
                 ),
               ),
+              
             ],
           ),
         ),
