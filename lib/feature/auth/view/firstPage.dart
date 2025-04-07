@@ -38,24 +38,24 @@ class _welcomePageState extends State<welcomePage>
   @override
   void initState() {
     // TODO: implement initState
-    
+
     super.initState();
-   
+
     checkLoginState();
     _controller = AnimationController(
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
       vsync: this,
     );
-    
+
     _animation = Tween<Offset>(
-      begin: Offset(1.0, 0),
-      end: Offset(0.0, 0.0),
+      begin: const Offset(1.0, 0),
+      end: const Offset(0.0, 0.0),
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
     // Start the animation
     _controller.forward();
 
-    Timer(Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 1), () {
       setState(() {
         _showText = true;
       });
@@ -103,35 +103,13 @@ class _welcomePageState extends State<welcomePage>
         height: double.infinity,
         decoration: const BoxDecoration(
           color: offwhite,
-          image: DecorationImage(
-              image: AssetImage(background), fit: BoxFit.fill),
+          image:
+              DecorationImage(image: AssetImage(background), fit: BoxFit.fill),
         ),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-
-Align(
-  alignment:Alignment.topLeft,
-  child: InkWell(
-                  onTap: () async{
-                  
-                                    final Uri url = Uri(
-                                      scheme: 'tel',
-                                      path: '0934906018',
-                                    );
-                                    if (await canLaunchUrl(url)) {
-                                      await launchUrl(url);
-                                    } else {
-                                      print('Can not lunch this url');
-                                    }
-                                  
-                  },
-                  child: Padding(
-                    padding:  EdgeInsets.all(MediaQuery.of(context).size.height*0.04),
-                    child: Text("تواصل معنا"),
-                  )),
-),
               //
               // if (isLoggedIn)
               SizedBox(
@@ -139,12 +117,34 @@ Align(
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.s,
                   children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: InkWell(
+                          onTap: () async {
+                            final Uri url = Uri(
+                              scheme: 'tel',
+                              path: '0934906018',
+                            );
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url);
+                            } else {
+                              print('Can not lunch this url');
+                            }
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.height * 0.04),
+                            child: const Text("تواصل معنا",
+                                style: TextStyle(
+                                    fontFamily: "motlaq", color: darkerrgreen)),
+                          )),
+                    ),
                     // SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                     const Spacer(
                       flex: 1,
                     ),
                     Expanded(
-                      flex: 3,
+                      flex: 7,
                       child: Image.asset(
                         logo,
                         // height: MediaQuery.of(context).size.height * 0.4,
@@ -152,6 +152,7 @@ Align(
                     ),
                     const SizedBox(height: 10),
                     Expanded(
+                        flex: 2,
                         child: _showText
                             ? SlideTransition(
                                 position: _animation,
@@ -301,7 +302,6 @@ Align(
                   text: "تسجيل الدخول",
                 ),
               ),
-              
             ],
           ),
         ),

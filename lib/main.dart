@@ -31,12 +31,14 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       theme: ThemeData(
-        fontFamily: "motlaq",
-        navigationBarTheme: const NavigationBarThemeData(
-          labelTextStyle: WidgetStatePropertyAll(TextStyle(fontSize: 14, color: Colors.white))
-        ),
-        appBarTheme: const AppBarTheme(titleTextStyle: TextStyle(color: Colors.white, fontSize: 24))
-      ),
+          fontFamily: "motlaq",
+          navigationBarTheme: const NavigationBarThemeData(
+              labelTextStyle: WidgetStatePropertyAll(
+                  TextStyle(fontSize: 14, color: Colors.white))),
+          appBarTheme: const AppBarTheme(
+              actionsIconTheme: IconThemeData(color: Colors.white),
+              iconTheme: IconThemeData(color: Colors.white),
+              titleTextStyle: TextStyle(color: Colors.white, fontSize: 24))),
       home: welcomePage(),
 
       //  welcomePage()
