@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +41,12 @@ class SignPage extends StatelessWidget {
       } else if (Platform.isWindows) {
         WindowsDeviceInfo windowsinfo = await deviceInfo.windowsInfo;
         return windowsinfo.computerName;
+      } else if (kIsWeb) {
+        WebBrowserInfo webinfo = await deviceInfo.webBrowserInfo;
+        String deviceid =
+            "${webinfo.userAgent}-${webinfo.deviceMemory}-${webinfo.hardwareConcurrency}-${webinfo.platform}";
+
+        return deviceid;
       } else {
         return "12345678";
       }
