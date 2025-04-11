@@ -11,7 +11,7 @@ class DioConsumer implements ApiConsumer {
     required this.dio,
   }) {
    // http://ibn-hayyan.webmyidea.com/api/v1/my-exams
-    dio.options.baseUrl = "http://ibn-hayyan.webmyidea.com/api/v1/";
+    dio.options.baseUrl = "https://ibn-hayyan.webmyidea.com/api/v1/";
   }
   @override
   
