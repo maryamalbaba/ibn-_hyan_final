@@ -1,0 +1,1 @@
+enum PlatForm{Android,Ios,Web,Windows,UnKown}

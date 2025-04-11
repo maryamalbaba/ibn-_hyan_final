@@ -14,44 +14,34 @@ import 'package:ibnhyanfinal/core/widgets/useable_green_container.dart';
 import 'package:ibnhyanfinal/feature/auth/bloc/auth_bloc.dart';
 import 'package:ibnhyanfinal/feature/auth/model/usermodel.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:ibnhyanfinal/feature/auth/view/platform/device_id.dart';
 
-class SignPage extends StatelessWidget {
+class SignPage extends StatefulWidget {
   SignPage({super.key});
 
+  @override
+  State<SignPage> createState() => _SignPageState();
+}
+
+class _SignPageState extends State<SignPage> {
   TextEditingController controller1 = TextEditingController();
 
-  // TextEditingController controller2 = TextEditingController();
-  // TextEditingController controller3 = TextEditingController();
-  // TextEditingController controller4 = TextEditingController();
-  // TextEditingController controller5 = TextEditingController();
-  // TextEditingController controller6 = TextEditingController();
-  // TextEditingController controller7 = TextEditingController();
-  // TextEditingController controller8 = TextEditingController();
+
+
+Future<String>loadeviceId()async{
+  
+ String  id= await getDeviceId();;
+ return id;
+  
+}
+
 
   @override
   Widget build(BuildContext context) {
-    Future<String> getAndroidId() async {
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      // AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      // String andridd = androidInfo.id;
-      // return andridd;// Unique ID for each Android device
-      if (Platform.isAndroid) {
-        AndroidDeviceInfo androidinf = await deviceInfo.androidInfo;
-        return androidinf.id;
-      } else if (Platform.isWindows) {
-        WindowsDeviceInfo windowsinfo = await deviceInfo.windowsInfo;
-        return windowsinfo.computerName;
-      } else if (kIsWeb) {
-        WebBrowserInfo webinfo = await deviceInfo.webBrowserInfo;
-        String deviceid =
-            "${webinfo.userAgent}-${webinfo.deviceMemory}-${webinfo.hardwareConcurrency}-${webinfo.platform}";
-
-        return deviceid;
-      } else {
-        return "12345678";
-      }
-    }
-
+   ///device func
+  
+   
+   //
     final screenwidth = MediaQuery.of(context).size.width * 0.8;
     final textfieldwidth = screenwidth / 10;
     return Scaffold(
@@ -184,28 +174,16 @@ class SignPage extends StatelessWidget {
                   child: InkWell(
                     onTap: () async {
                       String signincode = controller1.text;
-                      // controller2.text +
-                      // controller3.text +
-                      // controller4.text +
-                      // controller5.text +
-                      // controller6.text +
-                      // controller7.text +
-                      // controller8.text;
+                      
 
-                      String devceid = await getAndroidId();
+                      String devceid = await loadeviceId();
                       // ignore: use_build_context_synchronously
                       context.read<AuthBloc>().add(SignEvent(
                           user: UserRequest(
                               device_id: devceid, signIn_code: signincode)));
 
                       print("some thing is sender" + devceid + controller1.text
-                          // controller2.text +
-                          // controller3.text +
-                          // controller4.text +
-                          // controller5.text +
-                          // controller6.text +
-                          // controller7.text +
-                          // controller8.text
+                          
                           );
                     },
                     child: InkWell(
